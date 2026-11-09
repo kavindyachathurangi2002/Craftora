@@ -109,3 +109,26 @@ Developed as a Final Year Undergraduate Project.
 ---
 
 *Craftora – Empowering Artisans Through Technology.*
+
+
+## System Screenshots
+
+### Home Page – Main Banner
+
+![Craftora Home Page](01-home-hero.png)
+
+### Welcome and Services
+
+![Welcome and Services](02-home-welcome-and-services.png)
+
+### Registered Artisans
+
+![Registered Artisans](03-registered-artisans.png)
+
+### Latest News and Calendar
+
+![Latest News and Calendar](04-latest-news-and-calendar.png)
+
+### Home Page Footer
+
+![Craftora Footer](05-home-footer.png)
