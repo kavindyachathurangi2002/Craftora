@@ -1,0 +1,204 @@
+
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>All Artisans - Craftora</title>
+
+    <link rel="stylesheet" href="/css/style.css">
+</head>
+
+<body>
+
+<!-- NAVIGATION BAR -->
+<nav class="navbar">
+
+    <div class="logo">
+        <a href="/">
+            <img src="/images/craftora-logo.png" alt="Craftora Logo">
+        </a>
+    </div>
+
+    <div class="nav-links">
+        <a href="/">Home</a>
+        <a href="/about-us">About Us</a>
+
+        <div class="dropdown">
+            <a href="#">Events ▾</a>
+            <div class="dropdown-menu">
+                <a href="/workshops">Workshops</a>
+                <a href="/exhibitions">Exhibitions</a>
+                <a href="/competitions">Competitions</a>
+            </div>
+        </div>
+
+        <a href="/marketplace">Marketplace</a>
+        <a href="/ratings">Ratings</a>
+        <a href="/contact">Contact Us</a>
+    </div>
+
+    <div class="sign-in">
+        <a href="/login">Sign In</a>
+    </div>
+
+</nav>
+
+
+<!-- ALL ARTISANS SECTION -->
+<section class="artisans-section">
+
+    <div class="artisan-heading">
+
+        <span>OUR MASTER CRAFTSMEN</span>
+
+        <h2>ALL REGISTERED ARTISANS</h2>
+
+        <p>
+            Meet talented artisans and discover their unique
+            traditional handmade creations.
+        </p>
+
+    </div>
+
+
+    <div class="artisan-container">
+
+        <!-- ARTISAN CARD -->
+        <div class="artisan-card"
+             th:each="artisan : ${artisans}">
+
+            <!-- Profile Image -->
+            <div class="artisan-image">
+
+                <img th:if="${artisan.profileImage != null
+                             and !artisan.profileImage.isEmpty()}"
+                     th:src="${artisan.profileImage}"
+                     th:alt="${artisan.user.fullName}">
+
+                <div th:unless="${artisan.profileImage != null
+                                 and !artisan.profileImage.isEmpty()}"
+                     class="artisan-placeholder">
+
+                    <span>👤</span>
+
+                </div>
+
+            </div>
+
+
+            <!-- Artisan Details -->
+            <div class="artisan-info">
+
+                <div class="craft-badge"
+                     th:text="${artisan.craftType}">
+                    Craft Type
+                </div>
+
+                <h3 th:text="${artisan.user.fullName}">
+                    Artisan Name
+                </h3>
+
+                <p class="artisan-location">
+                    <span class="location-icon">📍</span>
+
+                    <span th:text="${artisan.location}">
+                        Location
+                    </span>
+                </p>
+
+                <!-- View Profile -->
+                <a th:href="@{/artisan-profile/{id}(id=${artisan.artisanId})}"
+                   class="view-profile-btn">
+                    View Profile
+                </a>
+
+            </div>
+
+        </div>
+
+
+        <!-- No Artisans Message -->
+        <div class="no-artisans"
+             th:if="${#lists.isEmpty(artisans)}">
+
+            <p>
+                No approved artisans are currently available.
+            </p>
+
+        </div>
+
+    </div>
+
+</section>
+
+
+<!-- FOOTER -->
+<footer class="site-footer">
+
+    <div class="footer-container">
+
+        <div class="footer-column footer-about">
+            <h3>CRAFTORA</h3>
+
+            <p>
+                Craftora is an integrated web application aimed at
+                preserving traditional handicrafts, promoting artisan
+                growth, and providing learning and commercial opportunities
+                through technology.
+            </p>
+        </div>
+
+        <div class="footer-column">
+            <h3>QUICK LINKS</h3>
+
+            <ul>
+                <li><a href="/">Home</a></li>
+                <li><a href="/about-us">About Us</a></li>
+                <li><a href="/all-artisans">Registered Artisans</a></li>
+                <li><a href="/ratings">Ratings & Reviews</a></li>
+            </ul>
+        </div>
+
+        <div class="footer-column">
+            <h3>EVENT CATEGORIES</h3>
+
+            <ul>
+                <li><a href="/workshops">Workshops</a></li>
+                <li><a href="/exhibitions">Exhibitions</a></li>
+                <li><a href="/competitions">Competitions</a></li>
+            </ul>
+        </div>
+
+        <div class="footer-column footer-contact">
+            <h3>CONTACT US</h3>
+
+            <div class="footer-contact-item">
+                <span>📍</span>
+                <span>Sri Lanka</span>
+            </div>
+
+            <div class="footer-contact-item">
+                <span>📞</span>
+                <span>+94 77 0343002</span>
+            </div>
+
+            <div class="footer-contact-item">
+                <span>✉</span>
+                <span>craftorasystem@gmail.com</span>
+            </div>
+        </div>
+
+    </div>
+
+    <div class="footer-bottom">
+        <p>© 2026 Craftora Project. All Rights Reserved.</p>
+    </div>
+
+</footer>
+
+<script src="/js/script.js"></script>
+
+</body>
+</html>

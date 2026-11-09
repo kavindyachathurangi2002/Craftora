@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="en"
+      xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
+
+    <title>Payment Successful - Craftora</title>
+
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background: #f4f7fb;
+            font-family: Arial, Helvetica, sans-serif;
+        }
+
+        .success-card {
+            width: 90%;
+            max-width: 500px;
+            background: #ffffff;
+            border-radius: 18px;
+            padding: 45px 35px;
+            text-align: center;
+            box-shadow: 0 10px 35px rgba(0, 0, 0, 0.10);
+        }
+
+        .success-icon {
+            width: 85px;
+            height: 85px;
+            margin: 0 auto 22px;
+            border: 5px solid #2ecc71;
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            color: #2ecc71;
+            font-size: 48px;
+            font-weight: bold;
+        }
+
+        h1 {
+            margin: 0 0 12px;
+            color: #222;
+            font-size: 30px;
+        }
+
+        .message {
+            color: #666;
+            font-size: 16px;
+            line-height: 1.6;
+            margin-bottom: 12px;
+        }
+
+        .receipt-message {
+            color: #555;
+            font-size: 14px;
+            line-height: 1.6;
+            margin-bottom: 22px;
+        }
+
+        .redirect-message {
+            color: #888;
+            font-size: 13px;
+        }
+
+        .loader {
+            width: 30px;
+            height: 30px;
+            margin: 18px auto 0;
+            border: 3px solid #e5e5e5;
+            border-top: 3px solid #2ecc71;
+            border-radius: 50%;
+            animation: spin 0.9s linear infinite;
+        }
+
+        @keyframes spin {
+            100% {
+                transform: rotate(360deg);
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+<div class="success-card">
+
+    <div class="success-icon">✓</div>
+
+    <h1>Payment Successful</h1>
+
+    <div class="message">
+        Your payment has been completed successfully.
+    </div>
+
+    <div class="receipt-message">
+        Your payment receipt has been sent to your email
+        as a PDF attachment.
+    </div>
+
+    <div class="redirect-message">
+        Redirecting to your dashboard...
+    </div>
+
+    <div class="loader"></div>
+
+</div>
+
+<script th:inline="javascript">
+    const dashboardUrl = /*[[${dashboardUrl}]]*/ '/customer-dashboard';
+
+    setTimeout(function () {
+        window.location.href = dashboardUrl;
+    }, 3000);
+</script>
+
+</body>
+</html>

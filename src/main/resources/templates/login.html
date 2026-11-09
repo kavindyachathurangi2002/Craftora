@@ -1,0 +1,624 @@
+<!DOCTYPE html>
+<html lang="en"
+      xmlns:th="http://www.thymeleaf.org">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
+
+    <title>Sign In | Craftora</title>
+
+    <link rel="stylesheet"
+          th:href="@{/css/style.css}">
+
+    <!-- Font Awesome -->
+    <link rel="stylesheet"
+          href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+
+    <style>
+
+        /* =====================================================
+           PASSWORD EYE ICON
+        ===================================================== */
+
+        .password-wrapper {
+            position: relative;
+            width: 100%;
+        }
+
+        .password-wrapper input {
+            width: 100%;
+            padding-right: 45px;
+        }
+
+        .password-toggle {
+            position: absolute;
+            right: 12px;
+            top: 50%;
+            transform: translateY(-50%);
+
+            width: auto;
+            height: auto;
+
+            padding: 5px;
+
+            border: none;
+            background: transparent;
+
+            color: #687126;
+
+            cursor: pointer;
+
+            font-size: 16px;
+            line-height: 1;
+        }
+
+        .password-toggle:hover {
+            color: #C98A2E;
+        }
+
+        .password-toggle:focus {
+            outline: none;
+            box-shadow: none;
+        }
+
+
+        /* =====================================================
+           LOGIN ERROR NOTIFICATION
+        ===================================================== */
+
+        .login-error {
+            display: block;
+
+            margin-bottom: 18px;
+
+            padding: 12px 15px;
+
+            background: #fff1f0;
+
+            border: 1px solid #d9534f;
+
+            border-left: 4px solid #d9534f;
+
+            border-radius: 8px;
+
+            color: #a94442;
+
+            font-size: 13px;
+
+            line-height: 1.5;
+        }
+
+
+        /* =====================================================
+           LOGIN SUCCESS NOTIFICATION
+        ===================================================== */
+
+        .login-success {
+            display: block;
+
+            margin-bottom: 18px;
+
+            padding: 12px 15px;
+
+            background: #f0f9f1;
+
+            border: 1px solid #5cb85c;
+
+            border-left: 4px solid #5cb85c;
+
+            border-radius: 8px;
+
+            color: #3c763d;
+
+            font-size: 13px;
+
+            line-height: 1.5;
+        }
+
+    </style>
+
+</head>
+
+
+<body class="login-page">
+
+
+<div class="login-container">
+
+
+    <!-- =====================================================
+         LEFT SIDE
+    ===================================================== -->
+
+    <div class="login-brand">
+
+        <div class="login-brand-content">
+
+            <img src="/images/craftora-logo.png"
+                 alt="Craftora Logo"
+                 class="login-logo">
+
+            <h1>Welcome Back</h1>
+
+            <p>
+                Sign in to continue your journey
+                with Craftora.
+            </p>
+
+            <div class="login-features">
+
+                <div>
+                    <span>✦</span>
+                    Discover Traditional Crafts
+                </div>
+
+                <div>
+                    <span>✦</span>
+                    Connect with Artisans
+                </div>
+
+                <div>
+                    <span>✦</span>
+                    Explore Workshops & Events
+                </div>
+
+                <div>
+                    <span>✦</span>
+                    Shop Handmade Products
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <!-- =====================================================
+         RIGHT SIDE
+    ===================================================== -->
+
+    <div class="login-form-section">
+
+        <div class="login-form-container">
+
+
+            <!-- =================================================
+                 LOGIN HEADING
+            ================================================= -->
+
+            <div class="login-heading">
+
+                <span>SIGN IN</span>
+
+                <h2>Welcome to Craftora</h2>
+
+                <p>
+                    Enter your account details to continue.
+                </p>
+
+            </div>
+
+
+            <!-- =================================================
+                 SERVER ERROR MESSAGE
+            ================================================= -->
+
+            <div id="login-error"
+                 class="login-error"
+                 th:if="${errorMessage}"
+                 th:text="${errorMessage}">
+            </div>
+
+
+            <!-- =================================================
+                 LOGIN SUCCESS MESSAGE
+            ================================================= -->
+
+            <div id="login-success"
+                 class="login-success"
+                 th:if="${successMessage}"
+                 th:text="${successMessage}">
+            </div>
+
+
+            <!-- =================================================
+                 LOGIN FORM
+            ================================================= -->
+
+            <form id="loginForm"
+                  th:action="@{/login}"
+                  method="post"
+                  autocomplete="off">
+
+
+                <!-- =================================================
+                     EMAIL
+                ================================================= -->
+
+                <div class="login-form-group">
+
+                    <label for="email">
+                        Email Address
+                    </label>
+
+                    <input
+                        type="email"
+                        id="email"
+                        name="email"
+                        placeholder="Enter your email address"
+                        autocomplete="email"
+                        required>
+
+                    <small class="error-message"
+                           id="emailError"></small>
+
+                </div>
+
+
+                <!-- =================================================
+                     PASSWORD
+                ================================================= -->
+
+                <div class="login-form-group">
+
+                    <label for="password">
+                        Password
+                    </label>
+
+
+                    <div class="password-wrapper">
+
+                        <input
+                            type="password"
+                            id="password"
+                            name="password"
+                            placeholder="Enter your password"
+                            autocomplete="current-password"
+                            required
+                            minlength="8">
+
+
+                        <!-- EYE ICON -->
+
+                        <button
+                            type="button"
+                            class="password-toggle"
+                            onclick="togglePassword(this)"
+                            aria-label="Show password">
+
+                            <i class="fa-solid fa-eye-slash"></i>
+
+                        </button>
+
+                    </div>
+
+
+                    <small class="error-message"
+                           id="passwordError"></small>
+
+                </div>
+
+
+                <!-- =================================================
+                     REMEMBER + FORGOT PASSWORD
+                ================================================= -->
+
+                <div class="login-options">
+
+                    <label class="remember-me">
+
+                        <input
+                            type="checkbox"
+                            name="rememberMe">
+
+                        <span>
+                            Remember me
+                        </span>
+
+                    </label>
+
+
+                    <a href="/forgot-password">
+                        Forgot Password?
+                    </a>
+
+                </div>
+
+
+                <!-- =================================================
+                     SIGN IN BUTTON
+                ================================================= -->
+
+                <button
+                    type="submit"
+                    class="login-btn">
+
+                    Sign In
+
+                </button>
+
+
+                <!-- =================================================
+                     REGISTER
+                ================================================= -->
+
+                <div class="register-link">
+
+                    <p>
+
+                        Don't have an account?
+
+                        <a href="/register">
+                            Create an Account
+                        </a>
+
+                    </p>
+
+                </div>
+
+
+            </form>
+
+        </div>
+
+    </div>
+
+</div>
+
+
+<script>
+
+
+/* =====================================================
+   PASSWORD SHOW / HIDE
+===================================================== */
+
+function togglePassword(button) {
+
+    const password =
+        document.getElementById("password");
+
+    const icon =
+        button.querySelector("i");
+
+
+    /* =================================================
+       PASSWORD IS HIDDEN
+    ================================================= */
+
+    if (password.type === "password") {
+
+        /* Show password */
+
+        password.type = "text";
+
+
+        /* Change eye-slash to open eye */
+
+        icon.classList.remove("fa-eye-slash");
+
+        icon.classList.add("fa-eye");
+
+
+        button.setAttribute(
+            "aria-label",
+            "Hide password"
+        );
+
+    }
+
+
+    /* =================================================
+       PASSWORD IS VISIBLE
+    ================================================= */
+
+    else {
+
+        /* Hide password */
+
+        password.type = "password";
+
+
+        /* Change open eye to eye-slash */
+
+        icon.classList.remove("fa-eye");
+
+        icon.classList.add("fa-eye-slash");
+
+
+        button.setAttribute(
+            "aria-label",
+            "Show password"
+        );
+
+    }
+
+}
+
+
+/* =====================================================
+   LOGIN VALIDATION
+===================================================== */
+
+document
+    .getElementById("loginForm")
+    .addEventListener("submit", function(event) {
+
+
+        const email =
+            document.getElementById("email");
+
+        const password =
+            document.getElementById("password");
+
+        const emailError =
+            document.getElementById("emailError");
+
+        const passwordError =
+            document.getElementById("passwordError");
+
+
+        /* =================================================
+           CLEAR PREVIOUS ERRORS
+        ================================================= */
+
+        emailError.textContent = "";
+
+        passwordError.textContent = "";
+
+
+        let valid = true;
+
+
+        /* =================================================
+           EMAIL VALIDATION
+        ================================================= */
+
+        if (email.value.trim() === "") {
+
+            emailError.textContent =
+                "Email address is required.";
+
+            valid = false;
+
+        }
+
+        else if (
+            /[A-Z]/.test(email.value) ||
+            /\s/.test(email.value) ||
+            !/^[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,}$/.test(email.value)
+        ) {
+
+            emailError.textContent =
+                "Please enter a valid email address.";
+
+            valid = false;
+
+        }
+
+
+        /* =================================================
+           PASSWORD VALIDATION
+        ================================================= */
+
+        if (password.value.trim() === "") {
+
+            passwordError.textContent =
+                "Password is required.";
+
+            valid = false;
+
+        }
+
+        else if (password.value.length < 8) {
+
+            passwordError.textContent =
+                "Password must contain at least 8 characters.";
+
+            valid = false;
+
+        }
+
+
+        /* =================================================
+           PREVENT SUBMISSION IF INVALID
+        ================================================= */
+
+        if (!valid) {
+
+            event.preventDefault();
+
+        }
+
+    });
+
+
+/* =====================================================
+   SHOW SERVER-SIDE ERROR
+===================================================== */
+
+document.addEventListener(
+    "DOMContentLoaded",
+    function () {
+
+        const errorMessage =
+            document.getElementById("login-error");
+
+
+        if (errorMessage) {
+
+            /*
+             * Scroll to error notification.
+             */
+
+            errorMessage.scrollIntoView({
+                behavior: "smooth",
+                block: "center"
+            });
+
+        }
+
+
+        const successMessage =
+            document.getElementById("login-success");
+
+
+        if (successMessage) {
+
+            /*
+             * Scroll to success notification.
+             */
+
+            successMessage.scrollIntoView({
+                behavior: "smooth",
+                block: "center"
+            });
+
+        }
+
+    }
+);
+
+
+/* =====================================================
+   CLEAR FORM WHEN RETURNING TO LOGIN PAGE
+===================================================== */
+
+window.addEventListener("pageshow", function (event) {
+
+    if (event.persisted) {
+
+        const loginForm =
+            document.getElementById("loginForm");
+
+        if (loginForm) {
+            loginForm.reset();
+        }
+
+        const loginError =
+            document.getElementById("login-error");
+
+        if (loginError) {
+            loginError.remove();
+        }
+
+        const loginSuccess =
+            document.getElementById("login-success");
+
+        if (loginSuccess) {
+            loginSuccess.remove();
+        }
+    }
+});
+
+</script>
+
+
+</body>
+
+</html>

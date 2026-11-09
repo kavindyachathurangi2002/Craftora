@@ -1,0 +1,3211 @@
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
+
+    <title>Register - Craftora</title>
+
+    <link rel="stylesheet"
+          href="/css/style.css?v=4">
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+
+
+
+    <style>
+
+        /* =====================================================
+           REGISTER PAGE
+        ===================================================== */
+
+        * {
+            box-sizing: border-box;
+        }
+
+
+        body.register-page {
+            margin: 0;
+            padding: 0;
+
+            min-height: 100vh;
+
+            background: #F4E8D3;
+
+            font-family:
+                Arial,
+                Helvetica,
+                sans-serif;
+
+            color: #123B29;
+        }
+
+
+        /* =====================================================
+           MAIN CONTAINER
+        ===================================================== */
+
+        .register-container {
+
+            width: calc(100% - 60px);
+
+            max-width: 1300px;
+
+            min-height: 760px;
+
+            margin: 26px auto;
+
+            display: grid;
+
+            grid-template-columns: 45% 55%;
+
+            background: #ffffff;
+
+            border-radius: 24px;
+
+            overflow: hidden;
+
+            box-shadow:
+                0 15px 40px
+                rgba(0, 0, 0, 0.12);
+        }
+
+
+        /* =====================================================
+           LEFT SIDE
+        ===================================================== */
+
+        .register-brand {
+
+            min-height: 760px;
+
+            background: #123B29;
+
+            color: #F4E8D3;
+
+            padding: 45px 55px;
+
+            display: flex;
+
+            flex-direction: column;
+
+            justify-content: center;
+
+            align-items: center;
+
+            text-align: center;
+        }
+
+
+        .register-brand img {
+
+            display: block;
+
+            width: 350px !important;
+
+            max-width: 90%;
+
+            height: auto;
+
+            margin: 0 auto 35px;
+
+            background: #ffffff;
+
+            padding: 12px;
+
+            border-radius: 12px;
+        }
+
+
+        .register-brand h1 {
+
+            margin: 0 0 12px;
+
+            color: #F4E8D3;
+
+            font-family:
+                Georgia,
+                "Times New Roman",
+                serif;
+
+            font-size: 42px;
+
+            font-weight: 600;
+        }
+
+
+        .register-brand > p {
+
+            max-width: 500px;
+
+            margin: 0 auto 45px;
+
+            color: #E7D8BE;
+
+            font-size: 16px;
+
+            line-height: 1.7;
+        }
+
+
+        /* =====================================================
+           BENEFITS
+        ===================================================== */
+
+        .register-benefits {
+
+            width: 100%;
+
+            max-width: 520px;
+
+            text-align: left;
+        }
+
+
+        .register-benefit {
+
+            display: flex;
+
+            align-items: flex-start;
+
+            gap: 15px;
+
+            margin-bottom: 25px;
+        }
+
+
+        .register-benefit > span {
+
+            width: 48px;
+
+            height: 48px;
+
+            min-width: 48px;
+
+            display: flex;
+
+            align-items: center;
+
+            justify-content: center;
+
+            background: #C98A2E;
+
+            border-radius: 50%;
+
+            font-size: 21px;
+        }
+
+
+        .register-benefit h3 {
+
+            margin: 0 0 5px;
+
+            color: #F4E8D3;
+
+            font-size: 18px;
+        }
+
+
+        .register-benefit p {
+
+            margin: 0;
+
+            color: #E7D8BE;
+
+            font-size: 13px;
+
+            line-height: 1.5;
+        }
+
+
+        /* =====================================================
+           RIGHT SIDE
+        ===================================================== */
+
+        .register-form-section {
+
+            min-height: 760px;
+
+            background: #ffffff;
+
+            padding: 30px 45px;
+
+            display: flex;
+
+            align-items: center;
+
+            justify-content: center;
+        }
+
+
+        /* =====================================================
+           FORM BOX
+        ===================================================== */
+
+        .register-form-box {
+
+            width: 100%;
+
+            max-width: 800px;
+
+            background: #ffffff;
+
+            border-radius: 18px;
+
+            padding: 30px 38px;
+
+            box-shadow:
+                0 10px 35px
+                rgba(0, 0, 0, 0.10);
+        }
+
+
+        /* =====================================================
+           HEADING
+        ===================================================== */
+
+        .register-heading {
+
+            text-align: center;
+
+            margin-bottom: 22px;
+        }
+
+
+        .register-heading span {
+
+            display: block;
+
+            margin-bottom: 7px;
+
+            color: #C98A2E;
+
+            font-size: 12px;
+
+            font-weight: 700;
+
+            letter-spacing: 2px;
+        }
+
+
+        .register-heading h2 {
+
+            margin: 0 0 7px;
+
+            color: #123B29;
+
+            font-family:
+                Georgia,
+                "Times New Roman",
+                serif;
+
+            font-size: 32px;
+        }
+
+
+        .register-heading p {
+
+            margin: 0;
+
+            color: #687126;
+
+            font-size: 14px;
+        }
+
+
+        /* =====================================================
+           ACCOUNT TYPE
+        ===================================================== */
+
+        .account-type {
+
+            display: grid;
+
+            grid-template-columns: 1fr 1fr;
+
+            gap: 15px;
+
+            margin-bottom: 22px;
+        }
+
+
+        .account-option {
+
+            position: relative;
+
+            display: block;
+
+            cursor: pointer;
+        }
+
+
+        .account-option input {
+
+            position: absolute;
+
+            opacity: 0;
+
+            pointer-events: none;
+        }
+
+
+        .account-option-content {
+
+            min-height: 75px;
+
+            padding: 12px;
+
+            border: 2px solid #E7D8BE;
+
+            border-radius: 12px;
+
+            background: #ffffff;
+
+            display: flex;
+
+            align-items: center;
+
+            gap: 12px;
+
+            transition: 0.3s ease;
+        }
+
+
+        .account-option:hover
+        .account-option-content {
+
+            border-color: #C98A2E;
+        }
+
+
+        .account-option
+        input:checked
+        + .account-option-content {
+
+            border-color: #C98A2E;
+
+            background: #FFF8ED;
+
+            box-shadow:
+                0 4px 12px
+                rgba(201, 138, 46, 0.15);
+        }
+
+
+        .account-icon {
+
+            width: 42px;
+
+            height: 42px;
+
+            min-width: 42px;
+
+            display: flex;
+
+            align-items: center;
+
+            justify-content: center;
+
+            border-radius: 50%;
+
+            background: #123B29;
+
+            font-size: 19px;
+        }
+
+
+        .account-option strong {
+
+            display: block;
+
+            margin-bottom: 3px;
+
+            color: #123B29;
+
+            font-size: 15px;
+        }
+
+
+        .account-option small {
+
+            display: block;
+
+            color: #687126;
+
+            font-size: 11px;
+
+            line-height: 1.4;
+        }
+
+
+        /* =====================================================
+           FORM
+        ===================================================== */
+
+        .registration-form h3 {
+
+            margin: 0 0 18px;
+
+            padding-bottom: 10px;
+
+            border-bottom:
+                1px solid #E7D8BE;
+
+            color: #123B29;
+
+            font-family:
+                Georgia,
+                "Times New Roman",
+                serif;
+
+            font-size: 21px;
+        }
+
+
+        .form-row {
+
+            display: grid;
+
+            grid-template-columns: 1fr 1fr;
+
+            gap: 18px;
+        }
+
+
+        .form-group {
+
+            margin-bottom: 15px;
+
+            position: relative;
+        }
+
+
+        .form-group label {
+
+            display: block;
+
+            margin-bottom: 6px;
+
+            color: #123B29;
+
+            font-size: 14px;
+
+            font-weight: 600;
+        }
+
+
+        .form-group input,
+        .form-group textarea {
+
+            width: 100%;
+
+            padding: 11px 13px;
+
+            border:
+                1px solid #D8C7AA;
+
+            border-radius: 8px;
+
+            outline: none;
+
+            background: #ffffff;
+
+            color: #333333;
+
+            font-family:
+                Arial,
+                Helvetica,
+                sans-serif;
+
+            font-size: 14px;
+
+            transition: 0.3s ease;
+        }
+
+
+        .form-group input {
+
+            height: 45px;
+        }
+
+
+        .form-group textarea {
+
+            min-height: 90px;
+
+            resize: vertical;
+        }
+
+
+        .form-group input:focus,
+        .form-group textarea:focus {
+
+            border-color: #C98A2E;
+
+            box-shadow:
+                0 0 0 3px
+                rgba(201, 138, 46, 0.12);
+        }
+
+
+        .form-group input::placeholder,
+        .form-group textarea::placeholder {
+
+            color: #999999;
+        }
+
+
+        /* =====================================================
+           CUSTOM CRAFT DROPDOWN
+        ===================================================== */
+
+        .craft-dropdown {
+
+            position: relative;
+
+            width: 100%;
+        }
+
+
+        .craft-selected {
+
+            width: 100%;
+
+            height: 45px;
+
+            padding: 0 13px;
+
+            border:
+                1px solid #D8C7AA;
+
+            border-radius: 8px;
+
+            background: #ffffff;
+
+            display: flex;
+
+            align-items: center;
+
+            justify-content: space-between;
+
+            color: #333333;
+
+            font-size: 14px;
+
+            cursor: pointer;
+
+            transition: 0.3s ease;
+        }
+
+
+        .craft-selected:hover {
+
+            border-color: #C98A2E;
+        }
+
+
+        .craft-selected.active {
+
+            border-color: #C98A2E;
+
+            box-shadow:
+                0 0 0 3px
+                rgba(201, 138, 46, 0.12);
+        }
+
+
+        .craft-arrow {
+
+            font-size: 17px;
+
+            color: #687126;
+
+            transition:
+                transform 0.3s ease;
+        }
+
+
+        .craft-selected.active
+        .craft-arrow {
+
+            transform: rotate(180deg);
+        }
+
+
+        /* =====================================================
+           DROPDOWN BOX
+        ===================================================== */
+
+        .craft-options {
+
+            position: absolute;
+
+            top: calc(100% + 6px);
+
+            left: 0;
+
+            width: 100%;
+
+            background: #ffffff;
+
+            border:
+                1px solid #D8C7AA;
+
+            border-radius: 9px;
+
+            box-shadow:
+                0 8px 25px
+                rgba(0, 0, 0, 0.15);
+
+            z-index: 9999;
+
+            display: none;
+
+            overflow: hidden;
+        }
+
+
+        .craft-options.open {
+
+            display: block;
+        }
+
+
+        /* SEARCH */
+
+        .craft-search-box {
+
+            padding: 10px;
+
+            background: #FFF8ED;
+
+            border-bottom:
+                1px solid #E7D8BE;
+        }
+
+
+        .craft-search {
+
+            width: 100%;
+
+            height: 38px;
+
+            padding: 8px 11px;
+
+            border:
+                1px solid #D8C7AA;
+
+            border-radius: 7px;
+
+            outline: none;
+
+            font-size: 13px;
+
+            color: #333333;
+        }
+
+
+        .craft-search:focus {
+
+            border-color: #C98A2E;
+        }
+
+
+        /* OPTIONS LIST */
+
+        .craft-options-list {
+
+            max-height: 220px;
+
+            overflow-y: auto;
+
+            overflow-x: hidden;
+        }
+
+
+        /* SCROLLBAR */
+
+        .craft-options-list::-webkit-scrollbar {
+
+            width: 8px;
+        }
+
+
+        .craft-options-list::-webkit-scrollbar-track {
+
+            background: #F4E8D3;
+        }
+
+
+        .craft-options-list::-webkit-scrollbar-thumb {
+
+            background: #C98A2E;
+
+            border-radius: 10px;
+        }
+
+
+        .craft-options-list::-webkit-scrollbar-thumb:hover {
+
+            background: #9A4F16;
+        }
+
+
+        /* OPTION */
+
+        .craft-option {
+
+            padding: 10px 13px;
+
+            color: #333333;
+
+            font-size: 14px;
+
+            cursor: pointer;
+
+            transition:
+                background 0.2s ease,
+                color 0.2s ease;
+        }
+
+
+        .craft-option:hover {
+
+            background: #FFF3DF;
+
+            color: #9A4F16;
+        }
+
+
+        .craft-option.selected {
+
+            background: #123B29;
+
+            color: #F4E8D3;
+
+            font-weight: 600;
+        }
+
+
+        .no-craft-result {
+
+            padding: 15px;
+
+            text-align: center;
+
+            color: #777777;
+
+            font-size: 13px;
+
+            display: none;
+        }
+
+
+        /* Hidden actual value */
+
+        #artisan-craft-type {
+
+            display: none;
+        }
+
+
+        /* =====================================================
+           ARTISAN NOTE
+        ===================================================== */
+
+        .artisan-note {
+
+            display: flex;
+
+            align-items: flex-start;
+
+            gap: 10px;
+
+            margin-bottom: 18px;
+
+            padding: 11px 14px;
+
+            background: #FFF8ED;
+
+            border-left:
+                4px solid #C98A2E;
+
+            border-radius:
+                0 8px 8px 0;
+        }
+
+
+        .artisan-note > span {
+
+            color: #C98A2E;
+
+            font-size: 17px;
+
+            font-weight: bold;
+        }
+
+
+        .artisan-note p {
+
+            margin: 0;
+
+            color: #687126;
+
+            font-size: 12px;
+
+            line-height: 1.5;
+        }
+
+
+        /* =====================================================
+           FILE
+        ===================================================== */
+
+        .form-group input[type="file"] {
+
+            height: auto;
+
+            padding: 9px;
+
+            background: #FFF8ED;
+
+            cursor: pointer;
+        }
+
+
+        .file-help {
+
+            display: block;
+
+            margin-top: 5px;
+
+            color: #777777;
+
+            font-size: 11px;
+        }
+
+
+        /* =====================================================
+           TERMS
+        ===================================================== */
+
+        .terms-box {
+
+            display: flex;
+
+            align-items: flex-start;
+
+            gap: 8px;
+
+            margin:
+                5px 0 18px;
+        }
+
+
+        .terms-box input {
+
+            margin-top: 3px;
+
+            accent-color: #C98A2E;
+
+            cursor: pointer;
+        }
+
+
+        .terms-box label {
+
+            color: #666666;
+
+            font-size: 12px;
+
+            line-height: 1.5;
+        }
+
+
+        .terms-box a {
+
+            color: #9A4F16;
+
+            font-weight: 600;
+
+            text-decoration: none;
+        }
+
+
+        .terms-box a:hover {
+
+            color: #C98A2E;
+
+            text-decoration: underline;
+        }
+
+
+        /* =====================================================
+           BUTTON
+        ===================================================== */
+
+        .register-submit-btn {
+
+            width: 100%;
+
+            padding: 13px 20px;
+
+            border: none;
+
+            border-radius: 8px;
+
+            background: #123B29;
+
+            color: #F4E8D3;
+
+            font-size: 15px;
+
+            font-weight: 600;
+
+            cursor: pointer;
+
+            transition: 0.3s ease;
+        }
+
+
+        .register-submit-btn:hover {
+
+            background: #0D4328;
+
+            transform:
+                translateY(-2px);
+
+            box-shadow:
+                0 6px 15px
+                rgba(18, 59, 41, 0.20);
+        }
+
+
+        /* =====================================================
+           SIGN IN
+        ===================================================== */
+
+        .already-account {
+
+            margin-top: 18px;
+
+            padding-top: 15px;
+
+            border-top:
+                1px solid #E7D8BE;
+
+            text-align: center;
+        }
+
+
+        .already-account p {
+
+            margin: 0;
+
+            color: #777777;
+
+            font-size: 13px;
+        }
+
+
+        .already-account a {
+
+            margin-left: 4px;
+
+            color: #9A4F16;
+
+            font-weight: 700;
+
+            text-decoration: none;
+        }
+
+
+        .already-account a:hover {
+
+            color: #C98A2E;
+
+            text-decoration: underline;
+        }
+
+
+        /* =====================================================
+           RESPONSIVE
+        ===================================================== */
+
+        @media (max-width: 1100px) {
+
+            .register-container {
+
+                width: calc(100% - 40px);
+
+                min-height: auto;
+
+                margin: 20px auto;
+
+                grid-template-columns: 1fr;
+
+                border-radius: 20px;
+            }
+
+
+            .register-brand {
+
+                min-height: auto;
+
+                padding: 40px 30px;
+            }
+
+
+            .register-brand img {
+
+                width: 260px !important;
+            }
+
+
+            .register-form-section {
+
+                min-height: auto;
+
+                padding: 35px 25px;
+            }
+        }
+
+
+        @media (max-width: 650px) {
+
+            .register-brand {
+
+                padding: 35px 20px;
+            }
+
+
+            .register-brand img {
+
+                width: 210px !important;
+            }
+
+
+            .register-brand h1 {
+
+                font-size: 32px;
+            }
+
+
+            .register-form-section {
+
+                padding: 20px 15px;
+            }
+
+
+            .register-form-box {
+
+                padding:
+                    25px 20px;
+            }
+
+
+            .form-row {
+
+                grid-template-columns: 1fr;
+
+                gap: 0;
+            }
+
+
+            .account-type {
+
+                grid-template-columns: 1fr;
+            }
+
+
+            .register-heading h2 {
+
+                font-size: 28px;
+            }
+        }
+
+        /* PASSWORD EYE ICON */
+        .password-wrapper { position: relative; width: 100%; }
+        .password-wrapper input { padding-right: 45px; }
+        .toggle-password { position: absolute; right: 12px; top: 50%; transform: translateY(-50%); width: auto; height: auto; padding: 5px; border: none; background: transparent; color: #687126; cursor: pointer; font-size: 16px; line-height: 1; }
+        .toggle-password:hover { color: #C98A2E; }
+        .toggle-password:focus { outline: none; box-shadow: none; }
+
+
+        /* =====================================================
+           REGISTRATION ERROR NOTIFICATION
+        ===================================================== */
+
+        .registration-error {
+            display: block;
+            margin-bottom: 18px;
+            padding: 12px 15px;
+            background: #fff1f0;
+            border: 1px solid #d9534f;
+            border-left: 4px solid #d9534f;
+            border-radius: 8px;
+            color: #a94442;
+            font-size: 13px;
+            line-height: 1.5;
+        }
+
+    </style>
+
+</head>
+
+
+<body class="register-page">
+
+
+<div class="register-container">
+
+
+    <!-- =====================================================
+         LEFT SIDE
+    ====================================================== -->
+
+    <div class="register-brand">
+
+
+        <img src="/images/craftora-logo.png"
+             alt="Craftora Logo">
+
+
+        <h1>
+            Join Craftora
+        </h1>
+
+
+        <p>
+            Become a part of our growing handicraft
+            community and explore new opportunities.
+        </p>
+
+
+        <div class="register-benefits">
+
+
+            <div class="register-benefit">
+
+                <span>🎨</span>
+
+                <div>
+
+                    <h3>
+                        For Artisans
+                    </h3>
+
+                    <p>
+                        Showcase your handmade creations
+                        and connect with customers.
+                    </p>
+
+                </div>
+
+            </div>
+
+
+            <div class="register-benefit">
+
+                <span>🛍️</span>
+
+                <div>
+
+                    <h3>
+                        For Customers
+                    </h3>
+
+                    <p>
+                        Discover and purchase authentic
+                        handmade products.
+                    </p>
+
+                </div>
+
+            </div>
+
+
+            <div class="register-benefit">
+
+                <span>🎓</span>
+
+                <div>
+
+                    <h3>
+                        Learn & Connect
+                    </h3>
+
+                    <p>
+                        Join workshops and connect with
+                        talented artisans.
+                    </p>
+
+                </div>
+
+            </div>
+
+
+        </div>
+
+    </div>
+
+
+    <!-- =====================================================
+         RIGHT SIDE
+    ====================================================== -->
+
+    <div class="register-form-section">
+
+
+        <div class="register-form-box">
+
+
+            <!-- REGISTRATION ERROR NOTIFICATION -->
+
+            <div id="registration-error"
+                 class="registration-error"
+                 th:if="${errorMessage}"
+                 th:text="${errorMessage}">
+            </div>
+
+            <!-- HEADING -->
+
+            <div class="register-heading">
+
+                <span>
+                    WELCOME TO CRAFTORA
+                </span>
+
+                <h2>
+                    Create Account
+                </h2>
+
+                <p>
+                    Select your account type and fill in
+                    your details to register.
+                </p>
+
+            </div>
+
+
+            <!-- =================================================
+                 ACCOUNT TYPE
+            ================================================== -->
+
+            <div class="account-type">
+
+
+                <!-- CUSTOMER -->
+
+                <label class="account-option">
+
+                    <input type="radio"
+                           name="accountType"
+                           value="customer"
+                           checked
+                           onclick="showRegistrationForm('customer')">
+
+
+                    <div class="account-option-content">
+
+                        <span class="account-icon">
+                            👤
+                        </span>
+
+                        <div>
+
+                            <strong>
+                                Customer
+                            </strong>
+
+                            <small>
+                                Browse, shop and join workshops
+                            </small>
+
+                        </div>
+
+                    </div>
+
+                </label>
+
+
+                <!-- ARTISAN -->
+
+                <label class="account-option">
+
+                    <input type="radio"
+                           name="accountType"
+                           value="artisan"
+                           onclick="showRegistrationForm('artisan')">
+
+
+                    <div class="account-option-content">
+
+                        <span class="account-icon">
+                            🎨
+                        </span>
+
+                        <div>
+
+                            <strong>
+                                Artisan
+                            </strong>
+
+                            <small>
+                                Sell crafts and share your skills
+                            </small>
+
+                        </div>
+
+                    </div>
+
+                </label>
+
+
+            </div>
+
+
+            <!-- =================================================
+                 CUSTOMER FORM
+            ================================================== -->
+
+           <form id="customer-form"
+      class="registration-form"
+      action="/register"
+      method="post"
+      onsubmit="return validateRegistration('customer')">
+
+
+                <h3>
+                    Customer Registration
+                </h3>
+
+
+                <div class="form-row">
+
+
+                    <div class="form-group">
+
+                        <label for="customer-first-name">
+                            First Name
+                        </label>
+
+                        <input type="text"
+                               id="customer-first-name"
+                               placeholder="Enter first name"
+                               required
+       name="firstName">
+
+                    </div>
+
+
+                    <div class="form-group">
+
+                        <label for="customer-last-name">
+                            Last Name
+                        </label>
+
+                        <input type="text"
+                               id="customer-last-name"
+                               placeholder="Enter last name"
+                               required
+       name="lastName">
+
+                    </div>
+
+
+                </div>
+
+
+                <div class="form-group">
+
+                    <label for="customer-email">
+                        Email Address
+                    </label>
+
+                    <input type="email"
+                           id="customer-email"
+                           placeholder="Enter your email"
+                           required
+       name="email">
+
+                </div>
+
+
+                <div class="form-group">
+
+                    <label for="customer-phone">
+                        Contact Number
+                    </label>
+
+                  <input type="tel"
+       id="customer-phone"
+       name="phone"
+       placeholder="Enter contact number"
+       minlength="10"
+       maxlength="10"
+       pattern="[0-9]{10}"
+       inputmode="numeric"
+       title="Contact number must contain exactly 10 digits."
+       required>
+
+                </div>
+
+
+                <div class="form-row">
+
+
+                    <div class="form-group">
+
+                        <label for="customer-password">
+                            Password
+                        </label>
+
+                        <div class="password-wrapper">
+                            <input type="password"
+                                   id="customer-password"
+                                   placeholder="Create password"
+                                   required
+                                   name="password">
+                            <button type="button" class="toggle-password" onclick="toggleCustomerPasswords(this)" aria-label="Show or hide password">
+                                <i class="fa-solid fa-eye-slash"></i>
+                            </button>
+                        </div>
+
+                    </div>
+
+
+                    <div class="form-group">
+
+                        <label for="customer-confirm-password">
+                            Confirm Password
+                        </label>
+
+                        <input type="password"
+                               id="customer-confirm-password"
+                               placeholder="Confirm password"
+                               required
+                               onpaste="pasteCurrentPassword('customer-password', 'customer-confirm-password', event)">
+
+                    </div>
+
+
+                </div>
+
+
+                <div class="terms-box">
+
+                    <input type="checkbox"
+                           id="customer-terms"
+                           required>
+
+                    <label for="customer-terms">
+
+                        I agree to the
+
+                        <a href="#">
+                            Terms & Conditions
+                        </a>
+
+                        and
+
+                        <a href="#">
+                            Privacy Policy
+                        </a>.
+
+                    </label>
+
+                </div>
+
+
+                <button type="submit"
+                        class="register-submit-btn">
+
+                    Create Customer Account
+
+                </button>
+
+
+            </form>
+
+
+            <!-- =================================================
+                 ARTISAN FORM
+            ================================================== -->
+
+            <form id="artisan-form"
+                  class="registration-form"
+                  action="/register-artisan"
+                  method="post"
+                  enctype="multipart/form-data"
+                  autocomplete="off"
+                  style="display: none;"
+                  onsubmit="return validateRegistration('artisan')">
+
+
+                <h3>
+                    Artisan Registration
+                </h3>
+
+
+                <div class="artisan-note">
+
+                    <span>
+                        ℹ
+                    </span>
+
+                    <p>
+                        Artisan registration requires admin
+                        approval before you can become an
+                        active artisan on Craftora.
+                    </p>
+
+                </div>
+
+
+                <!-- FIRST + LAST NAME -->
+
+                <div class="form-row">
+
+
+                    <div class="form-group">
+
+                        <label for="artisan-first-name">
+                            First Name
+                        </label>
+
+                        <input type="text"
+                               id="artisan-first-name"
+                               name="firstName"
+                               placeholder="Enter first name"
+                               required>
+
+                    </div>
+
+
+                    <div class="form-group">
+
+                        <label for="artisan-last-name">
+                            Last Name
+                        </label>
+
+                        <input type="text"
+                               id="artisan-last-name"
+                               name="lastName"
+                               placeholder="Enter last name"
+                               required>
+
+                    </div>
+
+
+                </div>
+
+
+                <!-- EMAIL -->
+
+                <div class="form-group">
+
+                    <label for="artisan-email">
+                        Email Address
+                    </label>
+
+                    <input type="email"
+                           id="artisan-email"
+                           name="email"
+                           placeholder="Enter your email"
+                           required>
+
+                </div>
+
+
+                <!-- CONTACT -->
+
+                <div class="form-group">
+
+                    <label for="artisan-phone">
+                        Contact Number
+                    </label>
+<input type="tel"
+       id="artisan-phone"
+       name="phone"
+       placeholder="Enter contact number"
+       minlength="10"
+       maxlength="10"
+       pattern="[0-9]{10}"
+       inputmode="numeric"
+       title="Contact number must contain exactly 10 digits."
+       required>
+                </div>
+
+
+                <!-- CRAFT TYPE + LOCATION -->
+
+                <div class="form-row">
+
+
+                    <!-- CUSTOM CRAFT DROPDOWN -->
+
+                    <div class="form-group">
+
+                        <label>
+                            Craft Type
+                        </label>
+
+
+                        <div class="craft-dropdown">
+
+
+                            <!-- SELECTED -->
+
+                            <div class="craft-selected"
+                                 id="craft-selected"
+                                 onclick="toggleCraftDropdown()">
+
+                                <span id="selected-craft-text">
+                                    Select craft type
+                                </span>
+
+                                <span class="craft-arrow">
+                                    ▼
+                                </span>
+
+                            </div>
+
+
+                            <!-- DROPDOWN -->
+
+                            <div class="craft-options"
+                                 id="craft-options">
+
+
+                                <!-- SEARCH -->
+
+                                <div class="craft-search-box">
+
+                                    <input type="text"
+                                           class="craft-search"
+                                           id="craft-search"
+                                           placeholder="Search craft type..."
+                                           oninput="searchCrafts(event)"
+                                           onclick="event.stopPropagation()">
+
+                                </div>
+
+
+                                <!-- OPTIONS -->
+
+                                <div class="craft-options-list"
+                                     id="craft-options-list">
+
+
+                                    <div class="craft-option"
+                                         data-value="Pottery"
+                                         onclick="selectCraft('Pottery')">
+                                        Pottery
+                                    </div>
+
+
+                                    <div class="craft-option"
+                                         data-value="Wood Carving"
+                                         onclick="selectCraft('Wood Carving')">
+                                        Wood Carving
+                                    </div>
+
+
+                                    <div class="craft-option"
+                                         data-value="Wooden Crafts"
+                                         onclick="selectCraft('Wooden Crafts')">
+                                        Wooden Crafts
+                                    </div>
+
+
+                                    <div class="craft-option"
+                                         data-value="Batik"
+                                         onclick="selectCraft('Batik')">
+                                        Batik
+                                    </div>
+
+
+                                    <div class="craft-option"
+                                         data-value="Handloom"
+                                         onclick="selectCraft('Handloom')">
+                                        Handloom
+                                    </div>
+
+
+                                    <div class="craft-option"
+                                         data-value="Weaving"
+                                         onclick="selectCraft('Weaving')">
+                                        Weaving
+                                    </div>
+
+
+                                    <div class="craft-option"
+                                         data-value="Basketry"
+                                         onclick="selectCraft('Basketry')">
+                                        Basketry
+                                    </div>
+
+
+                                    <div class="craft-option"
+                                         data-value="Cane Crafts"
+                                         onclick="selectCraft('Cane Crafts')">
+                                        Cane Crafts
+                                    </div>
+
+
+                                    <div class="craft-option"
+                                         data-value="Bamboo Crafts"
+                                         onclick="selectCraft('Bamboo Crafts')">
+                                        Bamboo Crafts
+                                    </div>
+
+
+                                    <div class="craft-option"
+                                         data-value="Palmyrah Crafts"
+                                         onclick="selectCraft('Palmyrah Crafts')">
+                                        Palmyrah Crafts
+                                    </div>
+
+
+                                    <div class="craft-option"
+                                         data-value="Coconut Shell Products"
+                                         onclick="selectCraft('Coconut Shell Products')">
+                                        Coconut Shell Products
+                                    </div>
+
+
+                                    <div class="craft-option"
+                                         data-value="Coconut Leaf Crafts"
+                                         onclick="selectCraft('Coconut Leaf Crafts')">
+                                        Coconut Leaf Crafts
+                                    </div>
+
+
+                                    <div class="craft-option"
+                                         data-value="Paper Crafts"
+                                         onclick="selectCraft('Paper Crafts')">
+                                        Paper Crafts
+                                    </div>
+
+
+                                    <div class="craft-option"
+                                         data-value="Paper Quilling"
+                                         onclick="selectCraft('Paper Quilling')">
+                                        Paper Quilling
+                                    </div>
+
+
+                                    <div class="craft-option"
+                                         data-value="Crochet"
+                                         onclick="selectCraft('Crochet')">
+                                        Crochet
+                                    </div>
+
+
+                                    <div class="craft-option"
+                                         data-value="Knitting"
+                                         onclick="selectCraft('Knitting')">
+                                        Knitting
+                                    </div>
+
+
+                                    <div class="craft-option"
+                                         data-value="Embroidery"
+                                         onclick="selectCraft('Embroidery')">
+                                        Embroidery
+                                    </div>
+
+
+                                    <div class="craft-option"
+                                         data-value="Sewing"
+                                         onclick="selectCraft('Sewing')">
+                                        Sewing
+                                    </div>
+
+
+                                    <div class="craft-option"
+                                         data-value="Textile Crafts"
+                                         onclick="selectCraft('Textile Crafts')">
+                                        Textile Crafts
+                                    </div>
+
+
+                                    <div class="craft-option"
+                                         data-value="Beadwork"
+                                         onclick="selectCraft('Beadwork')">
+                                        Beadwork
+                                    </div>
+
+
+                                    <div class="craft-option"
+                                         data-value="Jewellery"
+                                         onclick="selectCraft('Jewellery')">
+                                        Jewellery
+                                    </div>
+
+
+                                    <div class="craft-option"
+                                         data-value="Clay Crafts"
+                                         onclick="selectCraft('Clay Crafts')">
+                                        Clay Crafts
+                                    </div>
+
+
+                                    <div class="craft-option"
+                                         data-value="Terracotta"
+                                         onclick="selectCraft('Terracotta')">
+                                        Terracotta
+                                    </div>
+
+
+                                    <div class="craft-option"
+                                         data-value="Traditional Painting"
+                                         onclick="selectCraft('Traditional Painting')">
+                                        Traditional Painting
+                                    </div>
+
+
+                                    <div class="craft-option"
+                                         data-value="Canvas Painting"
+                                         onclick="selectCraft('Canvas Painting')">
+                                        Canvas Painting
+                                    </div>
+
+
+                                    <div class="craft-option"
+                                         data-value="Mask Making"
+                                         onclick="selectCraft('Mask Making')">
+                                        Mask Making
+                                    </div>
+
+
+                                    <div class="craft-option"
+                                         data-value="Traditional Masks"
+                                         onclick="selectCraft('Traditional Masks')">
+                                        Traditional Masks
+                                    </div>
+
+
+                                    <div class="craft-option"
+                                         data-value="Leather Crafts"
+                                         onclick="selectCraft('Leather Crafts')">
+                                        Leather Crafts
+                                    </div>
+
+
+                                    <div class="craft-option"
+                                         data-value="Stone Crafts"
+                                         onclick="selectCraft('Stone Crafts')">
+                                        Stone Crafts
+                                    </div>
+
+
+                                    <div class="craft-option"
+                                         data-value="Glass Crafts"
+                                         onclick="selectCraft('Glass Crafts')">
+                                        Glass Crafts
+                                    </div>
+
+
+                                    <div class="craft-option"
+                                         data-value="Metal Crafts"
+                                         onclick="selectCraft('Metal Crafts')">
+                                        Metal Crafts
+                                    </div>
+
+
+                                    <div class="craft-option"
+                                         data-value="Brass Crafts"
+                                         onclick="selectCraft('Brass Crafts')">
+                                        Brass Crafts
+                                    </div>
+
+
+                                    <div class="craft-option"
+                                         data-value="Silver Crafts"
+                                         onclick="selectCraft('Silver Crafts')">
+                                        Silver Crafts
+                                    </div>
+
+
+                                    <div class="craft-option"
+                                         data-value="Flower Crafts"
+                                         onclick="selectCraft('Flower Crafts')">
+                                        Flower Crafts
+                                    </div>
+
+
+                                    <div class="craft-option"
+                                         data-value="Recycled Crafts"
+                                         onclick="selectCraft('Recycled Crafts')">
+                                        Recycled Crafts
+                                    </div>
+
+
+                                    <div class="craft-option"
+                                         data-value="Handmade Toys"
+                                         onclick="selectCraft('Handmade Toys')">
+                                        Handmade Toys
+                                    </div>
+
+
+                                    <div class="craft-option"
+                                         data-value="Other"
+                                         onclick="selectCraft('Other')">
+                                        Other
+                                    </div>
+
+
+                                    <div class="no-craft-result"
+                                         id="no-craft-result">
+                                        No craft type found.
+                                    </div>
+
+
+                                </div>
+
+                            </div>
+
+
+                            <!-- HIDDEN VALUE -->
+
+                            <input type="hidden"
+                                   id="artisan-craft-type"
+                                   name="craftType"
+                                   required>
+
+                            <input type="text"
+                                   id="artisan-other-craft"
+                                   placeholder="Enter your craft type"
+                                   style="display:none; margin-top:8px;">
+
+                        </div>
+
+                    </div>
+
+
+                    <!-- LOCATION -->
+
+                    <div class="form-group">
+
+                        <label for="artisan-location">
+                            Location
+                        </label>
+
+                        <input type="text"
+                               id="artisan-location"
+                               name="location"
+                               placeholder="Enter your location"
+                               required>
+
+                    </div>
+
+
+                </div>
+
+
+                <!-- DESCRIPTION -->
+
+                <div class="form-group">
+
+                    <label for="artisan-description">
+                        Craft Description
+                    </label>
+
+                    <textarea id="artisan-description"
+                              name="description"
+                              rows="4"
+                              placeholder="Describe your craft, skills and experience"
+                              required></textarea>
+
+                </div>
+
+
+                <!-- CERTIFICATE / SUPPORTING DOCUMENT -->
+
+                <div class="form-group">
+
+                    <label for="artisan-certificate">
+                        Certificate / Supporting Document
+                        <span style="color: red;">*</span>
+                    </label>
+
+                    <input type="file"
+                           id="artisan-certificate"
+                           name="certificates"
+                           accept=".pdf,.jpg,.jpeg,.png"
+                           multiple
+                           onchange="handleCertificateFiles(this)">
+
+                    <div id="certificate-file-list"
+                         style="margin-top: 10px;">
+                    </div>
+
+                    <small class="file-help">
+                        Upload 1 to 4 certificates or supporting documents.
+                    </small>
+
+                </div>
+
+
+                <!-- PASSWORD -->
+
+                <div class="form-row">
+
+
+                    <div class="form-group">
+
+                        <label for="artisan-password">
+                            Password
+                        </label>
+
+                        <div class="password-wrapper">
+                            <input type="password"
+                                   id="artisan-password"
+                                   name="password"
+                                   placeholder="Create password"
+                                   required>
+                            <button type="button" class="toggle-password" onclick="toggleArtisanPasswords(this)" aria-label="Show or hide password">
+                                <i class="fa-solid fa-eye-slash"></i>
+                            </button>
+                        </div>
+
+                    </div>
+
+
+                    <div class="form-group">
+
+                        <label for="artisan-confirm-password">
+                            Confirm Password
+                        </label>
+
+                        <input type="password"
+                               id="artisan-confirm-password"
+                               placeholder="Confirm password"
+                               required
+                               onpaste="pasteCurrentPassword('artisan-password', 'artisan-confirm-password', event)">
+
+                    </div>
+
+
+                </div>
+
+
+                <!-- TERMS -->
+
+                <div class="terms-box">
+
+                    <input type="checkbox"
+                           id="artisan-terms"
+                           required>
+
+                    <label for="artisan-terms">
+
+                        I agree to the
+
+                        <a href="#">
+                            Terms & Conditions
+                        </a>
+
+                        and
+
+                        <a href="#">
+                            Privacy Policy
+                        </a>.
+
+                    </label>
+
+                </div>
+
+
+                <!-- BUTTON -->
+
+                <button type="submit"
+                        class="register-submit-btn">
+
+                    Submit Artisan Registration
+
+                </button>
+
+
+            </form>
+
+
+            <!-- =================================================
+                 SIGN IN
+            ================================================== -->
+
+            <div class="already-account">
+
+                <p>
+
+                    Already have an account?
+
+                    <a href="/login">
+                        Sign In
+                    </a>
+
+                </p>
+
+            </div>
+
+
+        </div>
+
+    </div>
+
+</div>
+
+
+<!-- =========================================================
+     JAVASCRIPT
+========================================================== -->
+
+<script>
+
+    /* =====================================================
+       PREVENT BROWSER BACK-CACHE / RESTORE OLD FORM DATA
+       After successful registration, the user is redirected
+       to the login page. If the user presses Back, the
+       registration form should be empty.
+    ===================================================== */
+
+    window.addEventListener("pageshow", function (event) {
+
+        // Only clear when the page was restored from browser
+        // back/forward cache. Do not clear normal page loads
+        // because server-side validation errors should remain visible.
+        if (!event.persisted) {
+            return;
+        }
+
+        const customerForm =
+            document.getElementById("customer-form");
+
+        const artisanForm =
+            document.getElementById("artisan-form");
+
+        if (customerForm) {
+            customerForm.reset();
+        }
+
+        if (artisanForm) {
+            artisanForm.reset();
+        }
+
+        // Clear customer fields explicitly.
+        [
+            "customer-first-name",
+            "customer-last-name",
+            "customer-email",
+            "customer-phone",
+            "customer-password",
+            "customer-confirm-password"
+        ].forEach(function (id) {
+            const field = document.getElementById(id);
+            if (field) {
+                field.value = "";
+            }
+        });
+
+        // Clear artisan fields explicitly.
+        [
+            "artisan-first-name",
+            "artisan-last-name",
+            "artisan-email",
+            "artisan-phone",
+            "artisan-location",
+            "artisan-description",
+            "artisan-password",
+            "artisan-confirm-password"
+        ].forEach(function (id) {
+            const field = document.getElementById(id);
+            if (field) {
+                field.value = "";
+            }
+        });
+
+        // Clear Artisan craft selection.
+        const craftType =
+            document.getElementById("artisan-craft-type");
+
+        if (craftType) {
+            craftType.value = "";
+        }
+
+        const otherCraftInput =
+            document.getElementById("artisan-other-craft");
+
+        if (otherCraftInput) {
+            otherCraftInput.value = "";
+            otherCraftInput.style.display = "none";
+        }
+
+        const selectedCraftText =
+            document.getElementById("selected-craft-text");
+
+        if (selectedCraftText) {
+            selectedCraftText.textContent = "Select craft type";
+        }
+
+        document.querySelectorAll(".craft-option")
+            .forEach(function (option) {
+                option.classList.remove("selected");
+                option.style.display = "block";
+            });
+
+        const craftSearch =
+            document.getElementById("craft-search");
+
+        if (craftSearch) {
+            craftSearch.value = "";
+        }
+
+        const noCraftResult =
+            document.getElementById("no-craft-result");
+
+        if (noCraftResult) {
+            noCraftResult.style.display = "none";
+        }
+
+        // Clear uploaded certificates.
+        const certificateInput =
+            document.getElementById("artisan-certificate");
+
+        if (certificateInput) {
+            certificateInput.value = "";
+        }
+
+        const certificateList =
+            document.getElementById("certificate-file-list");
+
+        if (certificateList) {
+            certificateList.innerHTML = "";
+        }
+
+        if (typeof selectedCertificateFiles !== "undefined") {
+            selectedCertificateFiles = [];
+        }
+
+        // Always return to Customer registration as the default form.
+        const customerRadio =
+            document.querySelector(
+                'input[name="accountType"][value="customer"]'
+            );
+
+        if (customerRadio) {
+            customerRadio.checked = true;
+        }
+
+        if (typeof showRegistrationForm === "function") {
+            showRegistrationForm("customer");
+        }
+    });
+
+
+    /* =====================================================
+       SHOW SERVER-SIDE REGISTRATION ERROR
+    ===================================================== */
+
+    document.addEventListener("DOMContentLoaded", function () {
+
+        const errorMessage =
+            document.getElementById("registration-error");
+
+        if (!errorMessage) {
+            return;
+        }
+
+        /*
+         * Scroll to the error notification.
+         */
+        errorMessage.scrollIntoView({
+            behavior: "smooth",
+            block: "center"
+        });
+
+        /*
+         * Automatically open the correct form.
+         *
+         * Artisan-related errors open the Artisan form.
+         * Other registration errors open the Customer form.
+         */
+        const message =
+            errorMessage.textContent.toLowerCase();
+
+        if (message.includes("artisan")) {
+
+            const artisanRadio =
+                document.querySelector(
+                    'input[name="accountType"][value="artisan"]'
+                );
+
+            if (artisanRadio) {
+                artisanRadio.checked = true;
+            }
+
+            showRegistrationForm("artisan");
+
+        } else {
+
+            const customerRadio =
+                document.querySelector(
+                    'input[name="accountType"][value="customer"]'
+                );
+
+            if (customerRadio) {
+                customerRadio.checked = true;
+            }
+
+            showRegistrationForm("customer");
+        }
+    });
+
+
+    /* =====================================================
+       CUSTOMER / ARTISAN SWITCH
+    ===================================================== */
+
+    function showRegistrationForm(type) {
+
+        const customerForm =
+            document.getElementById("customer-form");
+
+        const artisanForm =
+            document.getElementById("artisan-form");
+
+
+        if (type === "customer") {
+
+            customerForm.style.display = "block";
+
+            artisanForm.style.display = "none";
+
+        }
+
+        else {
+
+            customerForm.style.display = "none";
+
+            artisanForm.style.display = "block";
+
+        }
+
+    }
+
+
+
+    /* =====================================================
+       OPEN / CLOSE CRAFT DROPDOWN
+    ===================================================== */
+
+    function toggleCraftDropdown() {
+
+        const dropdown =
+            document.getElementById("craft-options");
+
+        const selected =
+            document.getElementById("craft-selected");
+
+
+        dropdown.classList.toggle("open");
+
+        selected.classList.toggle(
+            "active"
+        );
+
+
+        if (dropdown.classList.contains("open")) {
+
+            setTimeout(function () {
+
+                document.getElementById(
+                    "craft-search"
+                ).focus();
+
+            }, 50);
+
+        }
+
+    }
+
+
+
+    /* =====================================================
+       SELECT CRAFT
+    ===================================================== */
+
+    function selectCraft(craft) {
+
+        const selectedText =
+            document.getElementById(
+                "selected-craft-text"
+            );
+
+        const hiddenInput =
+            document.getElementById(
+                "artisan-craft-type"
+            );
+
+
+        selectedText.textContent =
+            craft;
+
+        const otherCraftInput =
+            document.getElementById("artisan-other-craft");
+
+        if (craft === "Other") {
+            otherCraftInput.style.display = "block";
+            otherCraftInput.value = "";
+            hiddenInput.value = "";
+            otherCraftInput.focus();
+        } else {
+            otherCraftInput.style.display = "none";
+            otherCraftInput.value = "";
+            hiddenInput.value = craft;
+        }
+
+
+        const options =
+            document.querySelectorAll(
+                ".craft-option"
+            );
+
+
+        options.forEach(function (option) {
+
+            option.classList.remove(
+                "selected"
+            );
+
+        });
+
+
+        const selectedOption =
+            document.querySelector(
+                '.craft-option[data-value="' +
+                craft +
+                '"]'
+            );
+
+
+        if (selectedOption) {
+
+            selectedOption.classList.add(
+                "selected"
+            );
+
+        }
+
+
+        closeCraftDropdown();
+
+    }
+
+
+
+    /* =====================================================
+       CLOSE DROPDOWN
+    ===================================================== */
+
+    function closeCraftDropdown() {
+
+        const dropdown =
+            document.getElementById(
+                "craft-options"
+            );
+
+        const selected =
+            document.getElementById(
+                "craft-selected"
+            );
+
+
+        dropdown.classList.remove(
+            "open"
+        );
+
+        selected.classList.remove(
+            "active"
+        );
+
+    }
+
+
+
+    /* =====================================================
+       SEARCH CRAFT TYPES
+    ===================================================== */
+
+    function searchCrafts(event) {
+
+        event.stopPropagation();
+
+
+        const search =
+            document.getElementById(
+                "craft-search"
+            );
+
+
+        const searchValue =
+            search.value
+                .toLowerCase()
+                .trim();
+
+
+        const options =
+            document.querySelectorAll(
+                ".craft-option"
+            );
+
+
+        const noResult =
+            document.getElementById(
+                "no-craft-result"
+            );
+
+
+        let found =
+            false;
+
+
+        options.forEach(function (option) {
+
+            const craftName =
+                option.textContent
+                    .toLowerCase();
+
+
+            if (
+                craftName.includes(
+                    searchValue
+                )
+            ) {
+
+                option.style.display =
+                    "block";
+
+                found = true;
+
+            }
+
+            else {
+
+                option.style.display =
+                    "none";
+
+            }
+
+        });
+
+
+        if (found) {
+
+            noResult.style.display =
+                "none";
+
+        }
+
+        else {
+
+            noResult.style.display =
+                "block";
+
+        }
+
+    }
+
+
+
+    /* =====================================================
+       CLOSE WHEN CLICKING OUTSIDE
+    ===================================================== */
+
+    document.addEventListener(
+        "click",
+        function (event) {
+
+            const dropdown =
+                document.querySelector(
+                    ".craft-dropdown"
+                );
+
+
+            if (
+                dropdown &&
+                !dropdown.contains(
+                    event.target
+                )
+            ) {
+
+                closeCraftDropdown();
+
+            }
+
+        }
+    );
+
+
+
+    function toggleCustomerPasswords(button) {
+        const password = document.getElementById("customer-password");
+        const confirmPassword = document.getElementById("customer-confirm-password");
+        const icon = button.querySelector("i");
+        const show = password.type === "password";
+        password.type = show ? "text" : "password";
+        confirmPassword.type = show ? "text" : "password";
+        icon.classList.toggle("fa-eye-slash", !show);
+        icon.classList.toggle("fa-eye", show);
+    }
+
+    function toggleArtisanPasswords(button) {
+        const password = document.getElementById("artisan-password");
+        const confirmPassword = document.getElementById("artisan-confirm-password");
+        const icon = button.querySelector("i");
+        const show = password.type === "password";
+        password.type = show ? "text" : "password";
+        confirmPassword.type = show ? "text" : "password";
+        icon.classList.toggle("fa-eye-slash", !show);
+        icon.classList.toggle("fa-eye", show);
+    }
+
+    /* =====================================================
+       PASSWORD -> CONFIRM PASSWORD COPY / PASTE
+
+       When the user presses Ctrl + V inside Confirm Password,
+       use the password currently entered in the Password field.
+
+       This guarantees that the exact Password value is copied
+       into Confirm Password for BOTH Customer and Artisan.
+    ===================================================== */
+
+    function pasteCurrentPassword(
+        passwordId,
+        confirmPasswordId,
+        event
+    ) {
+
+        event.preventDefault();
+
+        const password =
+            document.getElementById(passwordId);
+
+        const confirmPassword =
+            document.getElementById(confirmPasswordId);
+
+        if (!password || !confirmPassword) {
+            return;
+        }
+
+
+        /* Replace Confirm Password with the exact Password value. */
+
+        confirmPassword.value =
+            password.value;
+
+
+        /* Move cursor to the end. */
+
+        confirmPassword.focus();
+
+        confirmPassword.setSelectionRange(
+            confirmPassword.value.length,
+            confirmPassword.value.length
+        );
+
+
+        /* Update validation/listeners. */
+
+        confirmPassword.dispatchEvent(
+            new Event("input", {
+                bubbles: true
+            })
+        );
+
+        confirmPassword.dispatchEvent(
+            new Event("change", {
+                bubbles: true
+            })
+        );
+    }
+
+
+    /* =====================================================
+       ARTISAN CERTIFICATE FILES
+       Minimum 1, maximum 4.
+       New selections are added to existing files.
+       Duplicate files are not allowed.
+       Click file name to open.
+       Click × to remove.
+    ===================================================== */
+
+    let selectedCertificateFiles = [];
+
+    function getCertificateFileKey(file) {
+        return (
+            file.name.toLowerCase() +
+            "_" + file.size +
+            "_" + file.lastModified
+        );
+    }
+
+    function handleCertificateFiles(input) {
+
+        const newlySelectedFiles = Array.from(input.files);
+
+        if (newlySelectedFiles.length === 0) {
+            return;
+        }
+
+        const existingKeys = new Set(
+            selectedCertificateFiles.map(getCertificateFileKey)
+        );
+
+        const filesToAdd = [];
+
+        for (const file of newlySelectedFiles) {
+
+            const fileKey = getCertificateFileKey(file);
+
+            if (existingKeys.has(fileKey)) {
+                alert(
+                    "The same certificate cannot be uploaded more than once."
+                );
+                continue;
+            }
+
+            existingKeys.add(fileKey);
+            filesToAdd.push(file);
+        }
+
+        if (
+            selectedCertificateFiles.length +
+            filesToAdd.length > 4
+        ) {
+            alert("You can upload a maximum of 4 certificates.");
+
+            // Keep the files that were already selected.
+            // Add only enough new files to reach the maximum of 4.
+            const remainingSlots =
+                4 - selectedCertificateFiles.length;
+
+            if (remainingSlots > 0) {
+                selectedCertificateFiles =
+                    selectedCertificateFiles.concat(
+                        filesToAdd.slice(0, remainingSlots)
+                    );
+            }
+        } else {
+            selectedCertificateFiles =
+                selectedCertificateFiles.concat(filesToAdd);
+        }
+
+        updateCertificateInput();
+        renderCertificateFiles();
+
+    }
+
+    function renderCertificateFiles() {
+
+        const fileList =
+            document.getElementById("certificate-file-list");
+
+        if (!fileList) return;
+
+        fileList.innerHTML = "";
+
+        selectedCertificateFiles.forEach((file, index) => {
+
+            const fileItem = document.createElement("div");
+
+            fileItem.style.display = "flex";
+            fileItem.style.alignItems = "center";
+            fileItem.style.justifyContent = "space-between";
+            fileItem.style.width = "100%";
+            fileItem.style.marginBottom = "8px";
+            fileItem.style.padding = "4px 0";
+
+            const fileName = document.createElement("span");
+
+            fileName.textContent = file.name;
+            fileName.title = "Click to open file";
+            fileName.style.cursor = "pointer";
+            fileName.style.textDecoration = "underline";
+            fileName.style.flex = "1";
+            fileName.style.minWidth = "0";
+            fileName.style.overflow = "hidden";
+            fileName.style.textOverflow = "ellipsis";
+            fileName.style.whiteSpace = "nowrap";
+            fileName.onclick = function () {
+                openCertificateFile(index);
+            };
+
+            const removeButton = document.createElement("button");
+
+            removeButton.type = "button";
+            removeButton.textContent = "×";
+            removeButton.title = "Remove file";
+            removeButton.setAttribute("aria-label", "Remove " + file.name);
+
+            removeButton.style.border = "none";
+            removeButton.style.background = "transparent";
+            removeButton.style.color = "#b22222";
+            removeButton.style.fontSize = "24px";
+            removeButton.style.fontWeight = "bold";
+            removeButton.style.cursor = "pointer";
+            removeButton.style.lineHeight = "1";
+            removeButton.style.padding = "0 4px";
+            removeButton.style.marginLeft = "8px";
+            removeButton.style.flexShrink = "0";
+
+            removeButton.onmouseenter = function () {
+                removeButton.style.color = "#7a0000";
+            };
+
+            removeButton.onmouseleave = function () {
+                removeButton.style.color = "#b22222";
+            };
+
+            removeButton.onclick = function (event) {
+                event.preventDefault();
+                event.stopPropagation();
+                removeCertificateFile(index);
+            };
+
+            fileItem.appendChild(fileName);
+            fileItem.appendChild(removeButton);
+
+            fileList.appendChild(fileItem);
+        });
+    }
+
+    function openCertificateFile(index) {
+
+        const file = selectedCertificateFiles[index];
+
+        if (!file) return;
+
+        const fileUrl = URL.createObjectURL(file);
+
+        window.open(fileUrl, "_blank");
+
+        setTimeout(() => {
+            URL.revokeObjectURL(fileUrl);
+        }, 60000);
+    }
+
+    function removeCertificateFile(index) {
+
+        if (
+            index < 0 ||
+            index >= selectedCertificateFiles.length
+        ) {
+            return;
+        }
+
+        selectedCertificateFiles.splice(index, 1);
+
+        updateCertificateInput();
+        renderCertificateFiles();
+
+        // Clear the native chooser after removal so the same file
+        // can be selected again if needed.
+        const input =
+            document.getElementById("artisan-certificate");
+
+        if (input) {
+            input.value = "";
+        }
+    }
+
+    function updateCertificateInput() {
+
+        const input =
+            document.getElementById("artisan-certificate");
+
+        if (!input) return;
+
+        const dataTransfer = new DataTransfer();
+
+        selectedCertificateFiles.forEach(file => {
+            dataTransfer.items.add(file);
+        });
+
+        input.files = dataTransfer.files;
+    }
+
+
+    /* =====================================================
+       VALIDATION
+    ===================================================== */
+
+    function validateRegistration(type) {
+
+        let password;
+        let confirmPassword;
+
+        if (type === "customer") {
+
+            const firstName =
+                document.getElementById("customer-first-name")
+                    .value.trim();
+
+            const lastName =
+                document.getElementById("customer-last-name")
+                    .value.trim();
+
+            const phone =
+                document.getElementById("customer-phone")
+                    .value.trim();
+
+            const email =
+                document.getElementById("customer-email")
+                    .value.trim();
+
+            const emailPattern =
+                /^[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,}$/;
+
+            if (
+                /[A-Z]/.test(email) ||
+                /\s/.test(email) ||
+                !emailPattern.test(email) ||
+                /^[0-9]+@/.test(email)
+            ) {
+                alert("Please enter a valid email address.");
+                return false;
+            }
+
+            password =
+                document.getElementById("customer-password")
+                    .value;
+
+            confirmPassword =
+                document.getElementById("customer-confirm-password")
+                    .value;
+
+            const namePattern =
+                /^[\p{L}][\p{L}\s'-]*$/u;
+
+            if (!namePattern.test(firstName)) {
+                alert("First Name should contain letters only. Spaces, hyphens and apostrophes are allowed.");
+                return false;
+            }
+
+            if (!namePattern.test(lastName)) {
+                alert("Last Name should contain letters only. Spaces, hyphens and apostrophes are allowed.");
+                return false;
+            }
+
+            if (!/^[0-9]{10}$/.test(phone)) {
+                alert("Contact number must contain exactly 10 digits.");
+                return false;
+            }
+
+            if (
+                password.length < 8 ||
+                !/[A-Z]/.test(password) ||
+                !/[a-z]/.test(password) ||
+                !/[0-9]/.test(password) ||
+                !/[^A-Za-z0-9\s]/.test(password)
+            ) {
+                alert("Password must be strong: at least 8 characters with an uppercase letter, a lowercase letter, a number, and a special character.");
+                return false;
+            }
+
+            if (password !== confirmPassword) {
+                alert("Password and Confirm Password do not match.");
+                return false;
+            }
+
+            return true;
+        }
+
+        else {
+
+            const firstName =
+                document.getElementById("artisan-first-name")
+                    .value.trim();
+
+            const lastName =
+                document.getElementById("artisan-last-name")
+                    .value.trim();
+
+            const phone =
+                document.getElementById("artisan-phone")
+                    .value.trim();
+
+            const email =
+                document.getElementById("artisan-email")
+                    .value.trim();
+
+            const emailPattern =
+                /^[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,}$/;
+
+            if (
+                /[A-Z]/.test(email) ||
+                /\s/.test(email) ||
+                !emailPattern.test(email) ||
+                /^[0-9]+@/.test(email)
+            ) {
+                alert("Please enter a valid email address.");
+                return false;
+            }
+
+            const craftTypeInput =
+                document.getElementById("artisan-craft-type");
+
+            const otherCraftInput =
+                document.getElementById("artisan-other-craft");
+
+            if (otherCraftInput && otherCraftInput.style.display !== "none") {
+                const customCraftType =
+                    otherCraftInput.value.trim();
+
+                if (!customCraftType) {
+                    alert("Please enter your craft type.");
+                    otherCraftInput.focus();
+                    return false;
+                }
+
+                craftTypeInput.value = customCraftType;
+            }
+
+            const craftType =
+                craftTypeInput.value.trim();
+
+            password =
+                document.getElementById("artisan-password")
+                    .value;
+
+            confirmPassword =
+                document.getElementById("artisan-confirm-password")
+                    .value;
+
+
+            /* =================================================
+               ARTISAN NAME VALIDATION
+            ================================================= */
+
+            const namePattern =
+                /^[\p{L}][\p{L}\s'-]*$/u;
+
+
+            if (!namePattern.test(firstName)) {
+
+                alert(
+                    "First Name should contain letters only. Spaces, hyphens and apostrophes are allowed."
+                );
+
+                return false;
+            }
+
+
+            if (!namePattern.test(lastName)) {
+
+                alert(
+                    "Last Name should contain letters only. Spaces, hyphens and apostrophes are allowed."
+                );
+
+                return false;
+            }
+
+
+            /* =================================================
+               ARTISAN CONTACT NUMBER VALIDATION
+            ================================================= */
+
+            if (!/^[0-9]{10}$/.test(phone)) {
+
+                alert(
+                    "Contact number must contain exactly 10 digits."
+                );
+
+                return false;
+            }
+
+
+            /* =================================================
+               ARTISAN CRAFT TYPE VALIDATION
+            ================================================= */
+
+            if (!craftType) {
+
+                alert(
+                    "Please select a craft type."
+                );
+
+                return false;
+            }
+
+
+            /* =================================================
+               ARTISAN CERTIFICATE VALIDATION
+            ================================================= */
+
+            const certificateInput =
+                document.getElementById("artisan-certificate");
+
+            if (selectedCertificateFiles.length < 1) {
+                alert("Please upload at least 1 certificate or supporting document.");
+                if (certificateInput) certificateInput.focus();
+                return false;
+            }
+
+            if (selectedCertificateFiles.length > 4) {
+                alert("You can upload a maximum of 4 certificates or supporting documents.");
+                return false;
+            }
+
+            // Make sure the current selected files are attached
+            // to the form input before submission.
+            updateCertificateInput();
+
+            /* =================================================
+               ARTISAN STRONG PASSWORD VALIDATION
+            ================================================= */
+
+            if (
+                password.length < 8 ||
+                !/[A-Z]/.test(password) ||
+                !/[a-z]/.test(password) ||
+                !/[0-9]/.test(password) ||
+                !/[^A-Za-z0-9\s]/.test(password)
+            ) {
+
+                alert(
+                    "Password must be strong: at least 8 characters with an uppercase letter, a lowercase letter, a number, and a special character."
+                );
+
+                return false;
+            }
+
+
+            /* =================================================
+               ARTISAN CONFIRM PASSWORD VALIDATION
+            ================================================= */
+
+            if (password !== confirmPassword) {
+
+                alert(
+                    "Password and Confirm Password do not match."
+                );
+
+                return false;
+            }
+
+
+            return true;
+        }
+    }
+
+</script>
+
+
+</body>
+
+</html>

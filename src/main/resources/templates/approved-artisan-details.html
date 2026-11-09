@@ -1,0 +1,1157 @@
+<!DOCTYPE html>
+<html lang="en"
+      xmlns:th="http://www.thymeleaf.org">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
+
+    <title>Approved Artisan Details | Craftora</title>
+
+
+    <style>
+
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+            background: #F4E8D3;
+            color: #333;
+        }
+
+
+        /* =====================================================
+           NAVBAR
+        ===================================================== */
+
+        .navbar {
+            background: #123B29;
+            color: white;
+
+            padding: 12px 35px;
+            min-height: 80px;
+
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+
+        .logo {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            text-decoration: none;
+        }
+
+
+        .craftora-logo {
+            height: 62px;
+            width: auto;
+
+            display: block;
+
+            object-fit: contain;
+
+            border-radius: 12px;
+        }
+
+
+        .nav-links {
+            display: flex;
+
+            align-items: center;
+
+            gap: 22px;
+        }
+
+
+        .nav-links a {
+            color: white;
+
+            text-decoration: none;
+
+            font-size: 14px;
+
+            font-weight: 500;
+
+            transition: 0.2s;
+        }
+
+
+        .nav-links a:hover {
+            color: #D6B36A;
+        }
+
+
+        /* =====================================================
+           MAIN
+        ===================================================== */
+
+        .container {
+            padding: 40px;
+
+            max-width: 1200px;
+
+            margin: auto;
+        }
+
+
+        .back-btn {
+            display: inline-block;
+
+            margin-bottom: 25px;
+
+            background: #123B29;
+
+            color: white;
+
+            padding: 10px 18px;
+
+            border-radius: 7px;
+
+            text-decoration: none;
+
+            font-size: 14px;
+        }
+
+
+        .back-btn:hover {
+            background: #1d5b40;
+        }
+
+
+        h1 {
+            color: #123B29;
+
+            margin-bottom: 8px;
+
+            font-size: 34px;
+        }
+
+
+        .subtitle {
+            color: #666;
+
+            margin-bottom: 30px;
+
+            font-size: 16px;
+        }
+
+
+        /* =====================================================
+           PROFILE HEADER
+        ===================================================== */
+
+        .profile-header {
+            background: white;
+
+            padding: 30px;
+
+            border-radius: 14px;
+
+            display: flex;
+
+            align-items: center;
+
+            gap: 25px;
+
+            margin-bottom: 30px;
+
+            box-shadow:
+                    0 5px 15px rgba(0,0,0,0.08);
+        }
+
+
+        .profile-image {
+            width: 130px;
+
+            height: 130px;
+
+            border-radius: 50%;
+
+            object-fit: cover;
+
+            border: 4px solid #D6B36A;
+
+            background: #123B29;
+        }
+
+
+        .profile-placeholder {
+            width: 130px;
+
+            height: 130px;
+
+            border-radius: 50%;
+
+            background: #123B29;
+
+            color: white;
+
+            display: flex;
+
+            align-items: center;
+
+            justify-content: center;
+
+            font-size: 48px;
+
+            font-weight: bold;
+
+            border: 4px solid #D6B36A;
+        }
+
+
+        .profile-info h2 {
+            margin: 0 0 8px 0;
+
+            color: #123B29;
+
+            font-size: 28px;
+        }
+
+
+        .profile-info p {
+            margin: 5px 0;
+
+            color: #666;
+        }
+
+
+        .status {
+            display: inline-block;
+
+            padding: 7px 14px;
+
+            border-radius: 20px;
+
+            font-size: 12px;
+
+            font-weight: bold;
+
+            background: #d9f2df;
+
+            color: #176b2c;
+
+            margin-top: 8px;
+        }
+
+
+        /* =====================================================
+           SECTIONS
+        ===================================================== */
+
+        .section {
+            background: white;
+
+            padding: 28px;
+
+            border-radius: 14px;
+
+            margin-bottom: 25px;
+
+            box-shadow:
+                    0 5px 15px rgba(0,0,0,0.08);
+        }
+
+
+        .section h2 {
+            color: #123B29;
+
+            margin-top: 0;
+
+            margin-bottom: 22px;
+
+            font-size: 24px;
+
+            border-bottom: 2px solid #D6B36A;
+
+            padding-bottom: 10px;
+        }
+
+
+        /* =====================================================
+           DETAILS
+        ===================================================== */
+
+        .details-grid {
+            display: grid;
+
+            grid-template-columns:
+                    repeat(2, 1fr);
+
+            gap: 18px 30px;
+        }
+
+
+        /* Craft type and description are shown vertically
+           so the description has enough space to read clearly. */
+        .craft-details {
+            display: flex;
+            flex-direction: column;
+            gap: 18px;
+        }
+
+
+        .description-value {
+            display: block;
+            line-height: 1.6;
+        }
+
+
+        .detail-item {
+            padding: 15px;
+
+            background: #faf7f1;
+
+            border-radius: 8px;
+        }
+
+
+        .detail-label {
+            display: block;
+
+            font-size: 13px;
+
+            color: #777;
+
+            margin-bottom: 5px;
+
+            font-weight: bold;
+        }
+
+
+        .detail-value {
+            font-size: 15px;
+
+            color: #333;
+
+            word-break: break-word;
+        }
+
+
+        /* =====================================================
+           BIO
+        ===================================================== */
+
+        .bio {
+            line-height: 1.7;
+
+            color: #555;
+
+            background: #faf7f1;
+
+            padding: 18px;
+
+            border-radius: 8px;
+        }
+
+
+        /* =====================================================
+           SOCIAL MEDIA
+        ===================================================== */
+
+        .social-links {
+            display: flex;
+
+            flex-wrap: wrap;
+
+            gap: 12px;
+        }
+
+
+        .social-link {
+            display: inline-block;
+
+            background: #123B29;
+
+            color: white;
+
+            text-decoration: none;
+
+            padding: 10px 16px;
+
+            border-radius: 7px;
+
+            font-size: 14px;
+        }
+
+
+        .social-link:hover {
+            background: #1d5b40;
+        }
+
+
+        /* =====================================================
+           PAYMENT
+        ===================================================== */
+
+        .payment-card {
+            background: #faf7f1;
+
+            padding: 20px;
+
+            border-radius: 10px;
+
+            border-left: 5px solid #D6B36A;
+        }
+
+
+        .payment-status {
+            display: inline-block;
+
+            padding: 6px 12px;
+
+            border-radius: 20px;
+
+            background: #d9f2df;
+
+            color: #176b2c;
+
+            font-size: 12px;
+
+            font-weight: bold;
+        }
+
+
+        /* =====================================================
+           CERTIFICATES
+        ===================================================== */
+
+        .certificate-list {
+            display: flex;
+
+            flex-direction: column;
+
+            gap: 12px;
+        }
+
+
+        .certificate-item {
+            background: #faf7f1;
+
+            padding: 15px 18px;
+
+            border-radius: 8px;
+
+            display: flex;
+
+            justify-content: space-between;
+
+            align-items: center;
+
+            gap: 15px;
+        }
+
+
+        .certificate-name {
+            color: #333;
+
+            font-size: 14px;
+
+            word-break: break-word;
+        }
+
+
+        .certificate-btn {
+            background: #123B29;
+
+            color: white;
+
+            text-decoration: none;
+
+            padding: 8px 14px;
+
+            border-radius: 6px;
+
+            font-size: 13px;
+
+            white-space: nowrap;
+        }
+
+
+        .certificate-btn:hover {
+            background: #1d5b40;
+        }
+
+
+        .empty {
+            text-align: center;
+
+            color: #777;
+
+            padding: 20px;
+
+            background: #faf7f1;
+
+            border-radius: 8px;
+        }
+
+
+        /* =====================================================
+           RESPONSIVE
+        ===================================================== */
+
+        @media (max-width: 900px) {
+
+            .navbar {
+                flex-direction: column;
+
+                gap: 15px;
+
+                padding: 15px;
+            }
+
+
+            .nav-links {
+                flex-wrap: wrap;
+
+                justify-content: center;
+            }
+
+
+            .container {
+                padding: 20px;
+            }
+
+
+            .details-grid {
+                grid-template-columns: 1fr;
+            }
+
+
+            .profile-header {
+                flex-direction: column;
+
+                text-align: center;
+            }
+
+        }
+
+
+        @media (max-width: 500px) {
+
+            .container {
+                padding: 15px;
+            }
+
+
+            .certificate-item {
+                flex-direction: column;
+
+                align-items: flex-start;
+            }
+
+
+            .profile-image,
+            .profile-placeholder {
+                width: 110px;
+
+                height: 110px;
+            }
+
+        }
+
+    </style>
+
+</head>
+
+
+<body>
+
+
+<!-- =========================================================
+     NAVBAR
+========================================================= -->
+
+<nav class="navbar">
+
+
+    <a href="/admin-dashboard"
+       class="logo">
+
+        <img src="/images/craftora-logo.png"
+             alt="Craftora Logo"
+             class="craftora-logo">
+
+    </a>
+
+
+    <div class="nav-links">
+
+        <a href="/admin-dashboard">
+
+            Dashboard
+
+        </a>
+
+
+        <a href="/admin/manage-artisans">
+
+            Manage Artisan
+
+        </a>
+
+
+        <a href="#">
+
+            Manage Events
+
+        </a>
+
+
+        <a href="#">
+
+            Payments
+
+        </a>
+
+
+        <a href="#">
+
+            View Reports
+
+        </a>
+
+
+        <a href="#">
+
+            View Ratings
+
+        </a>
+
+    </div>
+
+</nav>
+
+
+
+<!-- =========================================================
+     MAIN CONTENT
+========================================================= -->
+
+<div class="container">
+
+
+    <!-- BACK -->
+
+    <a href="/admin/manage-artisans"
+       class="back-btn">
+
+        ← Back to Manage Artisans
+
+    </a>
+
+
+    <h1>
+
+        Artisan Profile
+
+    </h1>
+
+
+    <p class="subtitle">
+
+        View the information provided in the artisan's profile.
+
+    </p>
+
+
+
+    <!-- =====================================================
+         PROFILE HEADER
+    ====================================================== -->
+
+    <div class="profile-header">
+
+
+        <!-- PROFILE IMAGE -->
+
+        <div th:if="${artisan.profileImage != null
+                     and !#strings.isEmpty(artisan.profileImage)}">
+
+            <img th:src="${artisan.profileImage != null and !#strings.isEmpty(artisan.profileImage)
+                         ? (artisan.profileImage.startsWith('/') ? artisan.profileImage : '/' + artisan.profileImage)
+                         : ''}"
+                 alt="Artisan Profile"
+                 class="profile-image">
+
+        </div>
+
+
+        <!-- PROFILE PLACEHOLDER -->
+
+        <div th:unless="${artisan.profileImage != null
+                         and !#strings.isEmpty(artisan.profileImage)}"
+             class="profile-placeholder">
+
+            <span
+                th:text="${artisan.user.fullName != null
+                          and !#strings.isEmpty(artisan.user.fullName)
+                          ? artisan.user.fullName.substring(0,1).toUpperCase()
+                          : 'A'}">
+
+                A
+
+            </span>
+
+        </div>
+
+
+        <div class="profile-info">
+
+            <h2 th:text="${artisan.user.fullName}">
+
+                Artisan Name
+
+            </h2>
+
+
+            <p th:text="${artisanRequest != null and artisanRequest.email != null ? artisanRequest.email : artisan.user.email}">
+
+                artisan@example.com
+
+            </p>
+
+
+            <p th:if="${(artisan.contactNumber != null and !#strings.isEmpty(artisan.contactNumber))
+                       or (artisanRequest != null and artisanRequest.contactNumber != null and !#strings.isEmpty(artisanRequest.contactNumber))}"
+               th:text="${artisan.contactNumber != null and !#strings.isEmpty(artisan.contactNumber)
+                       ? artisan.contactNumber
+                       : artisanRequest.contactNumber}">
+
+                Contact Number
+
+            </p>
+
+
+            <p th:if="${artisan.craftType != null
+                       and !#strings.isEmpty(artisan.craftType)}"
+               th:text="${artisan.craftType}">
+
+                Craft Type
+
+            </p>
+
+
+            <span class="status">
+
+                ARTISAN
+
+            </span>
+
+        </div>
+
+    </div>
+
+
+
+    <!-- =====================================================
+         PERSONAL INFORMATION
+    ====================================================== -->
+
+    <div class="section">
+
+        <h2>
+
+            Personal Information
+
+        </h2>
+
+
+        <div class="details-grid">
+
+
+            <div class="detail-item">
+
+                <span class="detail-label">
+
+                    First Name
+
+                </span>
+
+                <span class="detail-value"
+                      th:text="${firstName}">
+
+                    -
+
+                </span>
+
+            </div>
+
+
+
+            <div class="detail-item">
+
+                <span class="detail-label">
+
+                    Last Name
+
+                </span>
+
+                <span class="detail-value"
+                      th:text="${lastName}">
+
+                    -
+
+                </span>
+
+            </div>
+
+
+
+            <div class="detail-item">
+
+                <span class="detail-label">
+
+                    Email
+
+                </span>
+
+                <span class="detail-value"
+                      th:text="${artisanRequest != null and artisanRequest.email != null
+                                ? artisanRequest.email
+                                : (artisan.user.email != null ? artisan.user.email : '-')}">
+
+                    -
+
+                </span>
+
+            </div>
+
+
+
+            <div class="detail-item">
+
+                <span class="detail-label">
+
+                    Contact Number
+
+                </span>
+
+                <span class="detail-value"
+                      th:text="${artisan.contactNumber != null
+                                ? artisan.contactNumber
+                                : (artisanRequest != null and artisanRequest.contactNumber != null ? artisanRequest.contactNumber : '-')}">
+
+                    -
+
+                </span>
+
+            </div>
+
+
+        </div>
+
+    </div>
+
+
+
+    <!-- =====================================================
+         CRAFT INFORMATION
+    ====================================================== -->
+
+    <div class="section">
+
+        <h2>
+
+            Craft Information
+
+        </h2>
+
+
+        <div class="craft-details">
+
+            <div class="detail-item">
+
+                <span class="detail-label">
+
+                    Craft Type
+
+                </span>
+
+                <span class="detail-value"
+                      th:text="${artisan.craftType != null
+                                ? artisan.craftType
+                                : '-'}">
+
+                    -
+
+                </span>
+
+            </div>
+
+
+            <div class="detail-item description-item">
+
+                <span class="detail-label">
+
+                    Description
+
+                </span>
+
+                <span class="detail-value description-value"
+                      th:text="${artisan.bio != null
+                                ? artisan.bio
+                                : '-'}">
+
+                    -
+
+                </span>
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+
+    <!-- =====================================================
+         LOCATION
+    ====================================================== -->
+
+    <div class="section">
+
+        <h2>
+
+            Location
+
+        </h2>
+
+
+        <div class="details-grid">
+
+
+            <div class="detail-item">
+
+                <span class="detail-label">
+
+                    Location
+
+                </span>
+
+                <span class="detail-value"
+                      th:text="${artisan.location != null
+                                ? artisan.location
+                                : '-'}">
+
+                    -
+
+                </span>
+
+            </div>
+
+
+
+            <div class="detail-item">
+
+                <span class="detail-label">
+
+                    Latitude
+
+                </span>
+
+                <span class="detail-value"
+                      th:text="${artisan.latitude != null
+                                ? artisan.latitude
+                                : '-'}">
+
+                    -
+
+                </span>
+
+            </div>
+
+
+
+            <div class="detail-item">
+
+                <span class="detail-label">
+
+                    Longitude
+
+                </span>
+
+                <span class="detail-value"
+                      th:text="${artisan.longitude != null
+                                ? artisan.longitude
+                                : '-'}">
+
+                    -
+
+                </span>
+
+            </div>
+
+
+        </div>
+
+
+        <div class="map-container"
+             th:if="${artisan.latitude != null
+                     and artisan.longitude != null}">
+
+            <iframe
+                width="100%"
+                height="100%"
+                style="border:0;"
+                loading="lazy"
+                allowfullscreen
+                th:src="@{'https://www.google.com/maps?q='
+                         + ${artisan.latitude}
+                         + ','
+                         + ${artisan.longitude}
+                         + '&output=embed'}">
+
+            </iframe>
+
+        </div>
+
+
+        <div class="map-note"
+             th:unless="${artisan.latitude != null
+                         and artisan.longitude != null}">
+
+            Location map is not available because latitude and longitude
+            have not been provided in the artisan profile.
+
+        </div>
+
+    </div>
+
+
+
+    <!-- =====================================================
+         SOCIAL MEDIA & WEBSITE
+    ====================================================== -->
+
+    <div class="section">
+
+        <h2>
+
+            Social Media & Website
+
+        </h2>
+
+
+        <div class="details-grid">
+
+
+            <div class="detail-item"
+                 th:if="${artisan.facebook != null
+                         and !#strings.isEmpty(artisan.facebook)}">
+
+                <span class="detail-label">
+
+                    Facebook
+
+                </span>
+
+                <a class="detail-value social-link"
+                   th:href="${artisan.facebook}"
+                   target="_blank"
+                   rel="noopener noreferrer"
+                   th:text="${artisan.facebook}">
+
+                    Facebook
+
+                </a>
+
+            </div>
+
+
+
+            <div class="detail-item"
+                 th:if="${artisan.instagram != null
+                         and !#strings.isEmpty(artisan.instagram)}">
+
+                <span class="detail-label">
+
+                    Instagram
+
+                </span>
+
+                <a class="detail-value social-link"
+                   th:href="${artisan.instagram}"
+                   target="_blank"
+                   rel="noopener noreferrer"
+                   th:text="${artisan.instagram}">
+
+                    Instagram
+
+                </a>
+
+            </div>
+
+
+
+            <div class="detail-item"
+                 th:if="${artisan.website != null
+                         and !#strings.isEmpty(artisan.website)}">
+
+                <span class="detail-label">
+
+                    Website
+
+                </span>
+
+                <a class="detail-value social-link"
+                   th:href="${artisan.website}"
+                   target="_blank"
+                   rel="noopener noreferrer"
+                   th:text="${artisan.website}">
+
+                    Website
+
+                </a>
+
+            </div>
+
+
+
+            <div class="detail-item"
+                 th:if="${(artisan.facebook == null
+                           or #strings.isEmpty(artisan.facebook))
+                         and (artisan.instagram == null
+                           or #strings.isEmpty(artisan.instagram))
+                         and (artisan.website == null
+                           or #strings.isEmpty(artisan.website))}">
+
+                <span class="detail-label">
+
+                    Social Media
+
+                </span>
+
+                <span class="detail-value">
+
+                    No social media or website information available.
+
+                </span>
+
+            </div>
+
+
+        </div>
+
+    </div>
+
+
+
+
+
+</div>
+
+
+</body>
+
+</html>

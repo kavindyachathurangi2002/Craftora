@@ -1,0 +1,1071 @@
+<!DOCTYPE html>
+<html lang="en"
+      xmlns:th="http://www.thymeleaf.org">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
+
+    <title>Craftora - My Cart</title>
+
+
+    <!-- Main Craftora CSS -->
+    <link rel="stylesheet"
+          href="/css/style.css">
+
+
+    <style>
+
+        /* =========================================================
+           CART NAVIGATION
+           ========================================================= */
+
+        .cart-nav-link {
+
+            color: #184c38;
+
+            text-decoration: none;
+
+            font-weight: 700;
+
+            white-space: nowrap;
+        }
+
+
+        .cart-nav-link:hover {
+
+            color: #b18a2e;
+        }
+
+
+        /* =========================================================
+           CART PAGE
+           ========================================================= */
+
+        body {
+
+            background: #f8f8f4;
+        }
+
+
+        .cart-page {
+
+            padding: 55px 7%;
+
+            min-height: 65vh;
+        }
+
+
+        /* =========================================================
+           CART HEADER
+           ========================================================= */
+
+        .cart-header {
+
+            max-width: 1250px;
+
+            margin: 0 auto 28px;
+        }
+
+
+        .cart-header span {
+
+            color: #b18a2e;
+
+            font-size: 13px;
+
+            font-weight: 700;
+
+            letter-spacing: 2px;
+        }
+
+
+        .cart-header h1 {
+
+            color: #184c38;
+
+            margin: 8px 0 8px;
+
+            font-size: 36px;
+        }
+
+
+        .cart-header p {
+
+            color: #666;
+
+            margin: 0;
+        }
+
+
+        /* =========================================================
+           CART LAYOUT
+           ========================================================= */
+
+        .cart-layout {
+
+            max-width: 1250px;
+
+            margin: 0 auto;
+
+            display: grid;
+
+            grid-template-columns: 1fr 350px;
+
+            gap: 25px;
+
+            align-items: start;
+        }
+
+
+        /* =========================================================
+           CART ITEMS
+           ========================================================= */
+
+        .cart-items {
+
+            display: flex;
+
+            flex-direction: column;
+
+            gap: 16px;
+        }
+
+
+        .cart-item {
+
+            background: white;
+
+            border: 1px solid #e7e5dc;
+
+            border-radius: 14px;
+
+            padding: 18px;
+
+            display: grid;
+
+            grid-template-columns: 120px 1fr auto;
+
+            gap: 18px;
+
+            align-items: center;
+
+            box-shadow: 0 5px 18px rgba(0,0,0,0.06);
+        }
+
+
+        .cart-image {
+
+            width: 120px;
+
+            height: 120px;
+
+            border-radius: 10px;
+
+            background: #f3f3ef;
+
+            overflow: hidden;
+        }
+
+
+        .cart-image img {
+
+            width: 100%;
+
+            height: 100%;
+
+            object-fit: contain;
+        }
+
+
+        /* =========================================================
+           CART PRODUCT INFORMATION
+           ========================================================= */
+
+        .cart-info h3 {
+
+            color: #184c38;
+
+            font-size: 19px;
+
+            margin: 0 0 7px;
+        }
+
+
+        .cart-category {
+
+            display: inline-block;
+
+            background: #eef5ef;
+
+            color: #18553d;
+
+            padding: 5px 9px;
+
+            border-radius: 18px;
+
+            font-size: 11px;
+
+            font-weight: 700;
+
+            margin-bottom: 8px;
+        }
+
+
+        .cart-artisan {
+
+            color: #666;
+
+            font-size: 13px;
+
+            margin-bottom: 8px;
+        }
+
+
+        .cart-price {
+
+            color: #b18a2e;
+
+            font-weight: 800;
+
+            font-size: 17px;
+        }
+
+
+        /* =========================================================
+           QUANTITY
+           ========================================================= */
+
+        .quantity-control {
+
+            display: flex;
+
+            align-items: center;
+
+            gap: 8px;
+
+            margin-top: 12px;
+        }
+
+
+        .quantity-control a {
+
+            width: 31px;
+
+            height: 31px;
+
+            border-radius: 7px;
+
+            background: #eef1ec;
+
+            color: #184c38;
+
+            text-decoration: none;
+
+            display: flex;
+
+            align-items: center;
+
+            justify-content: center;
+
+            font-weight: 800;
+        }
+
+
+        .quantity-control a:hover {
+
+            background: #dfe7df;
+        }
+
+
+        .quantity-number {
+
+            min-width: 28px;
+
+            text-align: center;
+
+            font-weight: 700;
+
+            color: #184c38;
+        }
+
+
+        /* =========================================================
+           RIGHT SIDE
+           ========================================================= */
+
+        .cart-right {
+
+            text-align: right;
+        }
+
+
+        .cart-subtotal {
+
+            color: #184c38;
+
+            font-size: 18px;
+
+            font-weight: 800;
+
+            margin-bottom: 15px;
+        }
+
+
+        .remove-btn {
+
+            color: #b42318;
+
+            text-decoration: none;
+
+            font-size: 13px;
+
+            font-weight: 700;
+        }
+
+
+        .remove-btn:hover {
+
+            text-decoration: underline;
+        }
+
+
+        /* =========================================================
+           CART SUMMARY
+           ========================================================= */
+
+        .cart-summary {
+
+            background: white;
+
+            border: 1px solid #e7e5dc;
+
+            border-radius: 14px;
+
+            padding: 24px;
+
+            box-shadow: 0 5px 18px rgba(0,0,0,0.06);
+
+            position: sticky;
+
+            top: 25px;
+        }
+
+
+        .cart-summary h2 {
+
+            color: #184c38;
+
+            margin: 0 0 20px;
+
+            font-size: 23px;
+        }
+
+
+        .summary-row {
+
+            display: flex;
+
+            justify-content: space-between;
+
+            color: #666;
+
+            margin-bottom: 12px;
+        }
+
+
+        .summary-total {
+
+            border-top: 1px solid #e7e5dc;
+
+            padding-top: 16px;
+
+            margin-top: 16px;
+
+            display: flex;
+
+            justify-content: space-between;
+
+            color: #184c38;
+
+            font-size: 21px;
+
+            font-weight: 800;
+        }
+
+
+        /* =========================================================
+           CHECKOUT BUTTON
+           ========================================================= */
+
+        .checkout-btn {
+
+            display: block;
+
+            text-align: center;
+
+            text-decoration: none;
+
+            margin-top: 20px;
+
+            padding: 13px;
+
+            border-radius: 9px;
+
+            background: #d6ae45;
+
+            color: #173d2f;
+
+            font-weight: 800;
+        }
+
+
+        .checkout-btn:hover {
+
+            background: #c89f35;
+
+            color: #173d2f;
+        }
+
+
+        /* =========================================================
+           CLEAR CART
+           ========================================================= */
+
+        .clear-btn {
+
+            display: block;
+
+            text-align: center;
+
+            text-decoration: none;
+
+            margin-top: 10px;
+
+            color: #b42318;
+
+            font-size: 13px;
+
+            font-weight: 700;
+        }
+
+
+        .clear-btn:hover {
+
+            text-decoration: underline;
+        }
+
+
+        /* =========================================================
+           EMPTY CART
+           ========================================================= */
+
+        .empty-cart {
+
+            max-width: 650px;
+
+            margin: 30px auto;
+
+            text-align: center;
+
+            background: white;
+
+            padding: 60px 25px;
+
+            border-radius: 14px;
+
+            border: 1px solid #e7e5dc;
+
+            box-shadow: 0 5px 18px rgba(0,0,0,0.06);
+        }
+
+
+        .empty-cart .icon {
+
+            font-size: 52px;
+
+            margin-bottom: 15px;
+        }
+
+
+        .empty-cart h2 {
+
+            color: #184c38;
+
+            margin-bottom: 10px;
+        }
+
+
+        .empty-cart p {
+
+            color: #666;
+
+            margin-bottom: 22px;
+        }
+
+
+        .shop-btn {
+
+            display: inline-block;
+
+            background: #184c38;
+
+            color: white;
+
+            text-decoration: none;
+
+            padding: 12px 22px;
+
+            border-radius: 8px;
+
+            font-weight: 700;
+        }
+
+
+        .shop-btn:hover {
+
+            background: #123c2d;
+
+            color: white;
+        }
+
+
+        /* =========================================================
+           RESPONSIVE
+           ========================================================= */
+
+        @media (max-width: 900px) {
+
+            .cart-layout {
+
+                grid-template-columns: 1fr;
+            }
+
+
+            .cart-summary {
+
+                position: static;
+            }
+        }
+
+
+        @media (max-width: 600px) {
+
+            .cart-item {
+
+                grid-template-columns: 90px 1fr;
+            }
+
+
+            .cart-image {
+
+                width: 90px;
+
+                height: 90px;
+            }
+
+
+            .cart-right {
+
+                grid-column: 1 / -1;
+
+                text-align: left;
+            }
+        }
+
+    </style>
+
+</head>
+
+
+<body>
+
+
+<!-- =========================================================
+     MAIN NAVIGATION
+     ========================================================= -->
+
+<nav class="navbar">
+
+
+    <!-- =====================================================
+         LOGO
+         ===================================================== -->
+
+    <div class="logo">
+
+        <a href="/">
+
+            <img src="/images/craftora-logo.png"
+                 alt="Craftora Logo">
+
+        </a>
+
+    </div>
+
+
+    <!-- =====================================================
+         NAVIGATION LINKS
+         ===================================================== -->
+
+    <div class="nav-links">
+
+
+        <!-- HOME -->
+
+        <a href="/">
+
+            Home
+
+        </a>
+
+
+        <!-- ABOUT US -->
+
+        <a href="/about-us">
+
+            About Us
+
+        </a>
+
+
+        <!-- EVENTS -->
+
+        <div class="dropdown">
+
+            <a href="#">
+
+                Events ▾
+
+            </a>
+
+
+            <div class="dropdown-menu">
+
+                <a href="/workshops">
+
+                    Workshops
+
+                </a>
+
+
+                <a href="/exhibitions">
+
+                    Exhibitions
+
+                </a>
+
+
+                <a href="/competitions">
+
+                    Competitions
+
+                </a>
+
+            </div>
+
+        </div>
+
+
+        <!-- MARKETPLACE -->
+
+        <a href="/marketplace">
+    Marketplace
+</a>
+
+<a href="/cart" class="active">
+    🛒 My Cart
+</a>
+
+
+        <!-- RATINGS -->
+
+        <a href="/ratings">
+
+            Ratings
+
+        </a>
+
+
+        <!-- CONTACT US -->
+
+        <a href="/contact-us">
+
+            Contact Us
+
+        </a>
+
+
+    </div>
+
+
+    <!-- =====================================================
+         LOGIN / DASHBOARD
+         ===================================================== -->
+
+    <div class="sign-in">
+
+
+        <!-- Logged-in user -->
+
+        <a th:if="${session.loggedInUserId != null}"
+           th:href="${session.selectedRole == 'ARTISAN' ? '/artisan-dashboard' : (session.selectedRole == 'ADMIN' ? '/admin-dashboard' : '/customer-dashboard')}">
+
+            Dashboard
+
+        </a>
+
+
+        <!-- Guest user -->
+
+        <a th:unless="${session.loggedInUserId != null}"
+           href="/login">
+
+            Sign In
+
+        </a>
+
+
+    </div>
+
+
+</nav>
+
+
+<!-- =========================================================
+     CART PAGE
+     ========================================================= -->
+
+<section class="cart-page">
+
+
+    <!-- =====================================================
+         CART HEADER
+         ===================================================== -->
+
+    <div class="cart-header">
+
+        <span>
+
+            CRAFTORA SHOPPING CART
+
+        </span>
+
+
+        <h1>
+
+            My Cart
+
+        </h1>
+
+
+        <p>
+
+            Review your selected handmade products before continuing.
+
+        </p>
+
+    </div>
+
+
+    <!-- =====================================================
+         CART WITH ITEMS
+         ===================================================== -->
+
+    <div class="cart-layout"
+         th:if="${not #lists.isEmpty(cartItems)}">
+
+
+        <!-- =================================================
+             CART ITEMS
+             ================================================= -->
+
+        <div class="cart-items">
+
+
+            <!-- SINGLE CART ITEM -->
+
+            <div class="cart-item"
+                 th:each="item : ${cartItems}">
+
+
+                <!-- PRODUCT IMAGE -->
+
+                <div class="cart-image">
+
+
+                    <img th:if="${item.product.productImage != null and !item.product.productImage.isEmpty()}"
+                         th:src="${item.product.productImage.startsWith('/') ? item.product.productImage : '/' + item.product.productImage}"
+                         th:alt="${item.product.productName}">
+
+
+                </div>
+
+
+                <!-- PRODUCT INFORMATION -->
+
+                <div class="cart-info">
+
+
+                    <!-- CATEGORY -->
+
+                    <span class="cart-category"
+                          th:text="${item.product.category}">
+
+                        Craft
+
+                    </span>
+
+
+                    <!-- PRODUCT NAME -->
+
+                    <h3 th:text="${item.product.productName}">
+
+                        Product Name
+
+                    </h3>
+
+
+                    <!-- ARTISAN -->
+
+                    <div class="cart-artisan">
+
+                        By
+
+                        <strong th:text="${item.product.artisan.user.fullName}">
+
+                            Artisan
+
+                        </strong>
+
+                    </div>
+
+
+                    <!-- PRODUCT PRICE -->
+
+                    <div class="cart-price">
+
+                        LKR
+
+                        <span th:text="${item.product.price}">
+
+                            0.00
+
+                        </span>
+
+                    </div>
+
+
+                    <!-- QUANTITY -->
+
+                    <div class="quantity-control">
+
+
+                        <!-- DECREASE -->
+
+                        <a th:href="@{/cart/decrease/{id}(id=${item.product.productId})}">
+
+                            −
+
+                        </a>
+
+
+                        <!-- QUANTITY -->
+
+                        <span class="quantity-number"
+                              th:text="${item.quantity}">
+
+                            1
+
+                        </span>
+
+
+                        <!-- INCREASE -->
+
+                        <a th:href="@{/cart/increase/{id}(id=${item.product.productId})}">
+
+                            +
+
+                        </a>
+
+
+                    </div>
+
+
+                </div>
+
+
+                <!-- RIGHT SIDE -->
+
+                <div class="cart-right">
+
+
+                    <!-- SUBTOTAL -->
+
+                    <div class="cart-subtotal">
+
+                        LKR
+
+                        <span th:text="${item.subtotal}">
+
+                            0.00
+
+                        </span>
+
+                    </div>
+
+
+                    <!-- REMOVE -->
+
+                    <a class="remove-btn"
+                       th:href="@{/cart/remove/{id}(id=${item.product.productId})}">
+
+                        Remove
+
+                    </a>
+
+
+                </div>
+
+
+            </div>
+
+
+        </div>
+
+
+        <!-- =================================================
+             ORDER SUMMARY
+             ================================================= -->
+
+        <div class="cart-summary">
+
+
+            <h2>
+
+                Order Summary
+
+            </h2>
+
+
+            <!-- ITEMS -->
+
+            <div class="summary-row">
+
+                <span>
+
+                    Items
+
+                </span>
+
+
+                <strong th:text="${#lists.size(cartItems)}">
+
+                    0
+
+                </strong>
+
+            </div>
+
+
+            <!-- TOTAL -->
+
+            <div class="summary-total">
+
+                <span>
+
+                    Total
+
+                </span>
+
+
+                <span>
+
+                    LKR
+
+                    <span th:text="${cartTotal}">
+
+                        0.00
+
+                    </span>
+
+                </span>
+
+            </div>
+
+
+            <!-- CHECKOUT -->
+
+            <a href="/checkout"
+               class="checkout-btn">
+
+                Proceed to Checkout
+
+            </a>
+
+
+            <!-- CLEAR CART -->
+
+            <a href="/cart/clear"
+               class="clear-btn">
+
+                Clear Cart
+
+            </a>
+
+
+        </div>
+
+
+    </div>
+
+
+    <!-- =====================================================
+         EMPTY CART
+         ===================================================== -->
+
+    <div class="empty-cart"
+         th:if="${#lists.isEmpty(cartItems)}">
+
+
+        <div class="icon">
+
+            🛒
+
+        </div>
+
+
+        <h2>
+
+            Your Cart is Empty
+
+        </h2>
+
+
+        <p>
+
+            You have not added any handmade products to your cart yet.
+
+        </p>
+
+
+        <a href="/marketplace"
+           class="shop-btn">
+
+            Continue Shopping
+
+        </a>
+
+
+    </div>
+
+
+</section>
+
+
+</body>
+
+</html>

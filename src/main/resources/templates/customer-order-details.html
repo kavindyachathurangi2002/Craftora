@@ -1,0 +1,1060 @@
+<!DOCTYPE html>
+<html lang="en"
+      xmlns:th="http://www.thymeleaf.org">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
+
+    <title>Order Details - Craftora</title>
+
+    <style>
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+            background: #f5f7f6;
+            color: #333;
+        }
+
+        /* =====================================================
+           NAVBAR
+        ===================================================== */
+
+        .navbar {
+            background: #123B29;
+            padding: 16px 7%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo img {
+            height: 58px;
+            width: auto;
+            max-width: 220px;
+            object-fit: contain;
+            border-radius: 10px;
+            background: white;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 20px;
+            align-items: center;
+        }
+
+        .nav-links a {
+            color: white;
+            text-decoration: none;
+            font-size: 14px;
+        }
+
+        .nav-links a:hover {
+            text-decoration: underline;
+        }
+
+        /* =====================================================
+           PAGE
+        ===================================================== */
+
+        .page-container {
+            width: 90%;
+            max-width: 1100px;
+            margin: 40px auto 60px;
+        }
+
+        .back-button {
+            display: inline-block;
+            margin-bottom: 20px;
+            color: #123B29;
+            text-decoration: none;
+            font-size: 14px;
+        }
+
+        .back-button:hover {
+            text-decoration: underline;
+        }
+
+        .page-title {
+            color: #123B29;
+            font-size: 30px;
+            margin-bottom: 7px;
+        }
+
+        .page-subtitle {
+            color: #777;
+            margin-bottom: 25px;
+        }
+
+        /* =====================================================
+           ORDER SUMMARY
+        ===================================================== */
+
+        .summary-card,
+        .section-card {
+            background: white;
+            border-radius: 14px;
+            box-shadow: 0 3px 12px rgba(0,0,0,0.06);
+            margin-bottom: 22px;
+        }
+
+        .summary-card {
+            padding: 25px;
+        }
+
+        .summary-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            gap: 20px;
+            flex-wrap: wrap;
+            padding-bottom: 18px;
+            border-bottom: 1px solid #eee;
+        }
+
+        .order-number {
+            color: #123B29;
+            font-size: 21px;
+            font-weight: bold;
+        }
+
+        .order-date {
+            color: #777;
+            font-size: 13px;
+            margin-top: 6px;
+        }
+
+        .status-row {
+            display: flex;
+            gap: 8px;
+            flex-wrap: wrap;
+        }
+
+        .status {
+            padding: 8px 14px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: bold;
+        }
+
+        .paid {
+            background: #dff5e8;
+            color: #18733b;
+        }
+
+        .pending {
+            background: #fff3cd;
+            color: #856404;
+        }
+
+        .confirmed {
+            background: #e1f0ff;
+            color: #1769aa;
+        }
+
+        .delivery-complete {
+            background: #dff5e8;
+            color: #18733b;
+        }
+
+        .summary-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 25px;
+            margin-top: 22px;
+        }
+
+        .summary-title,
+        .section-title {
+            color: #123B29;
+            font-size: 17px;
+            font-weight: bold;
+            margin-bottom: 15px;
+        }
+
+        .detail-box {
+            background: #fafbf9;
+            border: 1px solid #e7ece9;
+            border-radius: 10px;
+            padding: 17px;
+        }
+
+        .detail-row {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 11px;
+            line-height: 1.5;
+        }
+
+        .detail-row:last-child {
+            margin-bottom: 0;
+        }
+
+        .detail-icon {
+            width: 20px;
+            color: #b17e1d;
+        }
+
+        .detail-label {
+            color: #777;
+            min-width: 80px;
+        }
+
+        .detail-value {
+            color: #333;
+            font-weight: 600;
+        }
+
+        /* =====================================================
+           PRODUCTS
+        ===================================================== */
+
+        .section-card {
+            padding: 25px;
+        }
+
+        .item {
+            display: flex;
+            justify-content: space-between;
+            gap: 20px;
+            padding: 16px 0;
+            border-bottom: 1px solid #eee;
+        }
+
+        .item:last-child {
+            border-bottom: none;
+        }
+
+        .item-name {
+            font-weight: bold;
+            color: #333;
+        }
+
+        .item-meta {
+            color: #777;
+            font-size: 13px;
+            margin-top: 5px;
+        }
+
+        .item-price {
+            color: #123B29;
+            font-weight: bold;
+            white-space: nowrap;
+        }
+
+        .total-row {
+            border-top: 1px solid #eee;
+            margin-top: 8px;
+            padding-top: 18px;
+            display: flex;
+            justify-content: flex-end;
+            font-size: 20px;
+            font-weight: bold;
+            color: #123B29;
+        }
+
+        /* =====================================================
+           TRACKING
+        ===================================================== */
+
+        .tracking-card {
+            border: 1px solid #e2e9e5;
+            border-radius: 12px;
+            margin-bottom: 18px;
+            overflow: hidden;
+        }
+
+        .tracking-card:last-child {
+            margin-bottom: 0;
+        }
+
+        .tracking-header {
+            background: #f8faf9;
+            padding: 17px 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 15px;
+            flex-wrap: wrap;
+            border-bottom: 1px solid #e7ece9;
+        }
+
+        .artisan-name {
+            color: #123B29;
+            font-weight: bold;
+            font-size: 17px;
+        }
+
+        .tracking-status {
+            padding: 7px 13px;
+            border-radius: 18px;
+            font-size: 12px;
+            font-weight: bold;
+        }
+
+        .status-new {
+            background: #fff3cd;
+            color: #856404;
+        }
+
+        .status-processing {
+            background: #e1f0ff;
+            color: #1769aa;
+        }
+
+        .status-delivered {
+            background: #dff5e8;
+            color: #18733b;
+        }
+
+        .tracking-body {
+            padding: 22px;
+        }
+
+        .timeline {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 10px;
+            margin-bottom: 25px;
+        }
+
+        .timeline-step {
+            text-align: center;
+            position: relative;
+        }
+
+        .timeline-circle {
+            width: 38px;
+            height: 38px;
+            margin: 0 auto 9px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: #edf0ee;
+            color: #87918c;
+            font-weight: bold;
+        }
+
+        .timeline-step.active .timeline-circle {
+            background: #dff5e8;
+            color: #18733b;
+        }
+
+        .timeline-step.current .timeline-circle {
+            background: #123B29;
+            color: white;
+        }
+
+        .timeline-label {
+            font-size: 12px;
+            color: #777;
+        }
+
+        .timeline-step.active .timeline-label,
+        .timeline-step.current .timeline-label {
+            color: #123B29;
+            font-weight: bold;
+        }
+
+        .tracking-products-title {
+            color: #123B29;
+            font-size: 14px;
+            font-weight: bold;
+            margin-bottom: 10px;
+        }
+
+        .tracking-product {
+            display: flex;
+            justify-content: space-between;
+            gap: 15px;
+            padding: 10px 0;
+            border-bottom: 1px solid #f0f0f0;
+            font-size: 13px;
+        }
+
+        .tracking-product:last-child {
+            border-bottom: none;
+        }
+
+        .tracking-product-meta {
+            color: #777;
+        }
+
+        .empty-tracking {
+            text-align: center;
+            padding: 35px 20px;
+            color: #777;
+            background: #fafbf9;
+            border-radius: 10px;
+        }
+
+        /* =====================================================
+           RESPONSIVE
+        ===================================================== */
+
+        @media (max-width: 700px) {
+
+            .navbar {
+                padding: 15px 5%;
+            }
+
+            .logo img {
+                height: 50px;
+                max-width: 180px;
+            }
+
+            .nav-links {
+                gap: 10px;
+            }
+
+            .page-container {
+                width: 94%;
+            }
+
+            .summary-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .timeline {
+                grid-template-columns: 1fr;
+                gap: 14px;
+            }
+
+            .timeline-step {
+                display: flex;
+                align-items: center;
+                text-align: left;
+                gap: 10px;
+            }
+
+            .timeline-circle {
+                margin: 0;
+                flex-shrink: 0;
+            }
+
+            .item {
+                flex-direction: column;
+            }
+
+        }
+
+    </style>
+
+</head>
+
+
+<body>
+
+
+<!-- =====================================================
+     NAVIGATION
+===================================================== -->
+
+<div class="navbar">
+
+    <div class="logo">
+
+        <a href="/customer-dashboard">
+
+            <img src="/images/craftora-logo.png"
+                 alt="Craftora Logo">
+
+        </a>
+
+    </div>
+
+
+    <div class="nav-links">
+
+        <a href="/marketplace">
+            Marketplace
+        </a>
+
+        <a href="/cart">
+            My Cart
+        </a>
+
+        <a href="/customer/orders">
+            My Orders
+        </a>
+
+        <a href="/customer-dashboard">
+            Dashboard
+        </a>
+
+    </div>
+
+</div>
+
+
+<!-- =====================================================
+     PAGE
+===================================================== -->
+
+<div class="page-container">
+
+
+    <a href="/customer/orders"
+       class="back-button">
+
+        ← Back to My Orders
+
+    </a>
+
+
+    <h1 class="page-title">
+        Order Details
+    </h1>
+
+    <p class="page-subtitle">
+        View your order, delivery details and artisan-wise tracking.
+    </p>
+
+
+    <!-- =================================================
+         ORDER SUMMARY
+    ================================================= -->
+
+    <div class="summary-card">
+
+        <div class="summary-header">
+
+            <div>
+
+                <div class="order-number">
+
+                    Order #
+
+                    <span th:text="${order.orderId}">
+                        1
+                    </span>
+
+                </div>
+
+                <div class="order-date">
+
+                    Ordered on:
+
+                    <span th:text="${#temporals.format(
+                        order.orderDate,
+                        'dd MMM yyyy, hh:mm a'
+                    )}">
+
+                        22 Sep 2026, 12:00 PM
+
+                    </span>
+
+                </div>
+
+            </div>
+
+
+            <div class="status-row">
+
+                <span class="status"
+                      th:classappend="${order.paymentStatus == 'PAID'}
+                                      ? ' paid'
+                                      : ' pending'">
+
+                    Payment:
+
+                    <span th:text="${order.paymentStatus}">
+                        PAID
+                    </span>
+
+                </span>
+
+
+                <span class="status"
+                      th:classappend="${order.orderStatus == 'CONFIRMED'}
+                                      ? ' confirmed'
+                                      : ' pending'">
+
+                    Order:
+
+                    <span th:text="${order.orderStatus}">
+                        CONFIRMED
+                    </span>
+
+                </span>
+
+            </div>
+
+        </div>
+
+
+        <div class="summary-grid">
+
+
+            <!-- DELIVERY DETAILS -->
+
+            <div>
+
+                <div class="summary-title">
+
+                    <i class="bi bi-geo-alt-fill"></i>
+
+                    Delivery Details
+
+                </div>
+
+
+                <div class="detail-box">
+
+                    <div class="detail-row">
+
+                        <span class="detail-icon">👤</span>
+
+                        <span class="detail-label">
+                            Name
+                        </span>
+
+                        <span class="detail-value"
+                              th:text="${order.deliveryName}">
+                            Customer Name
+                        </span>
+
+                    </div>
+
+
+                    <div class="detail-row">
+
+                        <span class="detail-icon">☎</span>
+
+                        <span class="detail-label">
+                            Phone
+                        </span>
+
+                        <span class="detail-value"
+                              th:text="${order.deliveryPhone}">
+                            0000000000
+                        </span>
+
+                    </div>
+
+
+                    <div class="detail-row">
+
+                        <span class="detail-icon">📍</span>
+
+                        <span class="detail-label">
+                            Address
+                        </span>
+
+                        <span class="detail-value"
+                              th:text="${order.deliveryAddress}">
+                            Address
+                        </span>
+
+                    </div>
+
+
+                    <div class="detail-row">
+
+                        <span class="detail-icon">🏙</span>
+
+                        <span class="detail-label">
+                            City
+                        </span>
+
+                        <span class="detail-value"
+                              th:text="${order.deliveryCity}">
+                            City
+                        </span>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            <!-- ORDER TOTAL -->
+
+            <div>
+
+                <div class="summary-title">
+
+                    <i class="bi bi-receipt"></i>
+
+                    Order Summary
+
+                </div>
+
+
+                <div class="detail-box">
+
+                    <div class="detail-row">
+
+                        <span class="detail-label">
+                            Items
+                        </span>
+
+                        <span class="detail-value"
+                              th:text="${#lists.size(orderItems)}">
+                            1
+                        </span>
+
+                    </div>
+
+
+                    <div class="detail-row">
+
+                        <span class="detail-label">
+                            Payment
+                        </span>
+
+                        <span class="detail-value"
+                              th:text="${order.paymentStatus}">
+                            PAID
+                        </span>
+
+                    </div>
+
+
+                    <div class="detail-row">
+
+                        <span class="detail-label">
+                            Total
+                        </span>
+
+                        <span class="detail-value">
+
+                            LKR
+
+                            <span th:text="${#numbers.formatDecimal(
+                                order.totalAmount,
+                                1,
+                                2
+                            )}">
+                                8500.00
+                            </span>
+
+                        </span>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <!-- =================================================
+         ORDER ITEMS
+    ================================================= -->
+
+    <div class="section-card">
+
+        <div class="section-title">
+
+            <i class="bi bi-box-seam"></i>
+
+            Order Products
+
+        </div>
+
+
+        <div class="item"
+             th:each="item : ${orderItems}">
+
+            <div>
+
+                <div class="item-name"
+                     th:text="${item.productName}">
+
+                    Handcrafted Product
+
+                </div>
+
+
+                <div class="item-meta">
+
+                    Quantity:
+
+                    <span th:text="${item.quantity}">
+                        1
+                    </span>
+
+                    × LKR
+
+                    <span th:text="${#numbers.formatDecimal(
+                        item.unitPrice,
+                        1,
+                        2
+                    )}">
+                        3500.00
+                    </span>
+
+                </div>
+
+            </div>
+
+
+            <div class="item-price">
+
+                LKR
+
+                <span th:text="${#numbers.formatDecimal(
+                    item.subtotal,
+                    1,
+                    2
+                )}">
+                    3500.00
+                </span>
+
+            </div>
+
+        </div>
+
+
+        <div class="total-row">
+
+            Total: LKR
+
+            <span th:text="${#numbers.formatDecimal(
+                order.totalAmount,
+                1,
+                2
+            )}"
+                  style="margin-left:8px;">
+
+                3500.00
+
+            </span>
+
+        </div>
+
+    </div>
+
+
+    <!-- =================================================
+         ORDER TRACKING
+    ================================================= -->
+
+    <div class="section-card">
+
+        <div class="section-title">
+
+            <i class="bi bi-truck"></i>
+
+            Order Tracking
+
+        </div>
+
+
+        <!-- PAYMENT NOT COMPLETED -->
+
+        <div class="empty-tracking"
+             th:if="${order.paymentStatus != 'PAID'}">
+
+            <strong>
+                Tracking will be available after payment.
+            </strong>
+
+            <p style="margin-top:8px;">
+
+                Please complete the payment to start
+                artisan order processing.
+
+            </p>
+
+        </div>
+
+
+        <!-- NO ARTISAN ORDERS -->
+
+        <div class="empty-tracking"
+             th:if="${order.paymentStatus == 'PAID'
+                     and #lists.isEmpty(trackingViews)}">
+
+            Your order has been paid successfully.
+            Artisan tracking information will appear here.
+
+        </div>
+
+
+        <!-- ARTISAN-WISE TRACKING -->
+
+        <div th:each="tracking : ${trackingViews}"
+             class="tracking-card">
+
+
+            <div class="tracking-header">
+
+                <div class="artisan-name">
+
+                    <i class="bi bi-person-badge-fill"></i>
+
+                    <span th:text="${tracking.artisanName}">
+                        Artisan Name
+                    </span>
+
+                </div>
+
+
+                <span class="tracking-status"
+                      th:classappend="${tracking.artisanOrder.orderStatus == 'NEW'}
+                                      ? ' status-new'
+                                      : (${tracking.artisanOrder.orderStatus == 'PROCESSING'}
+                                      ? ' status-processing'
+                                      : (${tracking.artisanOrder.orderStatus == 'DELIVERED'}
+                                      ? ' status-delivered'
+                                      : ''))">
+
+                    <span th:text="${tracking.artisanOrder.orderStatus}">
+                        NEW
+                    </span>
+
+                </span>
+
+            </div>
+
+
+            <div class="tracking-body">
+
+
+                <!-- TIMELINE -->
+
+                <div class="timeline">
+
+
+                    <!-- NEW -->
+
+                    <div class="timeline-step"
+                         th:classappend="${tracking.artisanOrder.orderStatus == 'NEW'}
+                                         ? ' current'
+                                         : ' active'">
+
+                        <div class="timeline-circle">
+
+                            <span th:if="${tracking.artisanOrder.orderStatus == 'NEW'}">
+                                1
+                            </span>
+
+                            <span th:unless="${tracking.artisanOrder.orderStatus == 'NEW'}">
+                                ✓
+                            </span>
+
+                        </div>
+
+                        <div class="timeline-label">
+                            Order Confirmed
+                        </div>
+
+                    </div>
+
+
+                    <!-- PROCESSING -->
+
+                    <div class="timeline-step"
+                         th:classappend="${tracking.artisanOrder.orderStatus == 'PROCESSING'}
+                                         ? ' current'
+                                         : (${tracking.artisanOrder.orderStatus == 'DELIVERED'}
+                                         ? ' active'
+                                         : '')">
+
+                        <div class="timeline-circle">
+
+                            <span th:if="${tracking.artisanOrder.orderStatus == 'NEW'}">
+                                2
+                            </span>
+
+                            <span th:if="${tracking.artisanOrder.orderStatus == 'PROCESSING'}">
+                                2
+                            </span>
+
+                            <span th:if="${tracking.artisanOrder.orderStatus == 'DELIVERED'}">
+                                ✓
+                            </span>
+
+                        </div>
+
+                        <div class="timeline-label">
+                            Processing
+                        </div>
+
+                    </div>
+
+
+                    <!-- DELIVERED -->
+
+                    <div class="timeline-step"
+                         th:classappend="${tracking.artisanOrder.orderStatus == 'DELIVERED'}
+                                         ? ' current'">
+
+                        <div class="timeline-circle">
+
+                            <span th:if="${tracking.artisanOrder.orderStatus == 'DELIVERED'}">
+                                ✓
+                            </span>
+
+                            <span th:unless="${tracking.artisanOrder.orderStatus == 'DELIVERED'}">
+                                3
+                            </span>
+
+                        </div>
+
+                        <div class="timeline-label">
+                            Delivered
+                        </div>
+
+                    </div>
+
+                </div>
+
+
+                <!-- PRODUCTS FROM THIS ARTISAN -->
+
+                <div class="tracking-products-title">
+
+                    Products from this artisan
+
+                </div>
+
+
+                <div class="tracking-product"
+                     th:each="item : ${tracking.items}">
+
+                    <span th:text="${item.productName}">
+                        Product Name
+                    </span>
+
+                    <span class="tracking-product-meta">
+
+                        Qty:
+
+                        <span th:text="${item.quantity}">
+                            1
+                        </span>
+
+                    </span>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+</div>
+
+
+</body>
+
+</html>

@@ -1,0 +1,1441 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Admin Orders | Craftora</title>
+
+    <link rel="stylesheet"
+          href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --green-dark: #103d2b;
+            --green-main: #174d37;
+            --green-soft: #edf5ef;
+            --cream: #f8f4ec;
+            --cream-dark: #eee5d7;
+            --gold: #d6b36a;
+            --gold-dark: #a98239;
+            --gold-soft: #f8efd9;
+            --white: #ffffff;
+            --text-dark: #183c2d;
+            --text-medium: #65736b;
+            --text-light: #929b96;
+            --border: #e7dfd2;
+            --success: #2d713c;
+            --success-bg: #e5f3e8;
+            --warning: #997217;
+            --warning-bg: #fff3d4;
+            --danger: #a33a3a;
+            --danger-bg: #fdeaea;
+        }
+
+        body {
+            font-family: "Segoe UI", Arial, sans-serif;
+            background: #f8f6f1;
+            color: var(--text-dark);
+            min-height: 100vh;
+        }
+
+        a {
+            text-decoration: none;
+        }
+
+        .sidebar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 250px;
+            height: 100vh;
+            background: var(--green-dark);
+            color: white;
+            display: flex;
+            flex-direction: column;
+            z-index: 1000;
+            box-shadow: 7px 0 25px rgba(0, 0, 0, 0.08);
+        }
+
+        .logo-area {
+            height: 82px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 9px 20px;
+            border-bottom: 1px solid rgba(255,255,255,0.08);
+        }
+
+        .logo-area a {
+            width: 188px;
+            height: 57px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: #fff;
+            border-radius: 15px;
+        }
+
+        .logo-area img {
+            width: 176px;
+            height: 54px;
+            object-fit: contain;
+        }
+
+        .menu {
+            flex: 1;
+            padding: 22px 14px;
+            overflow-y: auto;
+        }
+
+        .menu-label {
+            font-size: 10px;
+            text-transform: uppercase;
+            letter-spacing: 1.6px;
+            color: rgba(255,255,255,0.38);
+            margin: 8px 13px 11px;
+        }
+
+        .menu-link {
+            display: flex;
+            align-items: center;
+            gap: 13px;
+            color: rgba(255,255,255,0.72);
+            padding: 12px 14px;
+            margin-bottom: 4px;
+            border-radius: 10px;
+            font-size: 13.5px;
+            font-weight: 500;
+            transition: all 0.25s ease;
+        }
+
+        .menu-link i {
+            width: 22px;
+            font-size: 17px;
+            text-align: center;
+        }
+
+        .menu-link:hover {
+            background: rgba(255,255,255,0.08);
+            color: white;
+            transform: translateX(3px);
+        }
+
+        .menu-link.active {
+            background: var(--gold);
+            color: var(--green-dark);
+            font-weight: 700;
+            box-shadow: 0 7px 18px rgba(0,0,0,0.12);
+        }
+
+        .logout-area {
+            padding: 12px 14px 20px;
+            border-top: 1px solid rgba(255,255,255,0.08);
+        }
+
+        .logout {
+            color: #ffdede !important;
+        }
+
+        .main {
+            margin-left: 250px;
+            min-height: 100vh;
+        }
+
+        .top-header {
+            height: 68px;
+            background: rgba(255,255,255,0.97);
+            border-bottom: 1px solid var(--border);
+            display: flex;
+            align-items: center;
+            justify-content: flex-end;
+            gap: 18px;
+            padding: 0 32px;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .notification {
+            width: 40px;
+            height: 40px;
+            border-radius: 11px;
+            background: var(--cream);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--green-dark);
+            font-size: 17px;
+        }
+
+        .admin-user {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .admin-avatar {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: var(--gold);
+            color: var(--green-dark);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 14px;
+            font-weight: 800;
+            overflow: hidden;
+        }
+
+        .admin-avatar img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .admin-details {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .admin-name {
+            font-size: 13px;
+            font-weight: 700;
+            color: var(--text-dark);
+        }
+
+        .admin-role {
+            font-size: 10px;
+            color: var(--text-light);
+            margin-top: 2px;
+        }
+
+        .content {
+            padding: 27px 34px 40px;
+        }
+
+        .welcome {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-end;
+            margin-bottom: 23px;
+            gap: 15px;
+        }
+
+        .welcome h1 {
+            font-size: 28px;
+            font-weight: 750;
+            color: var(--green-dark);
+            margin-bottom: 5px;
+        }
+
+        .welcome p {
+            color: var(--text-medium);
+            font-size: 13px;
+        }
+
+        .back-link {
+            display: inline-flex;
+            align-items: center;
+            gap: 7px;
+            color: var(--gold-dark);
+            font-size: 12px;
+            font-weight: 700;
+            margin-bottom: 8px;
+        }
+
+        .filters {
+            background: #fff;
+            border: 1px solid var(--border);
+            border-radius: 15px;
+            padding: 18px;
+            margin-bottom: 20px;
+            box-shadow: 0 5px 18px rgba(34,48,39,0.045);
+        }
+
+        .filter-title {
+            font-size: 13px;
+            font-weight: 750;
+            color: var(--green-dark);
+            margin-bottom: 12px;
+        }
+
+        .filter-row {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 9px;
+            align-items: center;
+        }
+
+        .filter-button {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            padding: 9px 13px;
+            border: 1px solid var(--border);
+            border-radius: 9px;
+            background: #fff;
+            color: var(--text-medium);
+            font-size: 11px;
+            font-weight: 700;
+        }
+
+        .filter-button:hover,
+        .filter-button.active {
+            background: var(--gold);
+            color: var(--green-dark);
+            border-color: var(--gold);
+        }
+
+        .custom-form {
+            display: flex;
+            flex-wrap: wrap;
+            align-items: end;
+            gap: 9px;
+            margin-top: 12px;
+            padding-top: 12px;
+            border-top: 1px solid #f0ebe4;
+        }
+
+        .date-field {
+            display: flex;
+            flex-direction: column;
+            gap: 5px;
+        }
+
+        .date-field label {
+            font-size: 9px;
+            color: var(--text-light);
+            font-weight: 700;
+            text-transform: uppercase;
+        }
+
+        .date-field input {
+            padding: 9px 10px;
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            font-size: 11px;
+            color: var(--text-dark);
+            background: #fff;
+        }
+
+        .apply-button {
+            border: 0;
+            padding: 10px 15px;
+            border-radius: 8px;
+            background: var(--green-main);
+            color: white;
+            font-size: 11px;
+            font-weight: 750;
+            cursor: pointer;
+        }
+
+        .stats {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 18px;
+            margin-bottom: 20px;
+        }
+
+        .stat-card {
+            background: #fff;
+            border: 1px solid var(--border);
+            border-radius: 15px;
+            padding: 20px;
+            box-shadow: 0 5px 18px rgba(34,48,39,0.045);
+        }
+
+        .stat-title {
+            font-size: 11px;
+            color: var(--text-medium);
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: .5px;
+        }
+
+        .stat-value {
+            margin-top: 10px;
+            font-size: 23px;
+            font-weight: 800;
+            color: var(--green-dark);
+        }
+
+        .stat-description {
+            font-size: 10px;
+            color: var(--text-light);
+            margin-top: 5px;
+        }
+
+        .card {
+            background: #fff;
+            border: 1px solid var(--border);
+            border-radius: 15px;
+            box-shadow: 0 5px 18px rgba(34,48,39,0.045);
+            overflow: hidden;
+        }
+
+        .card-header {
+            padding: 19px 22px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px solid #eee8df;
+        }
+
+        .card-header h2 {
+            font-size: 15px;
+            color: var(--green-dark);
+            font-weight: 750;
+        }
+
+        .card-header p {
+            font-size: 10px;
+            color: var(--text-light);
+            margin-top: 2px;
+        }
+
+        .table-wrapper {
+            width: 100%;
+            overflow-x: auto;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            min-width: 980px;
+        }
+
+        th {
+            text-align: left;
+            padding: 12px 18px;
+            background: #fbf9f5;
+            color: #8a928d;
+            font-size: 9px;
+            text-transform: uppercase;
+            letter-spacing: .8px;
+            font-weight: 750;
+        }
+
+        td {
+            padding: 14px 18px;
+            border-top: 1px solid #f0ebe4;
+            font-size: 11.5px;
+            color: #5f6963;
+            vertical-align: top;
+        }
+
+        .order-number {
+            color: var(--green-dark);
+            font-weight: 800;
+        }
+
+        .customer-name {
+            color: var(--green-dark);
+            font-weight: 700;
+        }
+
+        .date-text {
+            color: var(--text-light);
+            font-size: 10px;
+        }
+
+        .seller-list {
+            display: flex;
+            flex-direction: column;
+            gap: 5px;
+        }
+
+        .seller {
+            display: inline-flex;
+            width: fit-content;
+            padding: 4px 7px;
+            border-radius: 7px;
+            background: var(--green-soft);
+            color: var(--green-main);
+            font-size: 9px;
+            font-weight: 700;
+        }
+
+        .items-list {
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+            min-width: 190px;
+        }
+
+        .item-line {
+            color: var(--text-dark);
+            font-size: 10px;
+        }
+
+        .item-line span {
+            color: var(--text-light);
+        }
+
+        .money {
+            white-space: nowrap;
+            font-weight: 750;
+        }
+
+        .commission {
+            color: var(--gold-dark);
+        }
+
+        .status {
+            display: inline-flex;
+            align-items: center;
+            padding: 5px 9px;
+            border-radius: 30px;
+            font-size: 8.5px;
+            font-weight: 800;
+            letter-spacing: .3px;
+        }
+
+        .paid {
+            background: var(--success-bg);
+            color: var(--success);
+        }
+
+        .pending {
+            background: var(--warning-bg);
+            color: var(--warning);
+        }
+
+        .failed {
+            background: var(--danger-bg);
+            color: var(--danger);
+        }
+
+        .empty {
+            text-align: center;
+            padding: 50px 20px;
+            color: var(--text-light);
+        }
+
+        .empty i {
+            display: block;
+            font-size: 32px;
+            color: #d7c9b3;
+            margin-bottom: 9px;
+        }
+
+        .empty-title {
+            font-size: 12px;
+            font-weight: 700;
+            color: var(--text-medium);
+        }
+
+        .empty-description {
+            font-size: 10px;
+            margin-top: 4px;
+        }
+
+        .footer {
+            text-align: center;
+            padding: 20px 0 5px;
+            font-size: 9px;
+            color: #a1a7a3;
+        }
+
+        @media (max-width: 900px) {
+            .sidebar {
+                width: 225px;
+            }
+
+            .main {
+                margin-left: 225px;
+            }
+
+            .stats {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        @media (max-width: 700px) {
+            .sidebar {
+                position: relative;
+                width: 100%;
+                height: auto;
+            }
+
+            .main {
+                margin-left: 0;
+            }
+
+            .top-header {
+                padding: 0 16px;
+            }
+
+            .content {
+                padding: 22px 16px 30px;
+            }
+
+            .welcome {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+        }
+
+
+        
+@media print {
+    body.printing-report * {
+        visibility: hidden !important;
+    }
+
+    body.printing-report .payment-report.print-target,
+    body.printing-report .payment-report.print-target * {
+        visibility: visible !important;
+    }
+
+    body.printing-report .payment-report.print-target {
+        position: absolute !important;
+        left: 0 !important;
+        top: 0 !important;
+        width: 100% !important;
+        margin: 0 !important;
+        box-shadow: none !important;
+        border: none !important;
+        background: white !important;
+    }
+
+    body.printing-report .no-print {
+        display: none !important;
+    }
+
+    body.printing-report .table-wrapper {
+        overflow: visible !important;
+    }
+
+    body.printing-report table {
+        width: 100% !important;
+        border-collapse: collapse !important;
+    }
+
+    body.printing-report th,
+    body.printing-report td {
+        color: black !important;
+        border: 1px solid #ccc !important;
+        font-size: 10px !important;
+    }
+
+    body.printing-orders > * {
+    visibility: hidden !important;
+}
+
+body.printing-orders .main,
+body.printing-orders .main * {
+    visibility: visible !important;
+}
+
+body.printing-orders .sidebar,
+body.printing-orders .top-header,
+body.printing-orders .welcome,
+body.printing-orders .filters,
+body.printing-orders .stats,
+body.printing-orders .payment-report,
+body.printing-orders .footer,
+body.printing-orders .no-print {
+    display: none !important;
+}
+
+body.printing-orders .main {
+    margin-left: 0 !important;
+}
+
+body.printing-orders .content {
+    padding: 0 !important;
+}
+
+body.printing-orders .content > .card:first-of-type {
+    display: block !important;
+    position: absolute !important;
+    top: 0 !important;
+    left: 0 !important;
+    width: 100% !important;
+    box-shadow: none !important;
+    border: none !important;
+}
+
+body.printing-orders .table-wrapper {
+    overflow: visible !important;
+}
+
+body.printing-orders table {
+    width: 100% !important;
+    min-width: 0 !important;
+    font-size: 9px !important;
+}
+
+body.printing-orders th,
+body.printing-orders td {
+    padding: 6px !important;
+    font-size: 9px !important;
+    color: black !important;
+    border: 1px solid #ccc !important;
+}
+}
+
+    </style>
+</head>
+
+<body>
+
+<aside class="sidebar">
+
+    <div class="logo-area">
+        <a href="/">
+            <img src="/images/craftora-logo.png" alt="Craftora Logo">
+        </a>
+    </div>
+
+    <div class="menu">
+
+        <div class="menu-label">Main Menu</div>
+
+        <a href="/admin-dashboard" class="menu-link">
+            <i class="bi bi-grid-1x2-fill"></i>
+            <span>Dashboard</span>
+        </a>
+
+        <a href="/admin/manage-artisans" class="menu-link">
+            <i class="bi bi-people-fill"></i>
+            <span>Artisans</span>
+        </a>
+
+        <a href="#" class="menu-link">
+            <i class="bi bi-calendar-event-fill"></i>
+            <span>Events</span>
+        </a>
+
+        <a href="/admin/orders" class="menu-link active">
+            <i class="bi bi-credit-card-fill"></i>
+            <span>Payments</span>
+        </a>
+
+        <div class="menu-label" style="margin-top:23px;">Management</div>
+
+        <a href="/admin/orders" class="menu-link active">
+            <i class="bi bi-bar-chart-fill"></i>
+            <span>Reports</span>
+        </a>
+
+        <a href="#" class="menu-link">
+            <i class="bi bi-star-fill"></i>
+            <span>Ratings</span>
+        </a>
+
+        <a href="#" class="menu-link">
+            <i class="bi bi-chat-left-text-fill"></i>
+            <span>Inquiries</span>
+        </a>
+
+        <a href="/admin/settings" class="menu-link">
+            <i class="bi bi-gear-fill"></i>
+            <span>Settings</span>
+        </a>
+
+    </div>
+
+    <div class="logout-area">
+        <a href="/logout" class="menu-link logout">
+            <i class="bi bi-box-arrow-right"></i>
+            <span>Logout</span>
+        </a>
+    </div>
+
+</aside>
+
+<main class="main">
+
+    <header class="top-header">
+
+        <div class="notification">
+            <i class="bi bi-bell-fill"></i>
+        </div>
+
+        <a href="/admin/profile"
+           class="admin-user"
+           style="text-decoration:none; color:inherit;">
+
+            <div class="admin-avatar"
+                 th:if="${artisan != null and artisan.profileImage != null}">
+                <img th:src="@{'/' + ${artisan.profileImage}}"
+                     alt="Admin Profile">
+            </div>
+
+            <div class="admin-avatar"
+                 th:unless="${artisan != null and artisan.profileImage != null}"
+                 th:text="${admin != null and admin.fullName != null and !admin.fullName.isEmpty() ? admin.fullName.substring(0,1).toUpperCase() : 'A'}">
+                A
+            </div>
+
+            <div class="admin-details">
+                <span class="admin-name"
+                      th:text="${admin != null ? admin.fullName : 'Admin'}">
+                    Admin
+                </span>
+                <span class="admin-role">Administrator</span>
+            </div>
+        </a>
+
+    </header>
+
+    <div class="content">
+
+        <div class="welcome">
+
+            <div>
+                <a href="/admin-dashboard" class="back-link">
+                    <i class="bi bi-arrow-left"></i>
+                    Back to Dashboard
+                </a>
+
+                <h1>Orders &amp; Revenue</h1>
+
+                <p>
+                    View customer orders from all artisans and Craftora revenue.
+                </p>
+            </div>
+
+        </div>
+
+        <div class="filters">
+
+            <div class="filter-title">
+                <i class="bi bi-funnel-fill"></i>
+                Order Period
+            </div>
+
+            <div class="filter-row">
+
+                <a href="/admin/orders?period=all"
+                   class="filter-button"
+                   th:classappend="${period == 'all' ? ' active' : ''}">
+                    All Orders
+                </a>
+
+                <a href="/admin/orders?period=lastMonth"
+                   class="filter-button"
+                   th:classappend="${period == 'lastMonth' ? ' active' : ''}">
+                    Last Month
+                </a>
+
+                <a href="/admin/orders?period=last3Months"
+                   class="filter-button"
+                   th:classappend="${period == 'last3Months' ? ' active' : ''}">
+                    Last 3 Months
+                </a>
+
+                <a href="/admin/orders?period=year"
+                   class="filter-button"
+                   th:classappend="${period == 'year' ? ' active' : ''}">
+                    This Year
+                </a>
+
+            </div>
+
+            <form class="custom-form"
+                  method="get"
+                  action="/admin/orders">
+
+                <input type="hidden"
+                       name="period"
+                       value="custom">
+
+                <div class="date-field">
+                    <label for="from">From</label>
+                    <input type="date"
+                           id="from"
+                           name="from"
+                           th:value="${from}">
+                </div>
+
+                <div class="date-field">
+                    <label for="to">To</label>
+                    <input type="date"
+                           id="to"
+                           name="to"
+                           th:value="${to}">
+                </div>
+
+                <button type="submit" class="apply-button">
+                    <i class="bi bi-search"></i>
+                    Apply Date Range
+                </button>
+
+            </form>
+
+        </div>
+
+        <div class="stats">
+
+            <!-- TOTAL PRODUCT SALES -->
+            <div class="stat-card">
+                <div class="stat-title">Total Product Sales</div>
+
+                <div class="stat-value">
+                    LKR
+                    <span th:text="${#numbers.formatDecimal(totalSales,1,2)}">
+                        0.00
+                    </span>
+                </div>
+
+                <div class="stat-description"
+                     th:text="${periodLabel}">
+                    All Orders
+                </div>
+            </div>
+
+
+            <!-- CRAFTORA COMMISSION -->
+            <div class="stat-card">
+                <div class="stat-title">Current Commission
+                    (<span th:text="${#numbers.formatDecimal(platformCommission,1,2)}">2.00</span>%)</div>
+
+                <div class="stat-value">
+                    LKR
+                    <span th:text="${#numbers.formatDecimal(totalCommission,1,2)}">
+                        0.00
+                    </span>
+                </div>
+
+                <div class="stat-description">
+                    Craftora product sales revenue
+                </div>
+            </div>
+
+
+            <!-- ARTISAN REGISTRATION FEES -->
+            <div class="stat-card">
+                <div class="stat-title">Artisan Registration Fees</div>
+
+                <div class="stat-value">
+                    LKR
+                    <span th:text="${#numbers.formatDecimal(registrationFees,1,2)}">
+                        0.00
+                    </span>
+                </div>
+
+                <div class="stat-description">
+                    Paid artisan registration fees
+                </div>
+            </div>
+
+            <!-- EVENT REGISTRATION REVENUE -->
+<div class="stat-card">
+
+    <div class="stat-title">
+        Event Registration Revenue
+    </div>
+
+    <div class="stat-value">
+        LKR
+        <span th:text="${#numbers.formatDecimal(eventRegistrationRevenue, 1, 2)}">
+            0.00
+        </span>
+    </div>
+
+    <div class="stat-description">
+        Paid workshop, exhibition and competition registrations
+    </div>
+
+</div>
+
+
+            <!-- TOTAL CRAFTORA REVENUE -->
+            <div class="stat-card">
+                <div class="stat-title">Total Craftora Revenue</div>
+
+                <div class="stat-value">
+                    LKR
+                    <span th:text="${#numbers.formatDecimal(totalCraftoraRevenue,1,2)}">
+                        0.00
+                    </span>
+                </div>
+
+               <div class="stat-description">
+    Product commission + artisan fees + event registration revenue
+</div>
+            </div>
+
+
+            <!-- PAID ORDERS -->
+            <div class="stat-card">
+                <div class="stat-title">Paid Orders</div>
+
+                <div class="stat-value"
+                     th:text="${paidOrderCount}">
+                    0
+                </div>
+
+                <div class="stat-description">
+                    Completed product payments
+                </div>
+            </div>
+
+        </div>
+
+        <div class="card">
+
+<div class="card-header">
+
+    <div>
+        <h2>All Customer Orders</h2>
+        <p th:text="${periodLabel}">
+            All Orders
+        </p>
+    </div>
+
+    <button type="button"
+            class="apply-button no-print"
+            onclick="printOrderReport()">
+
+        <i class="bi bi-printer"></i>
+        Print Orders
+
+    </button>
+
+</div>
+
+            <div class="table-wrapper">
+
+                <table>
+
+                    <thead>
+                    <tr>
+                        <th>Order</th>
+                        <th>Customer</th>
+                        <th>Date</th>
+                        <th>Artisans</th>
+                        <th>Products</th>
+                        <th>Sales</th>
+                        <th>Craftora Commission</th>
+                        <th>Artisan Revenue</th>
+                        <th>Payment</th>
+                        <th>Order Status</th>
+                    </tr>
+                    </thead>
+
+                    <tbody>
+
+                    <tr th:each="view : ${orderViews}">
+
+                        <td>
+                            <div class="order-number">
+                                #<span th:text="${view.order.orderId}">1</span>
+                            </div>
+                        </td>
+
+                        <td>
+                            <div class="customer-name"
+                                 th:text="${view.customerName}">
+                                Customer
+                            </div>
+                        </td>
+
+                        <td>
+                            <span class="date-text"
+                                  th:if="${view.order.orderDate != null}"
+                                  th:text="${#temporals.format(view.order.orderDate,'dd MMM yyyy, hh:mm a')}">
+                                26 Sep 2026
+                            </span>
+                        </td>
+
+                        <td>
+                            <div class="seller-list">
+
+                                <span class="seller"
+                                      th:each="ao : ${view.artisanOrders}"
+                                      th:text="${ao.artisan != null and ao.artisan.user != null ? ao.artisan.user.fullName : 'Artisan'}">
+                                    Artisan
+                                </span>
+
+                                <span class="seller"
+                                      th:if="${#lists.isEmpty(view.artisanOrders)}"
+                                      th:each="artisanName : ${view.artisanNames}"
+                                      th:text="${artisanName}">
+                                    Artisan
+                                </span>
+
+                                <span class="date-text"
+                                      th:if="${#lists.isEmpty(view.artisanOrders) and #lists.isEmpty(view.artisanNames)}">
+                                    No artisan information
+                                </span>
+
+                            </div>
+                        </td>
+
+                        <td>
+                            <div class="items-list">
+
+                                <div class="item-line"
+                                     th:each="item : ${view.items}">
+
+                                    <strong th:text="${item.productName}">
+                                        Product
+                                    </strong>
+
+                                    <span>
+                                        ×
+                                        <span th:text="${item.quantity}">
+                                            1
+                                        </span>
+                                    </span>
+
+                                </div>
+
+                            </div>
+                        </td>
+
+                        <td class="money">
+                            <span th:text="${view.salesAmount != null ? 'LKR ' + #numbers.formatDecimal(view.salesAmount,1,2) : 'LKR 0.00'}">
+                                LKR 0.00
+                            </span>
+                        </td>
+
+                        <td class="money commission">
+                            <div style="font-size:9px; color:var(--gold-dark); font-weight:750; margin-bottom:4px;">
+                                Craftora Commission
+                                <span th:if="${view.commissionPercentage != null}">
+                                    (<span th:text="${#numbers.formatDecimal(view.commissionPercentage,1,2)}">3.00</span>%)
+                                </span>
+                            </div>
+                            <span th:text="${'LKR ' + #numbers.formatDecimal(view.commissionAmount,1,2)}">
+                                LKR 0.00
+                            </span>
+                        </td>
+
+                        <td class="money">
+                            <span th:text="${'LKR ' + #numbers.formatDecimal(view.artisanRevenue,1,2)}">
+                                LKR 0.00
+                            </span>
+                        </td>
+
+                        <td>
+                            <span class="status paid"
+                                  th:if="${view.order.paymentStatus != null and view.order.paymentStatus.equalsIgnoreCase('PAID')}">
+                                PAID
+                            </span>
+
+                            <span class="status pending"
+                                  th:if="${view.order.paymentStatus == null or !view.order.paymentStatus.equalsIgnoreCase('PAID')} "
+                                  th:text="${view.order.paymentStatus != null ? view.order.paymentStatus : 'PENDING'}">
+                                PENDING
+                            </span>
+                        </td>
+
+                        <td>
+                            <span class="status paid"
+                                  th:if="${view.order.orderStatus != null and view.order.orderStatus.equalsIgnoreCase('DELIVERED')}">
+                                DELIVERED
+                            </span>
+
+                            <span class="status pending"
+                                  th:if="${view.order.orderStatus == null or !view.order.orderStatus.equalsIgnoreCase('DELIVERED')}"
+                                  th:text="${view.order.orderStatus != null ? view.order.orderStatus : 'PENDING'}">
+                                PENDING
+                            </span>
+                        </td>
+
+                    </tr>
+
+                    <tr th:if="${#lists.isEmpty(orderViews)}">
+
+                        <td colspan="10">
+
+                            <div class="empty">
+
+                                <i class="bi bi-receipt"></i>
+
+                                <div class="empty-title">
+                                    No orders found
+                                </div>
+
+                                <div class="empty-description">
+                                    There are no customer orders for the selected period.
+                                </div>
+
+                            </div>
+
+                        </td>
+
+                    </tr>
+
+                    </tbody>
+
+                </table>
+
+            </div>
+
+        </div>
+
+    
+<!-- ================= ALL ARTISAN PAYMENTS ================= -->
+
+<div class="card payment-report" id="artisan-payment-report">
+
+    <div class="card-header">
+        <div>
+            <h2>All Artisan Payments</h2>
+            <p>Artisan registration fee payment records</p>
+        </div>
+
+        <button type="button"
+                class="apply-button no-print"
+                onclick="printPaymentReport('artisan-payment-report')">
+            <i class="bi bi-printer"></i>
+            Print Artisan Payments
+        </button>
+    </div>
+
+    <div class="table-wrapper">
+        <table>
+            <thead>
+            <tr>
+                <th>Payment ID</th>
+                <th>Artisan User ID</th>
+                <th>Request ID</th>
+                <th>Payment Date</th>
+                <th>Amount</th>
+                <th>Payment Method</th>
+                <th>Transaction ID</th>
+                <th>Payment Status</th>
+            </tr>
+            </thead>
+
+            <tbody>
+            <tr th:each="p : ${artisanPayments}">
+                <td th:text="${p.paymentId}">1</td>
+
+                <td th:text="${p.userId}">1</td>
+
+                <td th:text="${p.requestId}">1</td>
+
+                <td>
+                    <span th:if="${p.paidAt != null}"
+                          th:text="${#temporals.format(p.paidAt, 'dd MMM yyyy, hh:mm a')}">
+                        08 Oct 2026
+                    </span>
+
+                    <span th:if="${p.paidAt == null and p.createdAt != null}"
+                          th:text="${#temporals.format(p.createdAt, 'dd MMM yyyy, hh:mm a')}">
+                        08 Oct 2026
+                    </span>
+
+                    <span th:if="${p.paidAt == null and p.createdAt == null}">
+                        —
+                    </span>
+                </td>
+
+                <td class="money">
+                    <span th:text="${p.amount != null ? 'LKR ' + #numbers.formatDecimal(p.amount, 1, 2) : 'LKR 0.00'}">
+                        LKR 0.00
+                    </span>
+                </td>
+
+                <td th:text="${p.paymentMethod != null ? p.paymentMethod : '—'}">
+                    PayHere
+                </td>
+
+                <td th:text="${p.transactionId != null ? p.transactionId : '—'}">
+                    Transaction
+                </td>
+
+                <td>
+                    <span class="status paid"
+                          th:if="${p.paymentStatus != null and p.paymentStatus.equalsIgnoreCase('PAID')}">
+                        PAID
+                    </span>
+
+                    <span class="status pending"
+                          th:if="${p.paymentStatus == null or !p.paymentStatus.equalsIgnoreCase('PAID')}"
+                          th:text="${p.paymentStatus != null ? p.paymentStatus : 'PENDING'}">
+                        PENDING
+                    </span>
+                </td>
+            </tr>
+
+            <tr th:if="${#lists.isEmpty(artisanPayments)}">
+                <td colspan="8">
+                    <div class="empty">
+                        <i class="bi bi-receipt"></i>
+                        <div class="empty-title">No artisan payments found</div>
+                        <div class="empty-description">
+                            No artisan registration payment records are available.
+                        </div>
+                    </div>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+
+</div>
+
+
+<!-- ================= ALL EVENT PAYMENTS ================= -->
+
+<div class="card payment-report" id="event-payment-report">
+
+    <div class="card-header">
+        <div>
+            <h2>All Event Payments</h2>
+            <p>Workshop, exhibition and competition registration payments</p>
+        </div>
+
+        <button type="button"
+                class="apply-button no-print"
+                onclick="printPaymentReport('event-payment-report')">
+            <i class="bi bi-printer"></i>
+            Print Event Payments
+        </button>
+    </div>
+
+    <div class="table-wrapper">
+        <table>
+            <thead>
+            <tr>
+                <th>Payment ID</th>
+                <th>Event ID</th>
+                <th>Registration ID</th>
+                <th>User ID</th>
+                <th>Payment Date</th>
+                <th>Amount</th>
+                <th>Payment Method</th>
+                <th>Transaction ID</th>
+                <th>Payment Status</th>
+            </tr>
+            </thead>
+
+            <tbody>
+            <tr th:each="p : ${eventPaymentRecords}">
+                <td th:text="${p.paymentId}">1</td>
+
+                <td th:text="${p.eventId}">1</td>
+
+                <td th:text="${p.registrationId}">1</td>
+
+                <td th:text="${p.userId}">1</td>
+
+                <td>
+                    <span th:if="${p.paidAt != null}"
+                          th:text="${#temporals.format(p.paidAt, 'dd MMM yyyy, hh:mm a')}">
+                        08 Oct 2026
+                    </span>
+
+                    <span th:if="${p.paidAt == null and p.createdAt != null}"
+                          th:text="${#temporals.format(p.createdAt, 'dd MMM yyyy, hh:mm a')}">
+                        08 Oct 2026
+                    </span>
+
+                    <span th:if="${p.paidAt == null and p.createdAt == null}">
+                        —
+                    </span>
+                </td>
+
+                <td class="money">
+                    <span th:text="${p.amount != null ? 'LKR ' + #numbers.formatDecimal(p.amount, 1, 2) : 'LKR 0.00'}">
+                        LKR 0.00
+                    </span>
+                </td>
+
+                <td th:text="${p.paymentMethod != null ? p.paymentMethod : '—'}">
+                    PayHere
+                </td>
+
+                <td th:text="${p.transactionId != null ? p.transactionId : '—'}">
+                    Transaction
+                </td>
+
+                <td>
+                    <span class="status paid"
+                          th:if="${p.paymentStatus != null and p.paymentStatus.equalsIgnoreCase('PAID')}">
+                        PAID
+                    </span>
+
+                    <span class="status pending"
+                          th:if="${p.paymentStatus == null or !p.paymentStatus.equalsIgnoreCase('PAID')}"
+                          th:text="${p.paymentStatus != null ? p.paymentStatus : 'PENDING'}">
+                        PENDING
+                    </span>
+                </td>
+            </tr>
+
+            <tr th:if="${#lists.isEmpty(eventPaymentRecords)}">
+                <td colspan="9">
+                    <div class="empty">
+                        <i class="bi bi-receipt"></i>
+                        <div class="empty-title">No event payments found</div>
+                        <div class="empty-description">
+                            No event registration payment records are available.
+                        </div>
+                    </div>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+
+</div>
+
+
+        <div class="footer">
+            © 2026 Craftora. All rights reserved.
+        </div>
+
+    </div>
+
+</main>
+
+
+<script>
+    function printOrderReport() {
+    document.body.classList.add('printing-orders');
+    window.print();
+}
+
+window.addEventListener('afterprint', function () {
+    document.body.classList.remove('printing-orders');
+});
+
+
+    function printPaymentReport(reportId) {
+        const report = document.getElementById(reportId);
+
+        if (!report) {
+            return;
+        }
+
+        document.body.classList.add('printing-report');
+
+        document.querySelectorAll('.payment-report').forEach(function (item) {
+            item.classList.remove('print-target');
+        });
+
+        report.classList.add('print-target');
+
+        window.print();
+    }
+
+    window.addEventListener('afterprint', function () {
+        document.body.classList.remove('printing-report');
+
+        document.querySelectorAll('.payment-report').forEach(function (item) {
+            item.classList.remove('print-target');
+        });
+    });
+</script>
+
+
+
+</body>
+</html>

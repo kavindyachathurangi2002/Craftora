@@ -1,0 +1,1009 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Artisan Payments | Craftora</title>
+
+    <link rel="stylesheet"
+          href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --green-dark: #103d2b;
+            --green-main: #174d37;
+            --green-soft: #edf5ef;
+            --cream: #f8f4ec;
+            --cream-dark: #eee5d7;
+            --gold: #d6b36a;
+            --gold-dark: #a98239;
+            --gold-soft: #f8efd9;
+            --white: #ffffff;
+            --text-dark: #183c2d;
+            --text-medium: #65736b;
+            --text-light: #929b96;
+            --border: #e7dfd2;
+            --success: #2d713c;
+            --success-bg: #e5f3e8;
+            --warning: #997217;
+            --warning-bg: #fff3d4;
+        }
+
+        body {
+            font-family: "Segoe UI", Arial, sans-serif;
+            background: #f8f6f1;
+            color: var(--text-dark);
+            min-height: 100vh;
+        }
+
+        a {
+            text-decoration: none;
+        }
+
+        /* SIDEBAR */
+        .sidebar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 250px;
+            height: 100vh;
+            background: var(--green-dark);
+            color: white;
+            display: flex;
+            flex-direction: column;
+            z-index: 1000;
+            box-shadow: 7px 0 25px rgba(0,0,0,0.08);
+        }
+
+        .logo-area {
+            height: 82px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 9px 20px;
+            border-bottom: 1px solid rgba(255,255,255,0.08);
+        }
+
+        .logo-area a {
+            width: 188px;
+            height: 57px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: #fff;
+            border-radius: 15px;
+        }
+
+        .logo-area img {
+            width: 176px;
+            height: 54px;
+            object-fit: contain;
+        }
+
+        .menu {
+            flex: 1;
+            padding: 22px 14px;
+            overflow-y: auto;
+        }
+
+        .menu::-webkit-scrollbar {
+            width: 4px;
+        }
+
+        .menu::-webkit-scrollbar-thumb {
+            background: rgba(255,255,255,0.15);
+            border-radius: 10px;
+        }
+
+        .menu-label {
+            font-size: 10px;
+            text-transform: uppercase;
+            letter-spacing: 1.6px;
+            color: rgba(255,255,255,0.38);
+            margin: 8px 13px 11px;
+        }
+
+        .menu-link {
+            display: flex;
+            align-items: center;
+            gap: 13px;
+            color: rgba(255,255,255,0.72);
+            padding: 12px 14px;
+            margin-bottom: 4px;
+            border-radius: 10px;
+            font-size: 13.5px;
+            font-weight: 500;
+            transition: all 0.25s ease;
+        }
+
+        .menu-link i {
+            width: 22px;
+            font-size: 17px;
+            text-align: center;
+        }
+
+        .menu-link:hover {
+            background: rgba(255,255,255,0.08);
+            color: white;
+            transform: translateX(3px);
+        }
+
+        .menu-link.active {
+            background: var(--gold);
+            color: var(--green-dark);
+            font-weight: 700;
+            box-shadow: 0 7px 18px rgba(0,0,0,0.12);
+        }
+
+        .switch-link {
+            color: var(--gold) !important;
+            border: 1px solid rgba(214,179,106,0.25);
+        }
+
+        .switch-link:hover {
+            background: rgba(214,179,106,0.12) !important;
+            color: #f0d58d !important;
+            border-color: rgba(214,179,106,0.40);
+        }
+
+        .logout-area {
+            padding: 12px 14px 20px;
+            border-top: 1px solid rgba(255,255,255,0.08);
+        }
+
+        .logout {
+            color: #ffdede !important;
+        }
+
+        .logout:hover {
+            background: rgba(255,80,80,0.10) !important;
+            color: #ffdede !important;
+        }
+
+        /* MAIN */
+        .main {
+            margin-left: 250px;
+            min-height: 100vh;
+        }
+
+        .top-header {
+            height: 68px;
+            background: rgba(255,255,255,0.97);
+            border-bottom: 1px solid var(--border);
+            display: flex;
+            align-items: center;
+            justify-content: flex-end;
+            gap: 18px;
+            padding: 0 32px;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .notification {
+            width: 40px;
+            height: 40px;
+            border-radius: 11px;
+            background: var(--cream);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--green-dark);
+            font-size: 17px;
+            position: relative;
+        }
+
+        .notification-dot {
+            position: absolute;
+            top: 7px;
+            right: 7px;
+            width: 7px;
+            height: 7px;
+            border-radius: 50%;
+            background: var(--gold);
+            border: 2px solid white;
+        }
+
+        .artisan-user {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .artisan-profile-link {
+            color: inherit;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .artisan-avatar {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: var(--gold);
+            color: var(--green-dark);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 14px;
+            font-weight: 800;
+            overflow: hidden;
+        }
+
+        .artisan-avatar img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .artisan-details {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .artisan-name {
+            font-size: 13px;
+            font-weight: 700;
+            color: var(--text-dark);
+        }
+
+        .artisan-role {
+            font-size: 10px;
+            color: var(--text-light);
+            margin-top: 2px;
+        }
+
+        .switch-account-btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 7px;
+            padding: 8px 13px;
+            background: var(--cream);
+            color: var(--green-dark);
+            border: 1px solid #e4d9c7;
+            border-radius: 9px;
+            font-size: 11.5px;
+            font-weight: 700;
+        }
+
+        /* CONTENT */
+        .content {
+            padding: 27px 34px 40px;
+        }
+
+        .page-heading {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-end;
+            margin-bottom: 23px;
+        }
+
+        .page-heading h1 {
+            font-size: 28px;
+            font-weight: 750;
+            color: var(--green-dark);
+            margin-bottom: 5px;
+        }
+
+        .page-heading p {
+            color: var(--text-medium);
+            font-size: 13px;
+        }
+
+        .page-badge {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            color: var(--text-light);
+            font-size: 11px;
+            background: white;
+            border: 1px solid var(--border);
+            padding: 8px 12px;
+            border-radius: 9px;
+        }
+
+        .page-badge i {
+            color: var(--gold-dark);
+        }
+
+        /* SUMMARY CARDS */
+        .stats {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 18px;
+            margin-bottom: 22px;
+        }
+
+        .stat-card {
+            background: white;
+            border: 1px solid var(--border);
+            border-radius: 15px;
+            padding: 21px;
+            box-shadow: 0 5px 18px rgba(34,48,39,0.045);
+        }
+
+        .stat-top {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 17px;
+        }
+
+        .stat-title {
+            font-size: 12px;
+            color: var(--text-medium);
+            font-weight: 650;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .stat-icon {
+            width: 43px;
+            height: 43px;
+            border-radius: 12px;
+            background: var(--green-soft);
+            color: var(--green-main);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 18px;
+        }
+
+        .stat-card:nth-child(2) .stat-icon {
+            background: var(--gold-soft);
+            color: var(--gold-dark);
+        }
+
+        .stat-card:nth-child(3) .stat-icon {
+            background: #f1eee6;
+            color: var(--green-dark);
+        }
+
+        .stat-value {
+            font-size: 28px;
+            font-weight: 800;
+            color: var(--green-dark);
+        }
+
+        .stat-description {
+            font-size: 11px;
+            color: var(--text-light);
+            margin-top: 5px;
+        }
+
+        /* SECTION CARD */
+        .card {
+            background: white;
+            border: 1px solid var(--border);
+            border-radius: 15px;
+            box-shadow: 0 5px 18px rgba(34,48,39,0.045);
+            overflow: hidden;
+        }
+
+        .card-header {
+            padding: 19px 22px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px solid #eee8df;
+        }
+
+        .card-title-area {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .card-title-icon {
+            width: 34px;
+            height: 34px;
+            border-radius: 9px;
+            background: var(--green-soft);
+            color: var(--green-main);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 15px;
+        }
+
+        .card-header h2 {
+            font-size: 17px;
+            color: var(--green-dark);
+        }
+
+        .order-count {
+            font-size: 11px;
+            color: var(--text-light);
+        }
+
+        .card-body {
+            padding: 18px 22px;
+        }
+
+        /* ORDER REVENUE ROWS */
+        .payment-row {
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 17px;
+            margin-bottom: 13px;
+            background: #fff;
+        }
+
+        .payment-row:last-child {
+            margin-bottom: 0;
+        }
+
+        .payment-row-top {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 15px;
+        }
+
+        .order-info strong {
+            color: var(--green-dark);
+            font-size: 14px;
+        }
+
+        .order-date {
+            display: block;
+            margin-top: 4px;
+            color: var(--text-light);
+            font-size: 11px;
+        }
+
+        .status {
+            display: inline-flex;
+            align-items: center;
+            padding: 6px 10px;
+            border-radius: 20px;
+            background: var(--success-bg);
+            color: var(--success);
+            font-size: 10px;
+            font-weight: 750;
+            text-transform: uppercase;
+        }
+
+        .status.new {
+            background: var(--gold-soft);
+            color: var(--gold-dark);
+        }
+
+        .status.processing {
+            background: #edf2f5;
+            color: #496675;
+        }
+
+        .revenue-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 12px;
+        }
+
+        .revenue-item {
+            background: #faf9f6;
+            border: 1px solid #eee8df;
+            border-radius: 10px;
+            padding: 13px 14px;
+        }
+
+        .revenue-item.earned {
+            background: var(--green-soft);
+            border-color: #dcebdd;
+        }
+
+        .revenue-label {
+            display: block;
+            color: var(--text-light);
+            font-size: 10px;
+            margin-bottom: 5px;
+        }
+
+        .revenue-amount {
+            color: var(--green-dark);
+            font-size: 15px;
+            font-weight: 800;
+        }
+
+        .empty-state {
+            text-align: center;
+            padding: 45px 20px;
+        }
+
+        .empty-state i {
+            font-size: 38px;
+            color: var(--gold-dark);
+        }
+
+        .empty-state h3 {
+            margin-top: 13px;
+            font-size: 17px;
+            color: var(--green-dark);
+        }
+
+        .empty-state p {
+            margin-top: 5px;
+            font-size: 12px;
+            color: var(--text-light);
+        }
+
+        /* TOTAL */
+        .total-card {
+            margin-top: 18px;
+            background: var(--green-dark);
+            color: white;
+            border-radius: 15px;
+            padding: 21px 24px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .total-label {
+            font-size: 12px;
+            color: rgba(255,255,255,0.72);
+        }
+
+        .total-title {
+            margin-top: 4px;
+            font-size: 16px;
+            font-weight: 700;
+        }
+
+        .total-value {
+            font-size: 27px;
+            font-weight: 800;
+            color: var(--gold);
+        }
+
+        @media (max-width: 1000px) {
+            .stats {
+                grid-template-columns: 1fr;
+            }
+
+            .revenue-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        @media (max-width: 700px) {
+            .sidebar {
+                position: static;
+                width: 100%;
+                height: auto;
+            }
+
+            .main {
+                margin-left: 0;
+            }
+
+            .menu {
+                padding: 10px;
+            }
+
+            .menu-label {
+                display: none;
+            }
+
+            .menu-link {
+                display: inline-flex;
+                margin-right: 4px;
+            }
+
+            .logout-area {
+                display: flex;
+                gap: 5px;
+            }
+
+            .content {
+                padding: 22px 16px 30px;
+            }
+
+            .page-heading {
+                align-items: flex-start;
+                flex-direction: column;
+                gap: 12px;
+            }
+
+            .artisan-details {
+                display: none;
+            }
+
+            .payment-row-top {
+                align-items: flex-start;
+                flex-direction: column;
+                gap: 10px;
+            }
+
+            .total-card {
+                align-items: flex-start;
+                flex-direction: column;
+                gap: 10px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+<aside class="sidebar">
+
+    <div class="logo-area">
+        <a href="/">
+            <img src="/images/craftora-logo.png" alt="Craftora Logo">
+        </a>
+    </div>
+
+    <div class="menu">
+
+        <div class="menu-label">Main Menu</div>
+
+        <a href="/artisan-dashboard" class="menu-link">
+            <i class="bi bi-grid-1x2-fill"></i>
+            <span>Dashboard</span>
+        </a>
+
+        <a href="/artisan/profile" class="menu-link">
+            <i class="bi bi-person-circle"></i>
+            <span>Profile</span>
+        </a>
+
+        <a href="/artisan/marketplace" class="menu-link">
+            <i class="bi bi-shop"></i>
+            <span>Marketplace</span>
+        </a>
+
+        <a href="/cart" class="menu-link">
+            <i class="bi bi-cart-fill"></i>
+            <span>My Cart</span>
+        </a>
+
+        <a href="/artisan/orders" class="menu-link">
+            <i class="bi bi-bag-check-fill"></i>
+            <span>Orders</span>
+        </a>
+
+        <a href="/artisan/my-orders" class="menu-link">
+            <i class="bi bi-bag-heart-fill"></i>
+            <span>My Orders</span>
+        </a>
+
+        <a href="/artisan/payments" class="menu-link active">
+            <i class="bi bi-credit-card-fill"></i>
+            <span>Payments</span>
+        </a>
+
+        <a href="/artisan/events" class="menu-link">
+            <i class="bi bi-calendar-event-fill"></i>
+            <span>Events</span>
+        </a>
+
+    </div>
+
+    <div class="logout-area">
+
+        <div th:if="${session.userRoles != null and #lists.size(session.userRoles) > 1}">
+            <a href="/switch-account" class="menu-link switch-link">
+                <i class="bi bi-arrow-left-right"></i>
+                <span>Switch Account</span>
+            </a>
+        </div>
+
+        <a href="/logout" class="menu-link logout">
+            <i class="bi bi-box-arrow-left"></i>
+            <span>Logout</span>
+        </a>
+
+    </div>
+
+</aside>
+
+<main class="main">
+
+    <header class="top-header">
+
+        <div class="notification" title="Notifications">
+            <i class="bi bi-bell"></i>
+            <span class="notification-dot"></span>
+        </div>
+
+        <div class="artisan-user">
+
+            <a href="/artisan/profile" class="artisan-profile-link">
+
+                <div class="artisan-avatar"
+                     th:if="${artisan != null and artisan.profileImage != null and artisan.profileImage != ''}">
+                    <img
+                        th:src="${artisan.profileImage.startsWith('/') ? artisan.profileImage : '/' + artisan.profileImage}"
+                        alt="Artisan Profile">
+                </div>
+
+                <div class="artisan-avatar"
+                     th:unless="${artisan != null and artisan.profileImage != null and artisan.profileImage != ''}">
+                    A
+                </div>
+
+                <div class="artisan-details">
+                    <span class="artisan-name">Artisan</span>
+                    <span class="artisan-role">Artisan Account</span>
+                </div>
+
+            </a>
+
+            <a href="/switch-account"
+               class="switch-account-btn"
+               th:if="${session.userRoles != null and #lists.size(session.userRoles) > 1}">
+                <i class="bi bi-arrow-left-right"></i>
+                <span>Switch Account</span>
+            </a>
+
+        </div>
+
+    </header>
+
+    <div class="content">
+
+        <div class="page-heading">
+
+            <div>
+                <h1>Payments &amp; Revenue</h1>
+                <p>
+                    View your sales, Craftora commission and earnings from your products.
+                </p>
+            </div>
+
+            <div class="page-badge">
+                <i class="bi bi-wallet2"></i>
+                <span>Artisan Payments</span>
+            </div>
+
+        </div>
+
+        <!-- SUMMARY -->
+
+        <div class="stats">
+
+            <div class="stat-card">
+
+                <div class="stat-top">
+                    <span class="stat-title">Total Sales</span>
+
+                    <div class="stat-icon">
+                        <i class="bi bi-graph-up-arrow"></i>
+                    </div>
+                </div>
+
+                <div class="stat-value">
+                    LKR
+                    <span th:text="${#numbers.formatDecimal(totalSales, 1, 2)}">
+                        0.00
+                    </span>
+                </div>
+
+                <div class="stat-description">
+                    Sales from your products
+                </div>
+
+            </div>
+
+            <div class="stat-card">
+
+                <div class="stat-top">
+                    <span class="stat-title">Craftora Commission</span>
+
+                    <div class="stat-icon">
+                        <i class="bi bi-percent"></i>
+                    </div>
+                </div>
+
+                <div class="stat-value">
+                    LKR
+                    <span th:text="${#numbers.formatDecimal(totalCommission, 1, 2)}">
+                        0.00
+                    </span>
+                </div>
+
+                <div class="stat-description">
+                    <span th:text="${#numbers.formatDecimal(platformCommission, 1, 2)}">3.00</span>% commission from sales
+                </div>
+
+            </div>
+
+            <div class="stat-card">
+
+                <div class="stat-top">
+                    <span class="stat-title">Total Revenue</span>
+
+                    <div class="stat-icon">
+                        <i class="bi bi-wallet2"></i>
+                    </div>
+                </div>
+
+                <div class="stat-value">
+                    LKR
+                    <span th:text="${#numbers.formatDecimal(totalRevenue, 1, 2)}">
+                        0.00
+                    </span>
+                </div>
+
+                <div class="stat-description">
+                    Your earnings after commission
+                </div>
+
+            </div>
+
+        </div>
+
+        <!-- ORDER-WISE REVENUE -->
+
+        <div class="card">
+
+            <div class="card-header">
+
+                <div class="card-title-area">
+
+                    <div class="card-title-icon">
+                        <i class="bi bi-credit-card-fill"></i>
+                    </div>
+
+                    <div>
+                        <h2>Order-wise Revenue</h2>
+                    </div>
+
+                </div>
+
+                <span class="order-count"
+                      th:text="${#lists.size(artisanOrders) + ' order(s)'}">
+                    0 order(s)
+                </span>
+
+            </div>
+
+            <div class="card-body">
+
+                <div th:if="${#lists.isEmpty(artisanOrders)}"
+                     class="empty-state">
+
+                    <i class="bi bi-wallet2"></i>
+
+                    <h3>No Revenue Yet</h3>
+
+                    <p>
+                        Your product sales and earnings will appear here after customers purchase your products.
+                    </p>
+
+                </div>
+
+                <div th:each="artisanOrder : ${artisanOrders}"
+                     class="payment-row">
+
+                    <div class="payment-row-top">
+
+                        <div class="order-info">
+
+                            <strong>
+                                Order #
+                                <span th:text="${artisanOrder.order.orderId}">
+                                    0
+                                </span>
+                            </strong>
+
+                            <span class="order-date">
+                                Date:
+                                <span th:text="${#temporals.format(artisanOrder.createdAt, 'dd MMM yyyy')}">
+                                    26 Sep 2026
+                                </span>
+                            </span>
+
+                        </div>
+
+                        <span class="status"
+                              th:classappend="${artisanOrder.orderStatus == 'NEW' ? ' new' : (artisanOrder.orderStatus == 'PROCESSING' ? ' processing' : '')}"
+                              th:text="${artisanOrder.orderStatus}">
+                            NEW
+                        </span>
+
+                    </div>
+
+                    <div class="revenue-grid">
+
+                        <div class="revenue-item">
+
+                            <span class="revenue-label">
+                                Sales Amount
+                            </span>
+
+                            <span class="revenue-amount">
+                                LKR
+                                <span th:text="${#numbers.formatDecimal(artisanOrder.subtotal, 1, 2)}">
+                                    0.00
+                                </span>
+                            </span>
+
+                        </div>
+
+                        <div class="revenue-item">
+
+                            <span class="revenue-label">
+                                Craftora Commission (
+                                <span th:if="${artisanOrder.subtotal != null and artisanOrder.subtotal.doubleValue() > 0 and artisanOrder.commissionAmount != null}"
+                                      th:text="${#numbers.formatDecimal(artisanOrder.commissionAmount.doubleValue() * 100.0 / artisanOrder.subtotal.doubleValue(), 1, 2)}">
+                                    3.00
+                                </span>
+                                <span th:unless="${artisanOrder.subtotal != null and artisanOrder.subtotal.doubleValue() > 0 and artisanOrder.commissionAmount != null}">
+                                    0.00
+                                </span>
+                                %
+                            )
+                            </span>
+
+                            <span class="revenue-amount">
+                                LKR
+                                <span th:text="${#numbers.formatDecimal(artisanOrder.commissionAmount, 1, 2)}">
+                                    0.00
+                                </span>
+                            </span>
+
+                        </div>
+
+                        <div class="revenue-item earned">
+
+                            <span class="revenue-label">
+                                Your Revenue
+                            </span>
+
+                            <span class="revenue-amount">
+                                LKR
+                                <span th:text="${#numbers.formatDecimal(artisanOrder.artisanAmount, 1, 2)}">
+                                    0.00
+                                </span>
+                            </span>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+        <!-- TOTAL -->
+
+        <div class="total-card">
+
+            <div>
+                <div class="total-label">
+                    Total Revenue / Your Earnings
+                </div>
+
+                <div class="total-title">
+                    From all your product sales
+                </div>
+            </div>
+
+            <div class="total-value">
+                LKR
+                <span th:text="${#numbers.formatDecimal(totalRevenue, 1, 2)}">
+                    0.00
+                </span>
+            </div>
+
+        </div>
+
+    </div>
+
+</main>
+
+</body>
+</html>

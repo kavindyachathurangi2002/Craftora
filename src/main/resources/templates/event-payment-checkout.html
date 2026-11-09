@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="en"
+      xmlns:th="http://www.thymeleaf.org">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <title>Event Payment - Craftora</title>
+
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
+
+    <style>
+
+        body {
+            margin: 0;
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: #f5f5f5;
+            font-family: Arial, sans-serif;
+        }
+
+        .payment-box {
+            background: white;
+            width: 420px;
+            max-width: 90%;
+            padding: 40px;
+            text-align: center;
+            border-radius: 12px;
+            box-shadow: 0 8px 30px rgba(0,0,0,0.12);
+        }
+
+        .payment-box h2 {
+            margin-bottom: 10px;
+            color: #333;
+        }
+
+        .payment-box p {
+            color: #666;
+            margin-bottom: 25px;
+        }
+
+        .payment-btn {
+            background: #0b6b45;
+            color: white;
+            border: none;
+            padding: 13px 28px;
+            border-radius: 6px;
+            font-size: 15px;
+            cursor: pointer;
+        }
+
+        .payment-btn:hover {
+            background: #084f34;
+        }
+
+    </style>
+
+</head>
+
+<body>
+
+<div class="payment-box">
+
+    <h2>Proceed to Payment</h2>
+
+    <p>
+        You are being redirected to PayHere
+        to complete your event registration payment.
+    </p>
+
+    <form th:action="${checkoutUrl}"
+          method="post"
+          id="payhereForm">
+
+        <div th:each="entry : ${checkoutData}">
+
+            <input type="hidden"
+                   th:name="${entry.key}"
+                   th:value="${entry.value}">
+
+        </div>
+
+        <button type="submit"
+                class="payment-btn">
+
+            Continue to PayHere
+
+        </button>
+
+    </form>
+
+</div>
+
+<script>
+
+    window.onload = function () {
+
+        document
+            .getElementById("payhereForm")
+            .submit();
+
+    };
+
+</script>
+
+</body>
+
+</html>

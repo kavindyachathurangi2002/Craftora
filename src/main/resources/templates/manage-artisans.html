@@ -1,0 +1,965 @@
+<!DOCTYPE html>
+<html lang="en"
+      xmlns:th="http://www.thymeleaf.org">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
+
+    <title>Manage Artisan | Craftora</title>
+
+
+    <style>
+
+        /* =====================================================
+           GLOBAL
+        ===================================================== */
+
+        * {
+            box-sizing: border-box;
+        }
+
+
+        body {
+
+            margin: 0;
+
+            font-family:
+                    Arial,
+                    sans-serif;
+
+            background: #F4E8D3;
+
+            color: #333;
+        }
+
+
+        /* =====================================================
+           NAVBAR
+        ===================================================== */
+
+        .navbar {
+
+            background: #123B29;
+
+            color: white;
+
+            padding: 12px 35px;
+
+            min-height: 80px;
+
+            display: flex;
+
+            justify-content: space-between;
+
+            align-items: center;
+        }
+
+
+        /* =====================================================
+           CRAFTORA LOGO
+
+           The image itself is the logo.
+           No separate box.
+        ===================================================== */
+
+        .logo {
+
+            display: flex;
+
+            align-items: center;
+
+            justify-content: center;
+
+            text-decoration: none;
+        }
+
+
+        .craftora-logo {
+
+            height: 62px;
+
+            width: auto;
+
+            display: block;
+
+            object-fit: contain;
+
+            border-radius: 12px;
+        }
+
+
+        /* =====================================================
+           NAVIGATION LINKS
+        ===================================================== */
+
+        .nav-links {
+
+            display: flex;
+
+            align-items: center;
+
+            gap: 22px;
+        }
+
+
+        .nav-links a {
+
+            color: white;
+
+            text-decoration: none;
+
+            font-size: 14px;
+
+            font-weight: 500;
+
+            transition: 0.2s;
+        }
+
+
+        /* Current page */
+
+        .nav-links a.active {
+
+            color: #D6B36A;
+        }
+
+
+        .nav-links a:hover {
+
+            color: #D6B36A;
+        }
+
+
+        /* =====================================================
+           MAIN CONTAINER
+        ===================================================== */
+
+        .container {
+
+            padding: 40px;
+        }
+
+
+        /* =====================================================
+           PAGE TITLE
+        ===================================================== */
+
+        h1 {
+
+            color: #123B29;
+
+            margin-bottom: 8px;
+
+            font-size: 34px;
+        }
+
+
+        .subtitle {
+
+            color: #666;
+
+            margin-bottom: 30px;
+
+            font-size: 16px;
+        }
+
+
+        /* =====================================================
+           MESSAGE
+        ===================================================== */
+
+        .message {
+
+            padding: 15px;
+
+            border-radius: 8px;
+
+            margin-bottom: 20px;
+
+            background: white;
+        }
+
+
+        .success {
+
+            border-left:
+                    5px solid green;
+        }
+
+
+        .error {
+
+            border-left:
+                    5px solid red;
+        }
+
+
+        /* =====================================================
+           SECTION
+        ===================================================== */
+
+        .section {
+
+            background: white;
+
+            padding: 25px;
+
+            border-radius: 12px;
+
+            margin-bottom: 30px;
+
+            box-shadow:
+                    0 5px 15px rgba(0,0,0,0.08);
+        }
+
+
+        .section h2 {
+
+            color: #123B29;
+
+            margin-top: 0;
+
+            margin-bottom: 20px;
+
+            font-size: 24px;
+        }
+
+
+        /* =====================================================
+           TABLE
+        ===================================================== */
+
+        table {
+
+            width: 100%;
+
+            border-collapse: collapse;
+
+            margin-top: 20px;
+        }
+
+
+        th {
+
+            background: #123B29;
+
+            color: white;
+
+            padding: 13px;
+
+            text-align: left;
+
+            font-size: 14px;
+        }
+
+
+        td {
+
+            padding: 13px;
+
+            border-bottom:
+                    1px solid #ddd;
+
+            font-size: 14px;
+        }
+
+
+        tr:hover {
+
+            background: #faf7f1;
+        }
+
+
+        /* =====================================================
+           STATUS
+        ===================================================== */
+
+        .status {
+
+            padding: 6px 12px;
+
+            border-radius: 20px;
+
+            font-size: 12px;
+
+            font-weight: bold;
+
+            display: inline-block;
+        }
+
+
+        .pending {
+
+            background: #fff0c2;
+
+            color: #8a6200;
+        }
+
+
+        .approved {
+
+            background: #d9f2df;
+
+            color: #176b2c;
+        }
+
+
+        /* =====================================================
+           BUTTON
+        ===================================================== */
+
+        .btn {
+
+            display: inline-block;
+
+            padding: 8px 13px;
+
+            border-radius: 6px;
+
+            text-decoration: none;
+
+            border: none;
+
+            cursor: pointer;
+
+            font-size: 13px;
+
+            margin-right: 5px;
+        }
+
+
+        .view-btn {
+
+            background: #123B29;
+
+            color: white;
+        }
+
+
+        .view-btn:hover {
+
+            background: #1d5b40;
+        }
+
+
+        /* =====================================================
+           EMPTY
+        ===================================================== */
+
+        .empty {
+
+            text-align: center;
+
+            color: #777;
+
+            padding: 25px;
+        }
+
+
+        /* =====================================================
+           RESPONSIVE
+        ===================================================== */
+
+        @media (max-width: 1100px) {
+
+            .navbar {
+
+                padding:
+                        12px 25px;
+            }
+
+
+            .craftora-logo {
+
+                height: 62px;
+
+                width: auto;
+            }
+
+
+            .nav-links {
+
+                gap: 15px;
+            }
+
+
+            .nav-links a {
+
+                font-size: 13px;
+            }
+        }
+
+
+        @media (max-width: 900px) {
+
+            .navbar {
+
+                flex-direction: column;
+
+                gap: 15px;
+
+                padding: 15px;
+            }
+
+
+            .nav-links {
+
+                flex-wrap: wrap;
+
+                justify-content: center;
+            }
+
+
+            .container {
+
+                padding: 20px;
+            }
+
+
+            table {
+
+                display: block;
+
+                overflow-x: auto;
+            }
+        }
+
+
+        @media (max-width: 500px) {
+
+            .craftora-logo {
+
+                height: 58px;
+
+                width: auto;
+            }
+
+
+            .nav-links {
+
+                gap: 12px;
+            }
+        }
+
+    </style>
+
+</head>
+
+
+<body>
+
+
+<!-- =========================================================
+     NAVBAR
+========================================================= -->
+
+<nav class="navbar">
+
+
+    <!-- CRAFTORA LOGO -->
+
+    <a href="/admin-dashboard"
+       class="logo">
+
+        <img src="/images/craftora-logo.png"
+             alt="Craftora Logo"
+             class="craftora-logo">
+
+    </a>
+
+
+    <!-- NAVIGATION LINKS -->
+
+    <div class="nav-links">
+
+
+        <a href="/admin-dashboard">
+
+            Dashboard
+
+        </a>
+
+
+        <a href="/admin/manage-artisans"
+           class="active">
+
+            Manage Artisan
+
+        </a>
+
+
+        <a href="#">
+
+            Manage Events
+
+        </a>
+
+
+        <a href="#">
+
+            Payments
+
+        </a>
+
+
+        <a href="#">
+
+            View Reports
+
+        </a>
+
+
+        <a href="#">
+
+            View Ratings
+
+        </a>
+
+
+    </div>
+
+</nav>
+
+
+
+<!-- =========================================================
+     MAIN CONTENT
+========================================================= -->
+
+<div class="container">
+
+
+    <!-- PAGE TITLE -->
+
+    <h1>
+
+        Manage Artisan
+
+    </h1>
+
+
+    <p class="subtitle">
+
+        Review artisan registration applications
+        and manage approved artisans.
+
+    </p>
+
+
+
+    <!-- =====================================================
+         SUCCESS MESSAGE
+    ====================================================== -->
+
+    <div th:if="${successMessage}"
+         class="message success"
+         th:text="${successMessage}">
+
+    </div>
+
+
+
+    <!-- =====================================================
+         ERROR MESSAGE
+    ====================================================== -->
+
+    <div th:if="${errorMessage}"
+         class="message error"
+         th:text="${errorMessage}">
+
+    </div>
+
+
+
+    <!-- =====================================================
+         PENDING ARTISAN APPLICATIONS
+    ====================================================== -->
+
+    <div class="section">
+
+
+        <h2>
+
+            Pending Artisan Applications
+
+        </h2>
+
+
+        <table>
+
+
+            <thead>
+
+            <tr>
+
+                <th>
+
+                    Name
+
+                </th>
+
+
+                <th>
+
+                    Email
+
+                </th>
+
+
+                <th>
+
+                    Contact
+
+                </th>
+
+
+                <th>
+
+                    Requested Date
+
+                </th>
+
+
+                <th>
+
+                    Status
+
+                </th>
+
+
+                <th>
+
+                    Action
+
+                </th>
+
+            </tr>
+
+            </thead>
+
+
+
+            <tbody>
+
+
+            <!-- PENDING REQUESTS -->
+
+            <tr th:each="request : ${pendingRequests}">
+
+
+                <!-- NAME -->
+
+                <td>
+
+                    <span
+                            th:text="${request.firstName + ' ' + request.lastName}">
+
+                        Artisan Name
+
+                    </span>
+
+                </td>
+
+
+
+                <!-- EMAIL -->
+
+                <td th:text="${request.email}">
+
+                    email@example.com
+
+                </td>
+
+
+
+                <!-- CONTACT -->
+
+                <td th:text="${request.contactNumber}">
+
+                    0771234567
+
+                </td>
+
+
+
+                <!-- REQUESTED DATE -->
+
+                <td>
+
+                    <span
+                            th:if="${request.requestedAt != null}"
+                            th:text="${request.requestedAt}">
+
+                        2026-09-07
+
+                    </span>
+
+
+                    <span
+                            th:if="${request.requestedAt == null}">
+
+                        -
+
+                    </span>
+
+                </td>
+
+
+
+                <!-- STATUS -->
+
+                <td>
+
+                    <span class="status pending">
+
+                        PENDING
+
+                    </span>
+
+                </td>
+
+
+
+                <!-- ACTION -->
+
+                <td>
+
+                    <a class="btn view-btn"
+                       th:href="@{/admin/artisan-request/{id}(id=${request.requestId})}">
+
+                        View
+
+                    </a>
+
+                </td>
+
+
+            </tr>
+
+
+
+            <!-- NO PENDING REQUESTS -->
+
+            <tr th:if="${#lists.isEmpty(pendingRequests)}">
+
+                <td colspan="6"
+                    class="empty">
+
+                    No pending artisan applications.
+
+                </td>
+
+            </tr>
+
+
+            </tbody>
+
+        </table>
+
+    </div>
+
+
+
+    <!-- =====================================================
+         APPROVED ARTISANS
+    ====================================================== -->
+
+    <div class="section">
+
+
+        <h2>
+
+            Approved Artisans
+
+        </h2>
+
+
+        <table>
+
+
+            <thead>
+
+            <tr>
+
+                <th>
+
+                    Name
+
+                </th>
+
+
+                <th>
+
+                    Email
+
+                </th>
+
+
+                <th>
+
+                    Craft Type
+
+                </th>
+
+
+                <th>
+
+                    Location
+
+                </th>
+
+
+                <th>
+
+                    Contact
+
+                </th>
+
+
+                <th>
+
+                    Status
+
+                </th>
+
+
+                <!-- NEW ACTION COLUMN -->
+
+                <th>
+
+                    Action
+
+                </th>
+
+            </tr>
+
+            </thead>
+
+
+
+            <tbody>
+
+
+            <!-- APPROVED ARTISANS -->
+
+            <tr th:each="artisan : ${approvedArtisans}">
+
+
+                <!-- NAME -->
+
+                <td
+                        th:text="${artisan.user.fullName}">
+
+                    Artisan Name
+
+                </td>
+
+
+
+                <!-- EMAIL -->
+
+                <td
+                        th:text="${artisan.user.email}">
+
+                    email@example.com
+
+                </td>
+
+
+
+                <!-- CRAFT TYPE -->
+
+                <td
+                        th:text="${artisan.craftType}">
+
+                    Handloom
+
+                </td>
+
+
+
+                <!-- LOCATION -->
+
+                <td
+                        th:text="${artisan.location}">
+
+                    Kandy
+
+                </td>
+
+
+
+                <!-- CONTACT -->
+
+                <td
+                        th:text="${artisan.contactNumber}">
+
+                    0771234567
+
+                </td>
+
+
+
+                <!-- STATUS -->
+
+                <td>
+
+                    <span class="status approved">
+
+                        APPROVED
+
+                    </span>
+
+                </td>
+
+
+
+                <!-- NEW VIEW BUTTON -->
+
+                <td>
+
+                    <a class="btn view-btn"
+                       th:href="@{/admin/approved-artisan/{id}(id=${artisan.artisanId})}">
+
+                        View
+
+                    </a>
+
+                </td>
+
+
+            </tr>
+
+
+
+            <!-- NO APPROVED ARTISANS -->
+
+            <tr th:if="${#lists.isEmpty(approvedArtisans)}">
+
+                <td colspan="7"
+                    class="empty">
+
+                    No approved artisans yet.
+
+                </td>
+
+            </tr>
+
+
+            </tbody>
+
+        </table>
+
+    </div>
+
+
+</div>
+
+
+</body>
+
+</html>

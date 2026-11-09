@@ -1,0 +1,931 @@
+<!DOCTYPE html>
+<html lang="en"
+      xmlns:th="http://www.thymeleaf.org">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
+
+    <title>Upcoming Events - Craftora</title>
+
+    <!-- Bootstrap Icons -->
+    <link rel="stylesheet"
+          href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+
+    <!-- Craftora Main CSS -->
+    <link rel="stylesheet"
+          href="/css/style.css">
+
+
+    <style>
+
+        /* =====================================================
+           PAGE
+           ===================================================== */
+
+        body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+            background: #f7f8f6;
+            color: #333;
+        }
+
+
+        /* =====================================================
+           HERO
+           ===================================================== */
+
+        .artisan-events-hero {
+            position: relative;
+            height: 300px;
+
+            background-image:
+                linear-gradient(
+                    rgba(0, 70, 45, 0.78),
+                    rgba(0, 70, 45, 0.78)
+                ),
+                url('/images/hero2.jpg');
+
+            background-size: cover;
+            background-position: center;
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            text-align: center;
+            color: white;
+        }
+
+
+        .artisan-events-hero-content {
+            max-width: 850px;
+            padding: 30px;
+        }
+
+
+        .artisan-events-hero-content span {
+            display: block;
+
+            font-size: 14px;
+            letter-spacing: 3px;
+            font-weight: 600;
+
+            margin-bottom: 14px;
+
+            color: #e5c76b;
+        }
+
+
+        .artisan-events-hero-content h1 {
+            font-size: 46px;
+            margin: 0 0 12px;
+
+            font-weight: 700;
+        }
+
+
+        .artisan-events-hero-content p {
+            font-size: 17px;
+            line-height: 1.7;
+
+            margin: 0 auto;
+
+            max-width: 700px;
+        }
+
+
+        /* =====================================================
+           EVENTS SECTION
+           ===================================================== */
+
+        .artisan-events-section {
+            max-width: 1200px;
+
+            margin: 0 auto;
+
+            padding: 55px 25px 70px;
+        }
+
+
+        .section-heading {
+            text-align: center;
+
+            margin-bottom: 38px;
+        }
+
+
+        .section-heading h2 {
+            margin: 0;
+
+            color: #08724d;
+
+            font-size: 32px;
+
+            font-weight: 700;
+        }
+
+
+        .section-heading p {
+            margin-top: 10px;
+
+            color: #777;
+
+            font-size: 15px;
+        }
+
+
+        /* =====================================================
+           EVENT GRID
+           ===================================================== */
+
+        .artisan-event-grid {
+            display: grid;
+
+            grid-template-columns:
+                repeat(3, minmax(0, 1fr));
+
+            gap: 28px;
+        }
+
+
+        /* =====================================================
+           EVENT CARD
+           ===================================================== */
+
+        .artisan-event-card {
+            background: #fff;
+
+            border-radius: 16px;
+
+            overflow: hidden;
+
+            box-shadow:
+                0 5px 20px rgba(0, 0, 0, 0.08);
+
+            border: 1px solid #eeeeee;
+
+            transition:
+                transform 0.3s ease,
+                box-shadow 0.3s ease;
+
+            position: relative;
+        }
+
+
+        .artisan-event-card:hover {
+            transform: translateY(-6px);
+
+            box-shadow:
+                0 12px 28px rgba(0, 0, 0, 0.12);
+        }
+
+
+        /* =====================================================
+           IMAGE
+           ===================================================== */
+
+        .artisan-event-image {
+            position: relative;
+
+            width: 100%;
+            height: 220px;
+
+            overflow: hidden;
+
+            background: #e9ece8;
+        }
+
+
+        .artisan-event-image img {
+            width: 100%;
+            height: 100%;
+
+            object-fit: cover;
+
+            display: block;
+
+            transition: transform 0.4s ease;
+        }
+
+
+        .artisan-event-card:hover
+        .artisan-event-image img {
+            transform: scale(1.04);
+        }
+
+
+        /* =====================================================
+           FREE BADGE
+           ===================================================== */
+
+        .event-free-badge {
+            position: absolute;
+
+            top: 14px;
+            right: 14px;
+
+            z-index: 5;
+
+            background: #e91d25;
+
+            color: #fff;
+
+            padding: 7px 13px;
+
+            border-radius: 20px;
+
+            font-size: 12px;
+
+            font-weight: 800;
+
+            letter-spacing: 1px;
+
+            line-height: 1;
+
+            box-shadow:
+                0 4px 10px rgba(0, 0, 0, 0.18);
+        }
+
+
+        /* =====================================================
+           EVENT TYPE
+           ===================================================== */
+
+        .event-type-badge {
+            position: absolute;
+
+            left: 15px;
+            bottom: 15px;
+
+            background: rgba(0, 70, 45, 0.92);
+
+            color: white;
+
+            padding: 7px 12px;
+
+            border-radius: 20px;
+
+            font-size: 11px;
+
+            font-weight: 700;
+
+            letter-spacing: 0.5px;
+
+            text-transform: uppercase;
+        }
+
+
+        /* =====================================================
+           CARD CONTENT
+           ===================================================== */
+
+        .artisan-event-content {
+            padding: 22px;
+        }
+
+
+        .artisan-event-content h3 {
+            margin: 0 0 15px;
+
+            color: #174f3b;
+
+            font-size: 21px;
+
+            line-height: 1.4;
+
+            font-weight: 700;
+        }
+
+
+        /* =====================================================
+           EVENT INFORMATION
+           ===================================================== */
+
+        .event-info {
+            display: flex;
+
+            align-items: flex-start;
+
+            gap: 10px;
+
+            margin-bottom: 10px;
+
+            color: #666;
+
+            font-size: 14px;
+
+            line-height: 1.5;
+        }
+
+
+        .event-info i {
+            color: #08724d;
+
+            font-size: 16px;
+
+            margin-top: 2px;
+
+            flex-shrink: 0;
+        }
+
+
+        /* =====================================================
+           ARTISAN FEE
+           ===================================================== */
+
+        .artisan-fee {
+            display: flex;
+
+            align-items: center;
+
+            justify-content: space-between;
+
+            margin-top: 17px;
+
+            padding-top: 15px;
+
+            border-top: 1px solid #eeeeee;
+        }
+
+
+        .artisan-fee-label {
+            color: #777;
+
+            font-size: 13px;
+
+            font-weight: 600;
+        }
+
+
+        .artisan-fee-value {
+            color: #08724d;
+
+            font-size: 17px;
+
+            font-weight: 800;
+        }
+
+
+        /* =====================================================
+           BUTTONS
+           ===================================================== */
+
+        .event-actions {
+            display: flex;
+
+            gap: 10px;
+
+            margin-top: 20px;
+        }
+
+
+        .event-btn {
+            flex: 1;
+
+            text-align: center;
+
+            text-decoration: none;
+
+            padding: 11px 12px;
+
+            border-radius: 25px;
+
+            font-size: 13px;
+
+            font-weight: 700;
+
+            transition: 0.3s ease;
+        }
+
+
+        .view-event-btn {
+            background: #edf5f1;
+
+            color: #08724d;
+
+            border: 1px solid #08724d;
+        }
+
+
+        .view-event-btn:hover {
+            background: #08724d;
+
+            color: #fff;
+        }
+
+
+        .register-event-btn {
+            background: #08724d;
+
+            color: #fff;
+
+            border: 1px solid #08724d;
+        }
+
+
+        .register-event-btn:hover {
+            background: #065d40;
+
+            color: #fff;
+        }
+
+
+        /* =====================================================
+           EMPTY STATE
+           ===================================================== */
+
+        .no-events {
+            text-align: center;
+
+            padding: 65px 20px;
+
+            background: white;
+
+            border-radius: 16px;
+
+            box-shadow:
+                0 5px 20px rgba(0, 0, 0, 0.06);
+        }
+
+
+        .no-events i {
+            font-size: 55px;
+
+            color: #08724d;
+
+            margin-bottom: 15px;
+        }
+
+
+        .no-events h3 {
+            margin: 0 0 10px;
+
+            color: #174f3b;
+        }
+
+
+        .no-events p {
+            margin: 0;
+
+            color: #777;
+        }
+
+
+        /* =====================================================
+           RESPONSIVE
+           ===================================================== */
+
+        @media (max-width: 1000px) {
+
+            .artisan-event-grid {
+                grid-template-columns:
+                    repeat(2, minmax(0, 1fr));
+            }
+
+        }
+
+
+        @media (max-width: 650px) {
+
+            .artisan-events-hero {
+                height: 280px;
+            }
+
+
+            .artisan-events-hero-content h1 {
+                font-size: 34px;
+            }
+
+
+            .artisan-events-hero-content p {
+                font-size: 15px;
+            }
+
+
+            .artisan-event-grid {
+                grid-template-columns: 1fr;
+            }
+
+
+            .artisan-events-section {
+                padding-left: 15px;
+                padding-right: 15px;
+            }
+
+        }
+
+    </style>
+
+</head>
+
+
+<body>
+
+
+<!-- =========================================================
+     NAVBAR
+     ========================================================= -->
+
+<nav class="navbar">
+
+    <div class="logo">
+
+        <a href="/">
+            <img src="/images/craftora-logo.png"
+                 alt="Craftora Logo">
+        </a>
+
+    </div>
+
+
+    <div class="nav-links">
+
+        <a href="/">Home</a>
+
+        <a href="/about-us">About Us</a>
+
+
+        <div class="dropdown">
+
+            <a href="#">
+                Events ▾
+            </a>
+
+            <div class="dropdown-menu">
+
+                <a href="/workshops">
+                    Workshops
+                </a>
+
+                <a href="/exhibitions">
+                    Exhibitions
+                </a>
+
+                <a href="/competitions">
+                    Competitions
+                </a>
+
+            </div>
+
+        </div>
+
+
+        <a href="/marketplace">
+            Marketplace
+        </a>
+
+        <a href="/ratings">
+            Ratings
+        </a>
+
+        <a href="/contact-us">
+            Contact Us
+        </a>
+
+    </div>
+
+
+    <!-- Dashboard -->
+
+    <div class="sign-in">
+
+        <a href="/artisan-dashboard">
+            Dashboard
+        </a>
+
+    </div>
+
+</nav>
+
+
+<!-- =========================================================
+     HERO
+     ========================================================= -->
+
+<section class="artisan-events-hero">
+
+    <div class="artisan-events-hero-content">
+
+        <span>
+            DISCOVER • PARTICIPATE • CREATE
+        </span>
+
+        <h1>
+            Upcoming Events
+        </h1>
+
+        <p>
+            Explore upcoming workshops, exhibitions and competitions
+            available for artisans and take part in the Craftora
+            creative community.
+        </p>
+
+    </div>
+
+</section>
+
+
+<!-- =========================================================
+     EVENTS
+     ========================================================= -->
+
+<section class="artisan-events-section">
+
+
+    <div class="section-heading">
+
+        <h2>
+            Events for Artisans
+        </h2>
+
+        <p>
+            Discover events where you can participate, learn,
+            showcase your skills and connect with the craft community.
+        </p>
+
+    </div>
+
+
+    <!-- =====================================================
+         EVENTS AVAILABLE
+         ===================================================== -->
+
+    <div class="artisan-event-grid"
+         th:if="${events != null and !events.isEmpty()}">
+
+
+        <!-- =================================================
+             EVENT CARD
+             ================================================= -->
+
+        <div class="artisan-event-card"
+             th:each="event : ${events}">
+
+
+            <!-- EVENT IMAGE -->
+
+            <div class="artisan-event-image">
+
+
+                <!-- IMAGE EXISTS -->
+
+                <img th:if="${event.eventImage != null
+                             and !#strings.isEmpty(event.eventImage)}"
+                     th:src="${event.eventImage}"
+                     alt="Event Image">
+
+
+                <!-- NO IMAGE -->
+
+                <img th:unless="${event.eventImage != null
+                                  and !#strings.isEmpty(event.eventImage)}"
+                     src="/images/hero2.jpg"
+                     alt="Event Image">
+
+
+                <!-- =========================================
+                     FREE BADGE
+                     ========================================= -->
+
+                <span class="event-free-badge"
+                      th:if="${event.artisanRegistrationFee == null
+                              or event.artisanRegistrationFee.doubleValue() <= 0}">
+                    FREE
+                </span>
+
+
+                <!-- =========================================
+                     EVENT TYPE
+                     ========================================= -->
+
+                <span class="event-type-badge"
+                      th:text="${event.eventType}">
+                    WORKSHOP
+                </span>
+
+            </div>
+
+
+            <!-- EVENT CONTENT -->
+
+            <div class="artisan-event-content">
+
+
+                <!-- TITLE -->
+
+                <h3 th:text="${event.eventTitle}">
+                    Event Title
+                </h3>
+
+
+                <!-- DATE -->
+
+                <div class="event-info">
+
+                    <i class="bi bi-calendar-event"></i>
+
+                    <span th:text="${#temporals.format(
+                            event.eventDate,
+                            'dd MMMM yyyy'
+                    )}">
+                        01 January 2026
+                    </span>
+
+                </div>
+
+
+                <!-- TIME -->
+
+                <div class="event-info"
+                     th:if="${event.startTime != null}">
+
+                    <i class="bi bi-clock"></i>
+
+                    <span>
+
+                        <span th:text="${#temporals.format(
+                                event.startTime,
+                                'hh:mm a'
+                        )}">
+                            10:00 AM
+                        </span>
+
+                        <span
+                            th:if="${event.endTime != null}">
+                            -
+                            <span th:text="${#temporals.format(
+                                    event.endTime,
+                                    'hh:mm a'
+                            )}">
+                                12:00 PM
+                            </span>
+                        </span>
+
+                    </span>
+
+                </div>
+
+
+                <!-- LOCATION -->
+
+                <div class="event-info"
+                     th:if="${event.location != null
+                             and !#strings.isEmpty(event.location)}">
+
+                    <i class="bi bi-geo-alt"></i>
+
+                    <span th:text="${event.location}">
+                        Location
+                    </span>
+
+                </div>
+
+
+                <!-- CAPACITY -->
+
+                <div class="event-info"
+                     th:if="${event.capacity != null}">
+
+                    <i class="bi bi-people"></i>
+
+                    <span>
+                        Capacity:
+                        <strong th:text="${event.capacity}">
+                            20
+                        </strong>
+                    </span>
+
+                </div>
+
+
+                <!-- =========================================
+                     ARTISAN FEE
+                     ========================================= -->
+
+                <div class="artisan-fee">
+
+                    <span class="artisan-fee-label">
+                        Artisan Registration Fee
+                    </span>
+
+
+                    <!-- FREE -->
+
+                    <span class="artisan-fee-value"
+                          th:if="${event.artisanRegistrationFee == null
+                                  or event.artisanRegistrationFee.doubleValue() <= 0}">
+                        Free
+                    </span>
+
+
+                    <!-- PAID -->
+
+                    <span class="artisan-fee-value"
+                          th:if="${event.artisanRegistrationFee != null
+                                  and event.artisanRegistrationFee.doubleValue() > 0}">
+
+                        LKR
+                        <span th:text="${#numbers.formatDecimal(
+                                event.artisanRegistrationFee,
+                                1,
+                                2
+                        )}">
+                            0.00
+                        </span>
+
+                    </span>
+
+                </div>
+
+
+                <!-- =========================================
+                     ACTION BUTTONS
+                     ========================================= -->
+
+                <div class="event-actions">
+
+
+                    <!-- VIEW -->
+
+                    <a class="event-btn view-event-btn"
+                       th:href="@{'/events/' + ${event.eventId}}">
+
+                        <i class="bi bi-eye"></i>
+
+                        View
+
+                    </a>
+
+
+                    <!-- REGISTER -->
+
+                    <a class="event-btn register-event-btn"
+                       th:href="@{'/events/' + ${event.eventId} + '/register'}">
+
+                        <i class="bi bi-person-plus"></i>
+
+                        Register Now
+
+                    </a>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <!-- =====================================================
+         NO EVENTS
+         ===================================================== -->
+
+    <div class="no-events"
+         th:if="${events == null or events.isEmpty()}">
+
+        <i class="bi bi-calendar-x"></i>
+
+        <h3>
+            No Upcoming Events
+        </h3>
+
+        <p>
+            There are currently no upcoming events available
+            for artisan registration.
+        </p>
+
+    </div>
+
+
+</section>
+
+
+<!-- =========================================================
+     FOOTER
+     ========================================================= -->
+
+<footer style="
+    background:#174f3b;
+    color:white;
+    text-align:center;
+    padding:25px 15px;
+">
+
+    <p style="
+        margin:0;
+        font-size:14px;
+    ">
+        © 2026 Craftora. All Rights Reserved.
+    </p>
+
+</footer>
+
+
+</body>
+
+</html>

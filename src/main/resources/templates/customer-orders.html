@@ -1,0 +1,684 @@
+<!DOCTYPE html>
+<html lang="en"
+      xmlns:th="http://www.thymeleaf.org">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
+
+    <title>Customer Orders - Craftora</title>
+
+    <style>
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+            background: #f5f7f6;
+            color: #333;
+        }
+
+        /* =====================================================
+           NAVIGATION
+           ===================================================== */
+
+        .navbar {
+            background: #123B29;
+            padding: 16px 7%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+        }
+
+        .logo img {
+            height: 58px;
+            width: auto;
+            max-width: 220px;
+            object-fit: contain;
+            border-radius: 10px;
+            background: white;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 20px;
+            align-items: center;
+        }
+
+        .nav-links a {
+            color: white;
+            text-decoration: none;
+            font-size: 14px;
+        }
+
+        .nav-links a:hover {
+            text-decoration: underline;
+        }
+
+
+        /* =====================================================
+           PAGE
+           ===================================================== */
+
+        .page-container {
+            width: 90%;
+            max-width: 1100px;
+            margin: 40px auto;
+        }
+
+        .page-title {
+            color: #123B29;
+            margin-bottom: 25px;
+            font-size: 30px;
+        }
+
+
+        /* =====================================================
+           EMPTY ORDERS
+           ===================================================== */
+
+        .empty-box {
+            background: white;
+            padding: 50px;
+            text-align: center;
+            border-radius: 12px;
+            box-shadow: 0 3px 12px rgba(0,0,0,0.06);
+        }
+
+        .empty-box h2 {
+            color: #123B29;
+            margin-bottom: 10px;
+        }
+
+        .empty-box p {
+            color: #777;
+            margin-bottom: 20px;
+        }
+
+        .shop-button {
+            display: inline-block;
+            background: #123B29;
+            color: white;
+            padding: 12px 25px;
+            border-radius: 7px;
+            text-decoration: none;
+        }
+
+        .shop-button:hover {
+            background: #1d5a40;
+        }
+
+
+        /* =====================================================
+           ORDER CARD
+           ===================================================== */
+
+        .order-card {
+            background: white;
+            border-radius: 12px;
+            margin-bottom: 25px;
+            padding: 25px;
+            box-shadow: 0 3px 12px rgba(0,0,0,0.06);
+        }
+
+
+        /* =====================================================
+           ORDER HEADER
+           ===================================================== */
+
+        .order-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 15px;
+            padding-bottom: 18px;
+            border-bottom: 1px solid #eee;
+        }
+
+        .order-id {
+            color: #123B29;
+            font-size: 19px;
+            font-weight: bold;
+        }
+
+        .order-date {
+            color: #777;
+            font-size: 13px;
+            margin-top: 5px;
+        }
+
+
+        /* =====================================================
+           STATUS
+           ===================================================== */
+
+        .status-container {
+            display: flex;
+            gap: 8px;
+            flex-wrap: wrap;
+        }
+
+        .status {
+            padding: 7px 13px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: bold;
+        }
+
+        .payment-paid {
+            background: #dff5e8;
+            color: #18733b;
+        }
+
+        .payment-pending {
+            background: #fff3cd;
+            color: #856404;
+        }
+
+        .order-confirmed {
+            background: #e1f0ff;
+            color: #1769aa;
+        }
+
+        .order-pending {
+            background: #fff3cd;
+            color: #856404;
+        }
+
+
+        /* =====================================================
+           ORDER ITEMS
+           ===================================================== */
+
+        .order-items {
+            margin-top: 20px;
+        }
+
+        .item {
+            display: flex;
+            justify-content: space-between;
+            gap: 20px;
+            padding: 15px 0;
+            border-bottom: 1px solid #eee;
+        }
+
+        .item:last-child {
+            border-bottom: none;
+        }
+
+        .item-name {
+            font-weight: bold;
+            color: #333;
+        }
+
+        .item-details {
+            color: #777;
+            font-size: 13px;
+            margin-top: 5px;
+        }
+
+        .item-price {
+            color: #123B29;
+            font-weight: bold;
+            white-space: nowrap;
+        }
+
+
+        /* =====================================================
+           ORDER FOOTER
+           ===================================================== */
+
+        .order-footer {
+            margin-top: 15px;
+            padding-top: 18px;
+            border-top: 1px solid #eee;
+
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+
+            flex-wrap: wrap;
+            gap: 15px;
+        }
+
+        .total {
+            font-size: 20px;
+            font-weight: bold;
+            color: #123B29;
+        }
+
+
+        /* =====================================================
+           CONTINUE PAYMENT
+           ===================================================== */
+
+        .continue-payment-button {
+            display: inline-block;
+            background: #123B29;
+            color: white;
+            padding: 11px 20px;
+            border-radius: 7px;
+            text-decoration: none;
+            font-size: 14px;
+            font-weight: bold;
+        }
+
+        .continue-payment-button:hover {
+            background: #1d5a40;
+        }
+
+
+        /* =====================================================
+           PAYMENT COMPLETED
+           ===================================================== */
+
+        .payment-completed {
+            color: #18733b;
+            font-size: 13px;
+            font-weight: bold;
+        }
+
+
+        /* =====================================================
+           VIEW DETAILS / TRACK BUTTON
+           ===================================================== */
+
+        .view-details-button {
+            display: inline-block;
+            background: #f0f6f3;
+            color: #123B29;
+            border: 1px solid #cfe0d7;
+            padding: 10px 17px;
+            border-radius: 7px;
+            text-decoration: none;
+            font-size: 13px;
+            font-weight: bold;
+            margin-right: 8px;
+        }
+
+        .view-details-button:hover {
+            background: #e1eee8;
+        }
+
+
+        /* =====================================================
+           BACK BUTTON
+           ===================================================== */
+
+        .back-button {
+            display: inline-block;
+            margin-bottom: 20px;
+            color: #123B29;
+            text-decoration: none;
+            font-size: 14px;
+        }
+
+        .back-button:hover {
+            text-decoration: underline;
+        }
+
+
+        /* =====================================================
+           MOBILE
+           ===================================================== */
+
+        @media (max-width: 700px) {
+
+            .navbar {
+                padding: 15px 5%;
+            }
+
+            .logo img {
+                height: 50px;
+                max-width: 190px;
+            }
+
+            .nav-links {
+                gap: 10px;
+            }
+
+            .page-container {
+                width: 94%;
+            }
+
+            .item {
+                flex-direction: column;
+            }
+
+            .order-header {
+                align-items: flex-start;
+            }
+
+            .order-footer {
+                align-items: flex-start;
+            }
+
+            .continue-payment-button {
+                width: 100%;
+                text-align: center;
+            }
+        }
+
+    </style>
+
+</head>
+
+
+<body>
+
+
+<!-- =====================================================
+     NAVIGATION
+     ===================================================== -->
+
+<div class="navbar">
+
+    <div class="logo">
+
+        <a href="/customer-dashboard">
+
+            <img src="/images/craftora-logo.png"
+                 alt="Craftora Logo">
+
+        </a>
+
+    </div>
+
+
+    <div class="nav-links">
+
+        <a href="/marketplace">
+            Marketplace
+        </a>
+
+        <a href="/cart">
+            My Cart
+        </a>
+
+        <a href="/customer-dashboard">
+            Dashboard
+        </a>
+
+    </div>
+
+</div>
+
+
+<!-- =====================================================
+     PAGE
+     ===================================================== -->
+
+<div class="page-container">
+
+
+    <a href="/customer-dashboard"
+       class="back-button">
+
+        ← Back to Dashboard
+
+    </a>
+
+
+    <h1 class="page-title">
+
+        My Orders
+
+    </h1>
+
+
+    <!-- =================================================
+         NO ORDERS
+         ================================================= -->
+
+    <div class="empty-box"
+         th:if="${#lists.isEmpty(orderViews)}">
+
+        <h2>
+            No Orders Yet
+        </h2>
+
+        <p>
+            You have not placed any orders yet.
+        </p>
+
+        <a href="/marketplace"
+           class="shop-button">
+
+            Explore Marketplace
+
+        </a>
+
+    </div>
+
+
+    <!-- =================================================
+         ORDERS
+         ================================================= -->
+
+    <div th:each="orderView : ${orderViews}"
+         class="order-card">
+
+
+        <!-- =================================================
+             ORDER HEADER
+             ================================================= -->
+
+        <div class="order-header">
+
+            <div>
+
+                <div class="order-id">
+
+                    Order #
+
+                    <span th:text="${orderView.order.orderId}">
+                        1
+                    </span>
+
+                </div>
+
+
+                <div class="order-date">
+
+                    Ordered on:
+
+                    <span th:text="${#temporals.format(
+                        orderView.order.orderDate,
+                        'dd MMM yyyy, hh:mm a'
+                    )}">
+
+                        21 Sep 2026, 10:30 AM
+
+                    </span>
+
+                </div>
+
+            </div>
+
+
+            <!-- =================================================
+                 STATUS
+                 ================================================= -->
+
+            <div class="status-container">
+
+
+                <!-- PAYMENT STATUS -->
+
+                <span class="status"
+                      th:classappend="${orderView.order.paymentStatus == 'PAID'}
+                                      ? ' payment-paid'
+                                      : ' payment-pending'">
+
+                    Payment:
+
+                    <span th:text="${orderView.order.paymentStatus}">
+                        PAID
+                    </span>
+
+                </span>
+
+
+                <!-- ORDER STATUS -->
+
+                <span class="status"
+                      th:classappend="${orderView.order.orderStatus == 'CONFIRMED'}
+                                      ? ' order-confirmed'
+                                      : ' order-pending'">
+
+                    Order:
+
+                    <span th:text="${orderView.order.orderStatus}">
+                        CONFIRMED
+                    </span>
+
+                </span>
+
+            </div>
+
+        </div>
+
+
+        <!-- =================================================
+             ORDER ITEMS
+             ================================================= -->
+
+        <div class="order-items">
+
+            <div class="item"
+                 th:each="item : ${orderView.items}">
+
+                <div>
+
+                    <div class="item-name"
+                         th:text="${item.productName}">
+
+                        Handcrafted Product
+
+                    </div>
+
+
+                    <div class="item-details">
+
+                        Quantity:
+
+                        <span th:text="${item.quantity}">
+                            1
+                        </span>
+
+                        × Rs.
+
+                        <span th:text="${item.unitPrice}">
+                            3500.00
+                        </span>
+
+                    </div>
+
+                </div>
+
+
+                <div class="item-price">
+
+                    Rs.
+
+                    <span th:text="${item.subtotal}">
+                        3500.00
+                    </span>
+
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <!-- =================================================
+             ORDER TOTAL
+             ================================================= -->
+
+        <div class="order-footer">
+
+
+            <div class="total">
+
+                Total:
+
+                Rs.
+
+                <span th:text="${orderView.order.totalAmount}">
+                    3500.00
+                </span>
+
+            </div>
+
+
+            <!-- =================================================
+                 VIEW ORDER DETAILS / TRACKING
+                 ================================================= -->
+
+            <div>
+
+                <a th:href="@{/customer/orders/details/{orderId}(orderId=${orderView.order.orderId})}"
+                   class="view-details-button">
+
+                    <i class="bi bi-eye"></i>
+                    View Details &amp; Track
+
+                </a>
+
+
+                <!-- =================================================
+                     PENDING PAYMENT
+                     ================================================= -->
+
+                <span th:if="${orderView.order.paymentStatus == 'PENDING'}"
+                      style="display:inline-block;">
+
+                    <a th:href="@{/order-payment/payhere(order_id=${orderView.order.orderId})}"
+                       class="continue-payment-button">
+
+                        Continue Payment
+
+                    </a>
+
+                </span>
+
+
+                <!-- =================================================
+                     PAID
+                     ================================================= -->
+
+                <span th:if="${orderView.order.paymentStatus == 'PAID'}"
+                      class="payment-completed">
+
+                    ✓ Payment Completed
+
+                </span>
+
+            </div>
+
+        </div>
+
+
+    </div>
+
+
+</div>
+
+
+</body>
+
+</html>

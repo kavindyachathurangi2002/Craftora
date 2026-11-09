@@ -1,0 +1,231 @@
+
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Workshop Certificate | Craftora</title>
+
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            padding: 30px 16px;
+            background: #f2f5f1;
+            font-family: Arial, sans-serif;
+            color: #24352b;
+        }
+
+        .page {
+            max-width: 1050px;
+            margin: auto;
+        }
+
+        .top-bar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 15px;
+            margin-bottom: 25px;
+        }
+
+        .top-bar h2 {
+            margin: 0;
+            color: #24563c;
+        }
+
+        .certificate {
+            background: #fffdf6;
+            border: 8px solid #24563c;
+            outline: 2px solid #c6a75e;
+            outline-offset: -17px;
+            padding: 65px 35px;
+            text-align: center;
+            box-shadow: 0 12px 35px rgba(0, 0, 0, 0.12);
+        }
+
+        .brand {
+            color: #24563c;
+            font-size: 38px;
+            font-weight: bold;
+            letter-spacing: 5px;
+        }
+
+        .subtitle {
+            margin-top: 18px;
+            color: #b18b35;
+            font-size: 23px;
+            font-weight: bold;
+            letter-spacing: 2px;
+        }
+
+        .presented {
+            margin-top: 45px;
+            font-size: 17px;
+        }
+
+        .customer-name {
+            margin: 22px 0;
+            color: #24563c;
+            font-family: Georgia, serif;
+            font-size: 36px;
+            overflow-wrap: anywhere;
+        }
+
+        .description {
+            font-size: 17px;
+            line-height: 1.8;
+        }
+
+        .workshop-name {
+            margin: 20px 0;
+            font-size: 25px;
+            font-weight: bold;
+            color: #9b7626;
+            overflow-wrap: anywhere;
+        }
+
+        .details {
+            margin-top: 30px;
+            line-height: 1.9;
+            font-size: 15px;
+        }
+
+        .actions {
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+            gap: 14px;
+            margin-top: 30px;
+        }
+
+        .btn {
+            display: inline-block;
+            padding: 13px 24px;
+            border-radius: 7px;
+            text-decoration: none;
+            border: none;
+            font-size: 15px;
+            font-weight: bold;
+            cursor: pointer;
+        }
+
+        .btn-download {
+            color: white;
+            background: #24563c;
+        }
+
+        .btn-back {
+            color: #24563c;
+            background: white;
+            border: 1px solid #24563c;
+        }
+
+        .btn:hover {
+            opacity: 0.88;
+        }
+
+        @media (max-width: 600px) {
+            body {
+                padding: 20px 10px;
+            }
+
+            .certificate {
+                padding: 55px 22px;
+            }
+
+            .brand {
+                font-size: 28px;
+            }
+
+            .subtitle {
+                font-size: 18px;
+            }
+
+            .customer-name {
+                font-size: 27px;
+            }
+
+            .workshop-name {
+                font-size: 21px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+<div class="page">
+
+    <div class="top-bar">
+        <h2>My Workshop Certificate</h2>
+        <a th:href="@{/customer-dashboard}"
+           class="btn btn-back">
+            Back to Dashboard
+        </a>
+    </div>
+
+    <div class="certificate">
+
+        <div class="brand">CRAFTORA</div>
+
+        <div class="subtitle">
+            CERTIFICATE OF PARTICIPATION
+        </div>
+
+        <p class="presented">
+            This certificate is proudly presented to
+        </p>
+
+        <h1 class="customer-name"
+            th:text="${customer.fullName}">
+            Customer Name
+        </h1>
+
+        <p class="description">
+            for successfully attending the workshop
+        </p>
+
+        <div class="workshop-name"
+             th:text="${workshop.eventTitle}">
+            Workshop Name
+        </div>
+
+        <div class="details">
+            <p>
+                <strong>Workshop Date:</strong>
+                <span th:text="${workshop.eventDate}">
+                    Workshop Date
+                </span>
+            </p>
+
+            <p>
+                Thank you for participating in Craftora.
+            </p>
+        </div>
+
+    </div>
+
+    <div class="actions">
+
+        <a th:href="@{/customer/workshop-certificate/{id}/download(id=${registration.registrationId})}"
+           class="btn btn-download">
+             Download Certificate
+        </a>
+
+        <a th:href="@{/customer-dashboard}"
+           class="btn btn-back">
+            Back to Dashboard
+        </a>
+
+    </div>
+
+</div>
+
+</body>
+</html>

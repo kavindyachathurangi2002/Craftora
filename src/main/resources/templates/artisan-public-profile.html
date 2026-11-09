@@ -1,0 +1,241 @@
+
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Artisan Profile - Craftora</title>
+
+    <link rel="stylesheet" href="/css/style.css">
+
+    <style>
+        .public-profile-section {
+            max-width: 1100px;
+            margin: 60px auto;
+            padding: 20px;
+        }
+
+        .public-profile-card {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 35px;
+            background: #fff;
+            padding: 35px;
+            border-radius: 18px;
+            box-shadow: 0 5px 25px rgba(0,0,0,0.08);
+        }
+
+        .public-profile-image {
+            flex: 1 1 300px;
+            max-width: 400px;
+        }
+
+        .public-profile-image img {
+            width: 100%;
+            height: 400px;
+            object-fit: cover;
+            border-radius: 15px;
+        }
+
+        .public-profile-placeholder {
+            width: 100%;
+            height: 400px;
+            background: #f3eee7;
+            border-radius: 15px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 80px;
+        }
+
+        .public-profile-details {
+            flex: 1 1 350px;
+        }
+
+        .public-profile-details h1 {
+            margin: 15px 0;
+            color: #3d2b1f;
+        }
+
+        .public-profile-details p {
+            margin: 15px 0;
+            line-height: 1.7;
+            color: #555;
+        }
+
+        .profile-label {
+            font-weight: bold;
+            color: #8b5e3c;
+        }
+
+        .profile-back-btn {
+            display: inline-block;
+            margin-top: 25px;
+            padding: 12px 25px;
+            background: #8b5e3c;
+            color: white;
+            text-decoration: none;
+            border-radius: 8px;
+        }
+
+        .profile-back-btn:hover {
+            background: #6d452b;
+        }
+
+        @media (max-width: 768px) {
+            .public-profile-card {
+                padding: 20px;
+            }
+
+            .public-profile-image img,
+            .public-profile-placeholder {
+                height: 300px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+<nav class="navbar">
+
+    <div class="logo">
+        <a href="/">
+            <img src="/images/craftora-logo.png" alt="Craftora Logo">
+        </a>
+    </div>
+
+    <div class="nav-links">
+        <a href="/">Home</a>
+        <a href="/about-us">About Us</a>
+
+        <div class="dropdown">
+            <a href="#">Events ▾</a>
+            <div class="dropdown-menu">
+                <a href="/workshops">Workshops</a>
+                <a href="/exhibitions">Exhibitions</a>
+                <a href="/competitions">Competitions</a>
+            </div>
+        </div>
+
+        <a href="/marketplace">Marketplace</a>
+        <a href="/ratings">Ratings</a>
+        <a href="/contact">Contact Us</a>
+    </div>
+
+    <div class="sign-in">
+        <a href="/login">Sign In</a>
+    </div>
+
+</nav>
+
+
+<section class="public-profile-section">
+
+    <div class="public-profile-card">
+
+        <!-- Profile Image -->
+        <div class="public-profile-image">
+
+            <img th:if="${artisan.profileImage != null
+                         and !artisan.profileImage.isEmpty()}"
+                 th:src="${artisan.profileImage}"
+                 th:alt="${artisan.user.fullName}">
+
+            <div th:unless="${artisan.profileImage != null
+                             and !artisan.profileImage.isEmpty()}"
+                 class="public-profile-placeholder">
+                👤
+            </div>
+
+        </div>
+
+
+        <!-- Profile Details -->
+        <div class="public-profile-details">
+
+            <span class="craft-badge"
+                  th:text="${artisan.craftType}">
+                Craft Type
+            </span>
+
+            <h1 th:text="${artisan.user.fullName}">
+                Artisan Name
+            </h1>
+
+            <p>
+                <span class="profile-label">Email:</span>
+                <span th:text="${artisan.user.email}">Email</span>
+            </p>
+
+            <p>
+                <span class="profile-label">Craft Type:</span>
+                <span th:text="${artisan.craftType}">Craft Type</span>
+            </p>
+
+            <p>
+                <span class="profile-label">Specialization:</span>
+                <span th:text="${artisan.craftSpecialization != null
+                                and !artisan.craftSpecialization.isEmpty()
+                                ? artisan.craftSpecialization : 'Not specified'}">
+                    Specialization
+                </span>
+            </p>
+
+            <p>
+                <span class="profile-label">Contact Number:</span>
+                <span th:text="${artisan.contactNumber != null
+                                and !artisan.contactNumber.isEmpty()
+                                ? artisan.contactNumber : 'Not provided'}">
+                    Contact Number
+                </span>
+            </p>
+
+            <p>
+                <span class="profile-label">Location:</span>
+                <span th:text="${artisan.location != null
+                                and !artisan.location.isEmpty()
+                                ? artisan.location : 'Not provided'}">
+                    Location
+                </span>
+            </p>
+
+            <p>
+                <span class="profile-label">Years of Experience:</span>
+                <span th:text="${artisan.yearsOfExperience != null
+                                ? artisan.yearsOfExperience : 'Not specified'}">
+                    Experience
+                </span>
+            </p>
+
+            <p>
+                <span class="profile-label">About the Artisan:</span>
+            </p>
+
+            <p th:text="${artisan.bio != null
+                         and !artisan.bio.isEmpty()
+                         ? artisan.bio : 'No description available.'}">
+                Artisan description
+            </p>
+
+            <a href="/all-artisans" class="profile-back-btn">
+                ← Back to Artisans
+            </a>
+
+        </div>
+
+    </div>
+
+</section>
+
+
+<footer class="site-footer">
+    <div class="footer-bottom">
+        <p>© 2026 Craftora Project. All Rights Reserved.</p>
+    </div>
+</footer>
+
+</body>
+</html>

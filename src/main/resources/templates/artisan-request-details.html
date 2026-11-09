@@ -1,0 +1,1000 @@
+<!DOCTYPE html>
+<html lang="en"
+      xmlns:th="http://www.thymeleaf.org">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
+
+    <title>Artisan Request Details | Craftora</title>
+
+
+    <style>
+
+        * {
+            box-sizing: border-box;
+        }
+
+
+        body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+            background: #F4E8D3;
+            color: #333;
+        }
+
+
+        /* ==============================
+           Navigation Bar
+           ============================== */
+
+        .navbar {
+            background: #123B29;
+            color: white;
+            padding: 12px 35px;
+
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+
+            min-height: 80px;
+        }
+
+
+        /* ==============================
+           Craftora Logo
+           ============================== */
+
+        .logo {
+            display: flex;
+            align-items: center;
+        }
+
+
+        .craftora-logo {
+            height: 62px;
+            width: auto;
+            display: block;
+            object-fit: contain;
+
+            border-radius: 12px;
+        }
+
+
+        /* ==============================
+           Navigation Links
+           ============================== */
+
+        .nav-links {
+            display: flex;
+            gap: 22px;
+            align-items: center;
+        }
+
+
+        .nav-links a {
+            color: white;
+            text-decoration: none;
+            font-size: 14px;
+            font-weight: 500;
+        }
+
+        /* Current page */
+        .nav-links a.active {
+            color: #D6B36A;
+        }
+
+
+        .nav-links a:hover {
+            color: #C98A2E;
+        }
+
+
+        /* ==============================
+           Main Container
+           ============================== */
+
+        .container {
+            max-width: 1100px;
+            margin: 40px auto;
+            padding: 0 25px;
+        }
+
+
+        /* ==============================
+           Page Header
+           ============================== */
+
+        .page-header {
+            margin-bottom: 25px;
+        }
+
+
+        .page-header h1 {
+            color: #123B29;
+            margin-bottom: 8px;
+        }
+
+
+        .page-header p {
+            color: #666;
+        }
+
+
+        /* ==============================
+           Back Button
+           ============================== */
+
+        .back-button {
+            display: inline-block;
+
+            margin-bottom: 20px;
+
+            /* Move slightly to the left */
+            margin-left: -20px;
+
+            color: #123B29;
+            text-decoration: none;
+            font-weight: bold;
+
+            cursor: pointer;
+        }
+
+
+        .back-button:hover {
+            color: #C98A2E;
+        }
+
+
+        /* ==============================
+           Card
+           ============================== */
+
+        .card {
+            background: white;
+
+            border-radius: 12px;
+
+            padding: 30px;
+
+            margin-bottom: 25px;
+
+            box-shadow:
+                0 5px 15px rgba(0,0,0,0.08);
+        }
+
+
+        .card h2 {
+            color: #123B29;
+
+            margin-top: 0;
+            margin-bottom: 25px;
+        }
+
+
+        /* ==============================
+           Applicant Details
+           ============================== */
+
+        .details-grid {
+            display: grid;
+
+            grid-template-columns:
+                repeat(2, 1fr);
+
+            gap: 20px;
+        }
+
+
+        .detail-box {
+            background: #FAF7F1;
+
+            padding: 16px;
+
+            border-radius: 8px;
+
+            border-left:
+                4px solid #C98A2E;
+        }
+
+
+        .detail-label {
+            display: block;
+
+            color: #777;
+
+            font-size: 13px;
+
+            margin-bottom: 6px;
+        }
+
+
+        .detail-value {
+            color: #123B29;
+
+            font-size: 16px;
+
+            font-weight: bold;
+
+            word-break: break-word;
+        }
+
+
+        /* ==============================
+           Status
+           ============================== */
+
+        .status {
+            display: inline-block;
+
+            padding: 7px 15px;
+
+            border-radius: 20px;
+
+            background: #fff0c2;
+
+            color: #8a6200;
+
+            font-size: 13px;
+
+            font-weight: bold;
+        }
+
+
+        /* ==============================
+           Certificates
+           ============================== */
+
+        .certificate-list {
+            display: flex;
+
+            flex-direction: column;
+
+            gap: 12px;
+        }
+
+
+        .certificate {
+            display: flex;
+
+            align-items: center;
+
+            justify-content: space-between;
+
+            background: #FAF7F1;
+
+            padding: 15px 18px;
+
+            border-radius: 8px;
+
+            border: 1px solid #e5dccd;
+        }
+
+
+        .certificate-info {
+            display: flex;
+
+            align-items: center;
+
+            gap: 10px;
+        }
+
+
+        .certificate-number {
+            color: #777;
+
+            font-size: 13px;
+        }
+
+
+        /* ==============================
+           Certificate Link
+           ============================== */
+
+        .certificate-link {
+            color: #123B29;
+
+            font-weight: bold;
+
+            text-decoration: none;
+
+            cursor: pointer;
+        }
+
+
+        .certificate-link:hover {
+            color: #C98A2E;
+
+            text-decoration: underline;
+        }
+
+
+        .certificate-icon {
+            color: #C98A2E;
+
+            font-size: 18px;
+        }
+
+
+        /* ==============================
+           Action Section
+           ============================== */
+
+        .action-section {
+            border-top: 1px solid #ddd;
+
+            padding-top: 25px;
+
+            margin-top: 25px;
+        }
+
+
+        .action-section h3 {
+            color: #123B29;
+
+            margin-top: 0;
+        }
+
+
+        .action-buttons {
+            display: flex;
+
+            gap: 12px;
+
+            margin-top: 20px;
+        }
+
+
+        .btn {
+            border: none;
+
+            border-radius: 7px;
+
+            padding: 12px 24px;
+
+            font-size: 14px;
+
+            font-weight: bold;
+
+            cursor: pointer;
+        }
+
+
+        /* ==============================
+           Approve Button
+           ============================== */
+
+        .approve-btn {
+            background: #2e7d32;
+
+            color: white;
+        }
+
+
+        .approve-btn:hover {
+            background: #256628;
+        }
+
+
+        /* ==============================
+           Reject Button
+           ============================== */
+
+        .reject-btn {
+            background: #b3261e;
+
+            color: white;
+        }
+
+
+        .reject-btn:hover {
+            background: #91201a;
+        }
+
+
+        /* ==============================
+           Cancel Button
+           ============================== */
+
+        .cancel-btn {
+            background: #777;
+
+            color: white;
+        }
+
+
+        .cancel-btn:hover {
+            background: #5f5f5f;
+        }
+
+
+        /* ==============================
+           Reject Form
+           ============================== */
+
+        .reject-form {
+            display: none;
+
+            margin-top: 20px;
+
+            background: #fff7f7;
+
+            border: 1px solid #e5caca;
+
+            padding: 20px;
+
+            border-radius: 8px;
+        }
+
+
+        .reject-form label {
+            display: block;
+
+            margin-bottom: 8px;
+
+            color: #333;
+
+            font-weight: bold;
+        }
+
+
+        .reject-form textarea {
+            width: 100%;
+
+            min-height: 120px;
+
+            padding: 12px;
+
+            border: 1px solid #ccc;
+
+            border-radius: 7px;
+
+            font-family: Arial, sans-serif;
+
+            font-size: 14px;
+
+            resize: vertical;
+        }
+
+
+        .reject-form textarea:focus {
+            outline: none;
+
+            border-color: #123B29;
+        }
+
+
+        /* ==============================
+           Empty Certificates
+           ============================== */
+
+        .no-certificates {
+            color: #777;
+
+            background: #FAF7F1;
+
+            padding: 18px;
+
+            border-radius: 8px;
+        }
+
+
+        /* ==============================
+           Responsive
+           ============================== */
+
+        @media (max-width: 800px) {
+
+            .navbar {
+                flex-direction: column;
+
+                gap: 15px;
+
+                padding: 15px;
+            }
+
+
+            .nav-links {
+                flex-wrap: wrap;
+
+                justify-content: center;
+            }
+
+
+            .details-grid {
+                grid-template-columns: 1fr;
+            }
+
+
+            .certificate {
+                flex-direction: column;
+
+                align-items: flex-start;
+
+                gap: 10px;
+            }
+
+
+            .action-buttons {
+                flex-direction: column;
+            }
+
+
+            .btn {
+                width: 100%;
+            }
+
+
+            .back-button {
+                margin-left: 0;
+            }
+
+        }
+
+    </style>
+
+</head>
+
+
+<body>
+
+
+<!-- ==============================
+     Navigation Bar
+     ============================== -->
+
+<nav class="navbar">
+
+
+    <!-- Craftora Logo -->
+
+    <div class="logo">
+
+        <img src="/images/craftora-logo.png"
+             alt="Craftora Logo"
+             class="craftora-logo">
+
+    </div>
+
+
+
+    <!-- Navigation Links -->
+
+    <div class="nav-links">
+
+        <a href="/admin-dashboard">
+            Dashboard
+        </a>
+
+
+        <a href="/admin/manage-artisans" class="active">
+            Manage Artisan
+        </a>
+
+
+        <a href="#">
+            Manage Events
+        </a>
+
+
+        <a href="#">
+            Payments
+        </a>
+
+
+        <a href="#">
+            View Reports
+        </a>
+
+
+        <a href="#">
+            View Ratings
+        </a>
+
+    </div>
+
+</nav>
+
+
+
+<!-- ==============================
+     Main Content
+     ============================== -->
+
+<div class="container">
+
+
+    <!-- ==============================
+         Back Button
+         ============================== -->
+
+    <a href="/admin/manage-artisans"
+       class="back-button"
+       onclick="history.back(); return false;">
+
+        ← Back to Manage Artisan
+
+    </a>
+
+
+
+    <!-- ==============================
+         Page Header
+         ============================== -->
+
+    <div class="page-header">
+
+        <h1>
+            Artisan Application Details
+        </h1>
+
+
+        <p>
+            Review the artisan's information and certificates
+            before making a decision.
+        </p>
+
+    </div>
+
+
+
+    <!-- ==============================
+         Applicant Information
+         ============================== -->
+
+    <div class="card">
+
+        <h2>
+            Applicant Information
+        </h2>
+
+
+        <div class="details-grid">
+
+
+            <!-- First Name -->
+
+            <div class="detail-box">
+
+                <span class="detail-label">
+                    First Name
+                </span>
+
+
+                <span class="detail-value"
+                      th:text="${request.firstName}">
+
+                </span>
+
+            </div>
+
+
+
+            <!-- Last Name -->
+
+            <div class="detail-box">
+
+                <span class="detail-label">
+                    Last Name
+                </span>
+
+
+                <span class="detail-value"
+                      th:text="${request.lastName}">
+
+                </span>
+
+            </div>
+
+
+
+            <!-- Email -->
+
+            <div class="detail-box">
+
+                <span class="detail-label">
+                    Email
+                </span>
+
+
+                <span class="detail-value"
+                      th:text="${request.email}">
+
+                </span>
+
+            </div>
+
+
+
+            <!-- Contact Number -->
+
+            <div class="detail-box">
+
+                <span class="detail-label">
+                    Contact Number
+                </span>
+
+
+                <span class="detail-value"
+                      th:text="${request.contactNumber}">
+
+                </span>
+
+            </div>
+
+
+
+            <!-- User ID -->
+
+            <div class="detail-box">
+
+                <span class="detail-label">
+                    User ID
+                </span>
+
+
+                <span class="detail-value"
+                      th:text="${request.userId}">
+
+                </span>
+
+            </div>
+
+
+
+            <!-- Requested Date -->
+
+            <div class="detail-box">
+
+                <span class="detail-label">
+                    Application Date
+                </span>
+
+
+                <span class="detail-value"
+                      th:text="${request.requestedAt}">
+
+                </span>
+
+            </div>
+
+
+
+            <!-- Status -->
+
+            <div class="detail-box">
+
+                <span class="detail-label">
+                    Application Status
+                </span>
+
+
+                <span class="status"
+                      th:text="${request.status}">
+
+                </span>
+
+            </div>
+
+
+        </div>
+
+    </div>
+
+
+
+    <!-- ==============================
+         Submitted Certificates
+         ============================== -->
+
+    <div class="card">
+
+        <h2>
+            Submitted Certificates
+        </h2>
+
+
+        <div class="certificate-list">
+
+
+            <!-- Certificate -->
+
+            <div class="certificate"
+                 th:each="certificate, stat : ${certificates}">
+
+
+                <div class="certificate-info">
+
+
+                    <!-- Certificate Number -->
+
+                    <span class="certificate-number"
+                          th:text="'Certificate ' + ${stat.count} + ':'">
+
+                    </span>
+
+
+
+                    <!-- Clickable Certificate -->
+
+                    <a th:href="@{'/admin/artisan-certificate/' + ${certificate.fileName}}"
+                       target="_blank"
+                       class="certificate-link"
+                       title="Open Certificate">
+
+                        <span class="certificate-icon">
+                            📄
+                        </span>
+
+                        <span th:text="${certificate.fileName}">
+                            certificate.jpg
+                        </span>
+
+                    </a>
+
+
+                </div>
+
+            </div>
+
+
+
+            <!-- No Certificates -->
+
+            <div class="no-certificates"
+                 th:if="${#lists.isEmpty(certificates)}">
+
+                No certificates were submitted.
+
+            </div>
+
+
+        </div>
+
+    </div>
+
+
+
+    <!-- ==============================
+         Admin Action
+         ============================== -->
+
+    <div class="card">
+
+        <h2>
+            Admin Decision
+        </h2>
+
+
+        <p>
+            Please review all submitted information before
+            approving or rejecting this artisan application.
+        </p>
+
+
+
+        <div class="action-section">
+
+
+            <!-- Approve -->
+
+            <form th:action="@{/admin/artisan-request/{id}/approve(id=${request.requestId})}"
+                  method="post"
+                  style="display:inline;">
+
+                <button type="submit"
+                        class="btn approve-btn"
+                        onclick="return confirm('Are you sure you want to approve this artisan application?');">
+
+                    ✓ Approve Artisan
+
+                </button>
+
+            </form>
+
+
+
+            <!-- Reject Button -->
+
+            <button type="button"
+                    class="btn reject-btn"
+                    onclick="showRejectForm()">
+
+                ✕ Reject Artisan
+
+            </button>
+
+
+
+            <!-- Reject Form -->
+
+            <div class="reject-form"
+                 id="rejectForm">
+
+
+                <form th:action="@{/admin/artisan-request/{id}/reject(id=${request.requestId})}"
+                      method="post">
+
+
+                    <label for="adminNote">
+                        Reason for Rejection
+                    </label>
+
+
+                    <textarea id="adminNote"
+                              name="adminNote"
+                              placeholder="Enter the reason for rejecting this application..."
+                              required></textarea>
+
+
+
+                    <div class="action-buttons">
+
+
+                        <button type="submit"
+                                class="btn reject-btn"
+                                onclick="return confirm('Are you sure you want to reject this artisan application?');">
+
+                            Confirm Rejection
+
+                        </button>
+
+
+
+                        <button type="button"
+                                class="btn cancel-btn"
+                                onclick="hideRejectForm()">
+
+                            Cancel
+
+                        </button>
+
+
+                    </div>
+
+                </form>
+
+            </div>
+
+
+        </div>
+
+    </div>
+
+
+</div>
+
+
+
+<!-- ==============================
+     JavaScript
+     ============================== -->
+
+<script>
+
+
+    function showRejectForm() {
+
+        document.getElementById("rejectForm")
+                .style.display = "block";
+
+    }
+
+
+    function hideRejectForm() {
+
+        document.getElementById("rejectForm")
+                .style.display = "none";
+
+    }
+
+
+</script>
+
+
+</body>
+
+</html>

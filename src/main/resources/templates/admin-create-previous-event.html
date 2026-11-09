@@ -1,0 +1,511 @@
+
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Add Previous Event</title>
+
+    <style>
+        :root {
+            --primary: #103d2b;
+            --primary-dark: #174d37;
+            --gold: #d6b36a;
+            --cream: #f8f4ec;
+            --text: #26352d;
+            --muted: #777777;
+            --border: #d8ded8;
+            --white: #ffffff;
+        }
+
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            font-family: Arial, Helvetica, sans-serif;
+            background: var(--cream);
+            color: var(--text);
+        }
+
+        /* Green header without the Craftora name */
+        .page-header {
+            background: var(--primary);
+            min-height: 80px;
+            border-bottom: 3px solid var(--gold);
+            padding: 22px 6%;
+            display: flex;
+            justify-content: flex-end;
+            align-items: center;
+        }
+
+        .header-label {
+            color: var(--white);
+            font-size: 14px;
+        }
+
+        /* Main form */
+        .page-content {
+            width: 100%;
+            max-width: 1000px;
+            margin: 35px auto;
+            padding: 0 20px;
+        }
+
+        .page-title {
+            color: var(--primary);
+            font-size: 30px;
+            margin: 0 0 10px;
+        }
+
+        .page-description {
+            color: var(--muted);
+            line-height: 1.7;
+            margin-bottom: 25px;
+        }
+
+        .form-card {
+            background: var(--white);
+            border-radius: 12px;
+            overflow: hidden;
+            border: 1px solid #e5e3db;
+            box-shadow: 0 5px 22px rgba(16, 61, 43, 0.09);
+        }
+
+        .form-card-header {
+            background: var(--primary);
+            color: var(--white);
+            padding: 20px 28px;
+            font-size: 19px;
+            font-weight: bold;
+            border-bottom: 3px solid var(--gold);
+        }
+
+        .form-card-body {
+            padding: 30px;
+        }
+
+        .section-title {
+            color: var(--primary);
+            font-size: 18px;
+            margin: 0 0 22px;
+            padding-bottom: 12px;
+            border-bottom: 1px solid #e5e8e3;
+        }
+
+        .form-group {
+            margin-bottom: 22px;
+        }
+
+        .form-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 22px;
+        }
+
+        label {
+            display: block;
+            font-weight: 600;
+            font-size: 14px;
+            margin-bottom: 9px;
+            color: var(--primary);
+        }
+
+        .required {
+            color: #c0392b;
+        }
+
+        input[type="text"],
+        input[type="date"],
+        input[type="file"],
+        select,
+        textarea {
+            display: block;
+            width: 100%;
+            padding: 13px 14px;
+            font-size: 15px;
+            font-family: inherit;
+            color: var(--text);
+            background: var(--white);
+            border: 1px solid var(--border);
+            border-radius: 7px;
+            outline: none;
+            transition: border-color 0.2s, box-shadow 0.2s;
+        }
+
+        input:focus,
+        select:focus,
+        textarea:focus {
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px rgba(16, 61, 43, 0.12);
+        }
+
+        textarea {
+            min-height: 125px;
+            resize: vertical;
+            line-height: 1.6;
+        }
+
+        .help-text {
+            display: block;
+            margin-top: 7px;
+            color: var(--muted);
+            font-size: 12px;
+            line-height: 1.5;
+        }
+
+        /* Image upload */
+        .image-upload-box {
+            border: 2px dashed #aabcae;
+            border-radius: 9px;
+            background: #f7faf7;
+            padding: 24px;
+            text-align: center;
+        }
+
+        .image-icon {
+            font-size: 34px;
+            margin-bottom: 8px;
+            color: var(--primary);
+        }
+
+        .image-title {
+            font-weight: 600;
+            color: var(--primary);
+            margin-bottom: 8px;
+        }
+
+        .image-preview {
+            display: none;
+            max-width: 100%;
+            max-height: 280px;
+            object-fit: contain;
+            margin: 18px auto 0;
+            border-radius: 8px;
+        }
+
+        /* Messages */
+        .message {
+            padding: 13px 16px;
+            margin-bottom: 20px;
+            border-radius: 7px;
+            line-height: 1.5;
+            font-size: 14px;
+        }
+
+        .success-message {
+            background: #e5f5e9;
+            color: #216b35;
+        }
+
+        .error-message {
+            background: #fde8e7;
+            color: #a12622;
+        }
+
+        /* Buttons */
+        .form-actions {
+            display: flex;
+            align-items: center;
+            justify-content: flex-end;
+            flex-wrap: wrap;
+            gap: 14px;
+            margin-top: 30px;
+            padding-top: 24px;
+            border-top: 1px solid #e5e8e3;
+        }
+
+        .btn {
+            display: inline-block;
+            padding: 13px 23px;
+            border-radius: 7px;
+            font-size: 14px;
+            font-weight: 600;
+            text-decoration: none;
+            text-align: center;
+            cursor: pointer;
+            transition: background 0.2s;
+        }
+
+        .btn-primary {
+            background: var(--primary);
+            color: var(--white);
+            border: 1px solid var(--primary);
+        }
+
+        .btn-primary:hover {
+            background: var(--primary-dark);
+            color: var(--gold);
+        }
+
+        .btn-secondary {
+            background: var(--white);
+            color: var(--primary);
+            border: 1px solid var(--primary);
+        }
+
+        .btn-secondary:hover {
+            background: #edf3ee;
+        }
+
+        .page-footer {
+            text-align: center;
+            padding: 22px 15px;
+            color: var(--muted);
+            font-size: 12px;
+        }
+
+        @media (max-width: 600px) {
+            .page-header {
+                padding: 18px 20px;
+            }
+
+            .page-content {
+                margin: 22px auto;
+                padding: 0 12px;
+            }
+
+            .form-card-body {
+                padding: 22px 17px;
+            }
+
+            .page-title {
+                font-size: 25px;
+            }
+
+            .form-row {
+                grid-template-columns: 1fr;
+                gap: 0;
+            }
+
+            .form-actions {
+                flex-direction: column;
+                align-items: stretch;
+            }
+
+            .btn {
+                width: 100%;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+<header class="page-header">
+    <span class="header-label">Admin Panel / Previous Events</span>
+</header>
+
+<main class="page-content">
+
+    <h1 class="page-title">Add Previous Event</h1>
+
+    <p class="page-description">
+        Add completed workshops, exhibitions and competitions
+        to the public website.
+    </p>
+
+    <div th:if="${successMessage}"
+         class="message success-message"
+         th:text="${successMessage}">
+    </div>
+
+    <div th:if="${errorMessage}"
+         class="message error-message"
+         th:text="${errorMessage}">
+    </div>
+
+    <div class="form-card">
+
+        <div class="form-card-header">
+            &#128197; Previous Event Details
+        </div>
+
+        <div class="form-card-body">
+
+            <form th:action="@{/admin/previous-events/save}"
+                  th:object="${previousEvent}"
+                  method="post"
+                  enctype="multipart/form-data"
+                  id="previousEventForm">
+
+                <h2 class="section-title">Event Information</h2>
+
+                <div class="form-row">
+
+                    <div class="form-group">
+                        <label for="eventType">
+                            Event Type <span class="required">*</span>
+                        </label>
+
+                        <select id="eventType"
+                                th:field="*{eventType}"
+                                required>
+                            <option value="">-- Select Event Type --</option>
+                            <option value="WORKSHOP">Workshop</option>
+                            <option value="EXHIBITION">Exhibition</option>
+                            <option value="COMPETITION">Competition</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="eventDate">
+                            Event Date <span class="required">*</span>
+                        </label>
+
+                        <input type="date"
+                               id="eventDate"
+                               th:field="*{eventDate}"
+                               required>
+
+                        <small class="help-text">
+                            Select a date before today.
+                        </small>
+                    </div>
+
+                </div>
+
+                <div class="form-group">
+                    <label for="eventTitle">
+                        Event Title <span class="required">*</span>
+                    </label>
+
+                    <input type="text"
+                           id="eventTitle"
+                           th:field="*{eventTitle}"
+                           maxlength="255"
+                           placeholder="Enter the event title"
+                           required>
+                </div>
+
+                <div class="form-group">
+                    <label for="description">Event Description</label>
+
+                    <textarea id="description"
+                              th:field="*{description}"
+                              placeholder="Describe the event, activities and highlights..."></textarea>
+                </div>
+
+                <div class="form-group">
+                    <label for="location">Event Location</label>
+
+                    <input type="text"
+                           id="location"
+                           th:field="*{location}"
+                           maxlength="255"
+                           placeholder="Enter the event location">
+                </div>
+
+                <h2 class="section-title">Event Image</h2>
+
+                <div class="form-group">
+                    <label for="eventImageFile">Upload Event Photo</label>
+
+                    <div class="image-upload-box">
+
+                        <div class="image-icon">&#128247;</div>
+
+                        <div class="image-title">
+                            Choose an image for your previous event
+                        </div>
+
+                        <small class="help-text">
+                            Please select a valid image file.
+                        </small>
+
+                        <input type="file"
+                               id="eventImageFile"
+                               name="eventImageFile"
+                               accept="image/*">
+
+                        <img id="imagePreview"
+                             class="image-preview"
+                             alt="Selected event image preview">
+
+                    </div>
+                </div>
+
+                <div class="form-actions">
+
+                    <a th:href="@{/admin/events}"
+                       class="btn btn-secondary">
+                        Back to Admin Events
+                    </a>
+
+                    <button type="submit"
+                            class="btn btn-primary">
+                        Save Previous Event
+                    </button>
+
+                </div>
+
+            </form>
+        </div>
+    </div>
+
+</main>
+
+<footer class="page-footer">
+    Previous Events Management
+</footer>
+
+<script>
+    const imageInput = document.getElementById("eventImageFile");
+    const imagePreview = document.getElementById("imagePreview");
+    const eventDateInput = document.getElementById("eventDate");
+    const eventForm = document.getElementById("previousEventForm");
+
+    // Show selected image preview
+    imageInput.addEventListener("change", function () {
+        const file = this.files[0];
+
+        if (!file) {
+            imagePreview.style.display = "none";
+            imagePreview.removeAttribute("src");
+            return;
+        }
+
+        if (!file.type.startsWith("image/")) {
+            alert("Please select a valid image file.");
+            this.value = "";
+            imagePreview.style.display = "none";
+            imagePreview.removeAttribute("src");
+            return;
+        }
+
+        const reader = new FileReader();
+
+        reader.onload = function (event) {
+            imagePreview.src = event.target.result;
+            imagePreview.style.display = "block";
+        };
+
+        reader.readAsDataURL(file);
+    });
+
+    // Previous events must have a date before today
+    function setMaximumDate() {
+        const today = new Date();
+        const year = today.getFullYear();
+        const month = String(today.getMonth() + 1).padStart(2, "0");
+        const day = String(today.getDate()).padStart(2, "0");
+
+        eventDateInput.max = `${year}-${month}-${day}`;
+    }
+
+    setMaximumDate();
+
+    eventForm.addEventListener("submit", function (event) {
+        if (!eventDateInput.value ||
+            eventDateInput.value >= eventDateInput.max) {
+            event.preventDefault();
+            alert("Please select a date before today for a previous event.");
+            eventDateInput.focus();
+        }
+    });
+</script>
+
+</body>
+</html>

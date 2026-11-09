@@ -1,0 +1,2072 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
+
+    <title>Artisan Profile | Craftora</title>
+
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+
+
+    <style>
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: "Segoe UI", Arial, sans-serif;
+        }
+
+
+        body {
+            background: #f7f4eb;
+            color: #234b3b;
+            min-height: 100vh;
+        }
+
+
+        /* =====================================================
+           SIDEBAR
+        ===================================================== */
+
+        .sidebar {
+
+            position: fixed;
+
+            top: 0;
+            left: 0;
+
+            width: 250px;
+            height: 100vh;
+
+            background: #103d2b;
+
+            color: white;
+
+            z-index: 1000;
+
+            display: flex;
+            flex-direction: column;
+
+            box-shadow: 7px 0 25px rgba(0,0,0,0.08);
+        }
+
+
+        .logo-area {
+
+            height: 82px;
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            border-bottom: 1px solid rgba(255,255,255,0.08);
+        }
+
+
+        .logo-area a {
+
+            position: relative;
+
+            width: 188px;
+            height: 57px;
+
+            background: #fff;
+
+            border-radius: 15px;
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            text-decoration: none;
+        }
+
+
+        .logo-area img {
+
+            width: 176px;
+            height: 54px;
+
+            object-fit: contain;
+            display: block;
+        }
+
+
+        .logo-area a::before {
+
+            content: "";
+
+            position: absolute;
+
+            bottom: -5px;
+            left: 50%;
+
+            transform: translateX(-50%);
+
+            width: 40px;
+            height: 1px;
+
+            background: #d6b36a;
+        }
+
+
+        .menu {
+
+            flex: 1;
+
+            padding: 22px 14px;
+
+            overflow-y: auto;
+        }
+
+
+        .menu-label {
+
+            color: #81978c;
+
+            font-size: 10px;
+            font-weight: 700;
+
+            letter-spacing: 1.6px;
+
+            text-transform: uppercase;
+
+            margin: 0 12px 11px;
+        }
+
+
+        .menu-link {
+
+            display: flex;
+            align-items: center;
+
+            gap: 13px;
+
+            width: 100%;
+
+            padding: 12px 14px;
+
+            margin-bottom: 4px;
+
+            border-radius: 10px;
+
+            color: #d6dfda;
+
+            text-decoration: none;
+
+            font-size: 13.5px;
+            font-weight: 600;
+
+            transition: 0.2s ease;
+        }
+
+
+        .menu-link i {
+
+            width: 22px;
+
+            font-size: 17px;
+            text-align: center;
+
+            flex-shrink: 0;
+        }
+
+
+        .menu-link:hover {
+
+            background: rgba(255,255,255,0.07);
+            color: #fff;
+        }
+
+
+        .menu-link.active {
+
+            background: #d6b36a;
+
+            color: #103d2b;
+
+            font-weight: 700;
+
+            box-shadow: 0 5px 12px rgba(0,0,0,0.08);
+        }
+
+
+        .switch-link {
+
+            color: #d6b36a !important;
+
+            border: 1px solid rgba(214,179,106,0.25);
+        }
+
+
+        .switch-link:hover {
+
+            background: rgba(214,179,106,0.10);
+        }
+
+
+        .logout-area {
+
+            padding: 12px 14px 20px;
+
+            border-top: 1px solid rgba(255,255,255,0.08);
+        }
+
+
+        .logout {
+
+            color: #ffdede !important;
+        }
+
+
+        /* =====================================================
+           MAIN
+        ===================================================== */
+
+        .main {
+
+            margin-left: 250px;
+
+            min-height: 100vh;
+        }
+
+
+        /* =====================================================
+           TOP BAR
+        ===================================================== */
+
+        .topbar {
+
+            height: 76px;
+
+            background: white;
+
+            border-bottom: 1px solid #e7dfcc;
+
+            display: flex;
+
+            align-items: center;
+
+            justify-content: space-between;
+
+            padding: 0 38px;
+        }
+
+
+        .page-title {
+
+            color: #164d3b;
+
+            font-size: 24px;
+
+            font-weight: 700;
+        }
+
+
+        .top-right {
+
+            display: flex;
+
+            align-items: center;
+
+            gap: 18px;
+        }
+
+
+        /* Notification */
+
+        .notification {
+
+            width: 44px;
+
+            height: 44px;
+
+            border-radius: 50%;
+
+            background: #f5f0e3;
+
+            display: flex;
+
+            align-items: center;
+
+            justify-content: center;
+
+            font-size: 18px;
+
+            position: relative;
+        }
+
+
+        .notification::after {
+
+            content: "";
+
+            position: absolute;
+
+            width: 6px;
+
+            height: 6px;
+
+            background: #d9b762;
+
+            border-radius: 50%;
+
+            top: 9px;
+
+            right: 9px;
+        }
+
+
+        /* User */
+
+        .user-info {
+
+            display: flex;
+
+            align-items: center;
+
+            gap: 11px;
+        }
+
+
+        .user-avatar {
+
+            width: 46px;
+
+            height: 46px;
+
+            border-radius: 50%;
+
+            background: #d9b762;
+
+            color: #174a38;
+
+            display: flex;
+
+            align-items: center;
+
+            justify-content: center;
+
+            font-size: 18px;
+
+            font-weight: 700;
+        }
+
+
+        .user-name {
+
+            color: #173f32;
+
+            font-size: 14px;
+
+            font-weight: 600;
+        }
+
+
+        .user-role {
+
+            display: block;
+
+            color: #929292;
+
+            font-size: 11px;
+
+            margin-top: 2px;
+        }
+
+
+        /* =====================================================
+           CONTENT
+        ===================================================== */
+
+        .content {
+
+            padding: 34px 38px 50px;
+        }
+
+
+        .back-link {
+
+            display: inline-flex;
+
+            align-items: center;
+
+            gap: 7px;
+
+            color: #667d72;
+
+            text-decoration: none;
+
+            font-size: 14px;
+
+            margin-bottom: 19px;
+        }
+
+
+        .back-link:hover {
+
+            color: #164d3b;
+        }
+
+
+        .intro {
+
+            margin-bottom: 24px;
+        }
+
+
+        .intro h1 {
+
+            color: #164d3b;
+
+            font-size: 30px;
+
+            margin-bottom: 7px;
+        }
+
+
+        .intro p {
+
+            color: #718278;
+
+            font-size: 14px;
+        }
+
+
+        /* =====================================================
+           ALERTS
+        ===================================================== */
+
+        .alert {
+
+            padding: 14px 18px;
+
+            border-radius: 10px;
+
+            margin-bottom: 20px;
+
+            font-size: 14px;
+        }
+
+
+        .success {
+
+            background: #e8f5ed;
+
+            color: #28734c;
+
+            border: 1px solid #b9dec7;
+        }
+
+
+        .error {
+
+            background: #fdeaea;
+
+            color: #a33a3a;
+
+            border: 1px solid #efbcbc;
+        }
+
+
+        /* =====================================================
+           PROFILE HEADER
+        ===================================================== */
+
+        .profile-header {
+
+            background: white;
+
+            border-radius: 17px;
+
+            padding: 27px 30px;
+
+            display: flex;
+
+            align-items: center;
+
+            gap: 25px;
+
+            margin-bottom: 25px;
+
+            border: 1px solid #e8dfca;
+
+            box-shadow: 0 5px 18px rgba(44,66,55,0.06);
+        }
+
+
+        /* =====================================================
+           PROFILE IMAGE
+        ===================================================== */
+
+        .profile-picture-wrapper {
+
+            position: relative;
+
+            width: 125px;
+
+            height: 125px;
+
+            flex-shrink: 0;
+        }
+
+
+        .profile-picture {
+
+            width: 125px;
+
+            height: 125px;
+
+            border-radius: 50%;
+
+            object-fit: cover;
+
+            border: 4px solid #d9b762;
+
+            background: #edf4ee;
+
+            display: block;
+        }
+
+
+        .default-profile {
+
+            width: 125px;
+
+            height: 125px;
+
+            border-radius: 50%;
+
+            background: #d9b762;
+
+            border: 4px solid #d9b762;
+
+            display: flex;
+
+            align-items: center;
+
+            justify-content: center;
+
+            color: #174b3a;
+
+            font-size: 48px;
+
+            font-weight: 700;
+        }
+
+
+        /* Camera button */
+
+        .camera-label {
+
+            position: absolute;
+
+            right: -3px;
+
+            bottom: 1px;
+
+            width: 39px;
+
+            height: 39px;
+
+            border-radius: 50%;
+
+            background: white;
+
+            color: #174b3a;
+
+            display: flex;
+
+            align-items: center;
+
+            justify-content: center;
+
+            cursor: pointer;
+
+            border: 2px solid #ded9ca;
+
+            box-shadow: 0 2px 7px rgba(0,0,0,0.16);
+
+            font-size: 16px;
+        }
+
+
+        /* =====================================================
+           PROFILE HEADER INFORMATION
+        ===================================================== */
+
+        .profile-header-info h2 {
+
+            color: #164d3b;
+
+            font-size: 25px;
+
+            margin-bottom: 7px;
+        }
+
+
+        .profile-header-info p {
+
+            color: #718278;
+
+            font-size: 14px;
+
+            margin-bottom: 5px;
+        }
+
+
+        .profile-badge {
+
+            display: inline-block;
+
+            background: #f6edcf;
+
+            color: #876d19;
+
+            padding: 6px 13px;
+
+            border-radius: 20px;
+
+            font-size: 12px;
+
+            font-weight: 700;
+
+            margin-top: 5px;
+        }
+
+
+        /* =====================================================
+           CARD
+        ===================================================== */
+
+        .card {
+
+            background: white;
+
+            border-radius: 17px;
+
+            padding: 28px;
+
+            margin-bottom: 25px;
+
+            border: 1px solid #e8dfca;
+
+            box-shadow: 0 5px 18px rgba(44,66,55,0.06);
+        }
+
+
+        .card-title {
+
+            display: flex;
+
+            align-items: center;
+
+            gap: 11px;
+
+            color: #164d3b;
+
+            font-size: 19px;
+
+            font-weight: 700;
+
+            padding-bottom: 16px;
+
+            margin-bottom: 22px;
+
+            border-bottom: 1px solid #eee7d5;
+        }
+
+
+        .card-title-icon {
+
+            width: 37px;
+
+            height: 37px;
+
+            border-radius: 10px;
+
+            background: #f5edcf;
+
+            color: #174b3a;
+
+            display: flex;
+
+            align-items: center;
+
+            justify-content: center;
+
+            font-size: 18px;
+        }
+
+
+        /* =====================================================
+           FORM GRID
+        ===================================================== */
+
+        .form-grid {
+
+            display: grid;
+
+            grid-template-columns: repeat(2, 1fr);
+
+            gap: 20px;
+        }
+
+
+        .form-group {
+
+            display: flex;
+
+            flex-direction: column;
+        }
+
+
+        .form-group.full {
+
+            grid-column: 1 / -1;
+        }
+
+
+        label {
+
+            color: #43594b;
+
+            font-size: 13px;
+
+            font-weight: 600;
+
+            margin-bottom: 8px;
+        }
+
+
+        .required {
+
+            color: #c24b4b;
+        }
+
+
+        input,
+        textarea {
+
+            width: 100%;
+
+            padding: 13px 14px;
+
+            border: 1px solid #ddd6c4;
+
+            border-radius: 9px;
+
+            outline: none;
+
+            background: #fffdf8;
+
+            color: #333;
+
+            font-size: 14px;
+
+            transition: 0.2s;
+        }
+
+
+        input:focus,
+        textarea:focus {
+
+            border-color: #c7a84b;
+
+            box-shadow: 0 0 0 3px rgba(199,168,75,0.12);
+        }
+
+
+        input[readonly] {
+
+            background: #f2f0e8;
+
+            color: #777;
+
+            cursor: not-allowed;
+        }
+
+
+        textarea {
+
+            min-height: 135px;
+
+            resize: vertical;
+        }
+
+
+        .help-text {
+
+            color: #888;
+
+            font-size: 11px;
+
+            margin-top: 6px;
+        }
+
+
+        /* =====================================================
+           FILE UPLOAD
+        ===================================================== */
+
+        .upload-box {
+
+            border: 2px dashed #d8cda9;
+
+            border-radius: 12px;
+
+            padding: 18px;
+
+            background: #fffdf7;
+        }
+
+
+        .upload-box input[type="file"] {
+
+            border: none;
+
+            padding: 5px;
+
+            background: transparent;
+        }
+
+
+        /* =====================================================
+           MAP
+        ===================================================== */
+
+        .map-container {
+
+            width: 100%;
+
+            height: 330px;
+
+            border-radius: 12px;
+
+            overflow: hidden;
+
+            border: 1px solid #ddd6c4;
+
+            margin-top: 15px;
+
+            background: #f1eee4;
+        }
+
+
+        #map {
+
+            width: 100%;
+
+            height: 100%;
+        }
+
+
+        .map-note {
+
+            background: #f8f4e7;
+
+            border-left: 4px solid #c7a84b;
+
+            padding: 12px 15px;
+
+            margin-top: 15px;
+
+            border-radius: 7px;
+
+            color: #665b39;
+
+            font-size: 13px;
+        }
+
+
+        /* =====================================================
+           BUTTONS
+        ===================================================== */
+
+        .button-row {
+
+            display: flex;
+
+            justify-content: flex-end;
+
+            gap: 12px;
+
+            margin-top: 5px;
+        }
+
+
+        .btn {
+
+            border: none;
+
+            border-radius: 9px;
+
+            padding: 12px 23px;
+
+            font-size: 14px;
+
+            font-weight: 600;
+
+            cursor: pointer;
+
+            text-decoration: none;
+
+            display: inline-flex;
+
+            align-items: center;
+
+            gap: 8px;
+        }
+
+
+        .btn-cancel {
+
+            background: #eeeae0;
+
+            color: #555;
+        }
+
+
+        .btn-save {
+
+            background: #174f3b;
+
+            color: white;
+        }
+
+
+        .btn-save:hover {
+
+            background: #123d2f;
+        }
+
+
+        /* =====================================================
+           RESPONSIVE
+        ===================================================== */
+
+        @media (max-width: 1000px) {
+
+            .sidebar {
+
+                width: 250px;
+            }
+
+
+            .main {
+
+                margin-left: 250px;
+            }
+
+
+            .form-grid {
+
+                grid-template-columns: 1fr;
+            }
+
+
+            .form-group.full {
+
+                grid-column: auto;
+            }
+
+
+            .content {
+
+                padding: 25px;
+            }
+        }
+
+
+        @media (max-width: 750px) {
+
+            .sidebar {
+
+                position: relative;
+
+                width: 100%;
+
+                height: auto;
+            }
+
+
+            .menu {
+
+                display: flex;
+                flex-wrap: wrap;
+                padding: 10px;
+            }
+
+
+            .menu-label {
+
+                display: none;
+            }
+
+
+            .menu-link {
+
+                width: auto;
+                margin: 2px;
+                padding: 9px 11px;
+            }
+
+
+            .logout-area {
+
+                display: flex;
+                gap: 5px;
+                padding: 8px 10px 12px;
+            }
+
+
+            .logout-area .menu-link {
+
+                flex: 1;
+            }
+
+
+            .main {
+
+                margin-left: 0;
+            }
+
+
+            .profile-header {
+
+                flex-direction: column;
+
+                text-align: center;
+            }
+
+
+            .topbar {
+
+                padding: 0 20px;
+            }
+
+
+            .content {
+
+                padding: 20px;
+            }
+        }
+
+    </style>
+
+</head>
+
+
+<body>
+
+
+<!-- =========================================================
+     ARTISAN SIDEBAR
+========================================================= -->
+
+<aside class="sidebar">
+
+    <div class="logo-area">
+        <a href="/">
+            <img src="/images/craftora-logo.png" alt="Craftora Logo">
+        </a>
+    </div>
+
+    <div class="menu">
+
+        <div class="menu-label">
+            Main Menu
+        </div>
+
+        <a href="/artisan-dashboard" class="menu-link">
+            <i class="bi bi-grid-1x2-fill"></i>
+            <span>Dashboard</span>
+        </a>
+
+        <a href="/artisan/profile" class="menu-link active">
+            <i class="bi bi-person-circle"></i>
+            <span>Profile</span>
+        </a>
+
+        <a href="/artisan/marketplace" class="menu-link">
+            <i class="bi bi-shop-window"></i>
+            <span>Marketplace</span>
+        </a>
+
+        <a href="/artisan/orders" class="menu-link">
+            <i class="bi bi-bag-check-fill"></i>
+            <span>Orders</span>
+        </a>
+
+        <a href="/artisan/payments" class="menu-link">
+            <i class="bi bi-credit-card-fill"></i>
+            <span>Payments</span>
+        </a>
+
+        <a href="/artisan/events" class="menu-link">
+            <i class="bi bi-calendar-event-fill"></i>
+            <span>Events</span>
+        </a>
+
+    </div>
+
+    <div class="logout-area">
+
+        <div th:if="${session.userRoles != null and #lists.size(session.userRoles) > 1}">
+            <a href="/switch-account" class="menu-link switch-link">
+                <i class="bi bi-arrow-left-right"></i>
+                <span>Switch Account</span>
+            </a>
+        </div>
+
+        <a href="/logout" class="menu-link logout">
+            <i class="bi bi-box-arrow-left"></i>
+            <span>Logout</span>
+        </a>
+
+    </div>
+
+</aside>
+
+
+<main class="main">
+
+
+    <!-- =====================================================
+         TOP BAR
+    ====================================================== -->
+
+    <header class="topbar">
+
+
+        <div class="page-title">
+            Artisan Profile
+        </div>
+
+
+        <div class="top-right">
+
+
+            <!-- NOTIFICATION -->
+
+            <div class="notification">
+                🔔
+            </div>
+
+
+            <!-- USER -->
+
+            <div class="user-info">
+
+
+                <div class="user-avatar">
+
+                    <span
+                        th:text="${user != null
+                        and user.fullName != null
+                        and !user.fullName.isEmpty()
+                        ? user.fullName.substring(0,1).toUpperCase()
+                        : 'A'}">
+
+                        A
+
+                    </span>
+
+                </div>
+
+
+                <div>
+
+                    <div
+                        class="user-name"
+                        th:text="${user != null
+                        ? user.fullName
+                        : 'Artisan'}">
+
+                        Artisan
+
+                    </div>
+
+
+                    <span class="user-role">
+                        Artisan Account
+                    </span>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </header>
+
+
+
+    <!-- =====================================================
+         PAGE CONTENT
+    ====================================================== -->
+
+    <section class="content">
+
+
+        <!-- BACK -->
+
+        <a
+            href="/artisan-dashboard"
+            class="back-link">
+
+            ← Back to Dashboard
+
+        </a>
+
+
+
+        <!-- INTRO -->
+
+        <div class="intro">
+
+            <h1>
+                My Artisan Profile
+            </h1>
+
+            <p>
+                Create and manage your artisan profile.
+                Customers and administrators can view the
+                information you provide here.
+            </p>
+
+        </div>
+
+
+
+        <!-- SUCCESS MESSAGE -->
+
+        <div
+            th:if="${success}"
+            class="alert success"
+            th:text="${success}">
+
+            Profile saved successfully.
+
+        </div>
+
+
+
+        <!-- ERROR MESSAGE -->
+
+        <div
+            th:if="${error}"
+            class="alert error"
+            th:text="${error}">
+
+            Something went wrong.
+
+        </div>
+
+
+
+        <!-- =================================================
+             PROFILE HEADER
+        ================================================== -->
+
+        <div class="profile-header">
+
+
+            <!-- PROFILE IMAGE -->
+
+            <div class="profile-picture-wrapper">
+
+                <img
+                    id="profilePreview"
+                    class="profile-picture"
+                    th:src="${artisan != null and artisan.profileImage != null and artisan.profileImage != ''
+                    ? (artisan.profileImage.startsWith('/') ? artisan.profileImage : '/' + artisan.profileImage)
+                    : ''}"
+                    alt="Profile Picture"
+                    th:style="${artisan != null and artisan.profileImage != null and artisan.profileImage != ''
+                    ? 'display:block;'
+                    : 'display:none;'}">
+
+                <div
+                    id="defaultProfile"
+                    class="default-profile"
+                    th:style="${artisan != null and artisan.profileImage != null and artisan.profileImage != ''
+                    ? 'display:none;'
+                    : 'display:flex;'}">
+
+                    <span
+                        th:text="${artisanRequest != null
+                        and artisanRequest.firstName != null
+                        and !artisanRequest.firstName.isEmpty()
+                        ? artisanRequest.firstName.substring(0,1).toUpperCase()
+                        : 'A'}">
+                        A
+                    </span>
+
+                </div>
+
+                <!-- One hidden input. Selecting another image replaces the previous preview. -->
+                <input
+                    type="file"
+                    id="profileImage"
+                    name="profileImage"
+                    form="artisanProfileForm"
+                    accept="image/png,image/jpeg,image/jpg"
+                    hidden>
+
+                <label
+                    for="profileImage"
+                    class="camera-label"
+                    title="Change Profile Picture">
+                    <i class="bi bi-camera-fill"></i>
+                </label>
+
+            </div>
+
+
+            <!-- PROFILE DETAILS -->
+
+            <div class="profile-header-info">
+
+
+                <h2>
+
+
+                    <!-- APPROVED REQUEST NAME -->
+
+                    <span
+                        th:if="${artisanRequest != null}"
+                        th:text="${artisanRequest.firstName
+                        + ' '
+                        + artisanRequest.lastName}">
+
+                        Artisan Name
+
+                    </span>
+
+
+                    <!-- FALLBACK USER NAME -->
+
+                    <span
+                        th:if="${artisanRequest == null}"
+                        th:text="${user != null
+                        ? user.fullName
+                        : 'Artisan'}">
+
+                        Artisan Name
+
+                    </span>
+
+
+                </h2>
+
+
+                <!-- EMAIL -->
+
+                <p
+                    th:if="${artisanRequest != null}"
+                    th:text="${artisanRequest.email}">
+
+                    artisan@example.com
+
+                </p>
+
+
+                <p
+                    th:if="${artisanRequest == null
+                    and user != null}"
+                    th:text="${user.email}">
+
+                    artisan@example.com
+
+                </p>
+
+
+                <!-- CRAFT TYPE -->
+
+                <p
+                    th:if="${artisan != null
+                    and artisan.craftType != null
+                    and artisan.craftType != ''}"
+                    th:text="${artisan.craftType}">
+
+                    Craft Type
+
+                </p>
+
+
+                <span class="profile-badge">
+
+                    ARTISAN
+
+                </span>
+
+            </div>
+
+        </div>
+
+
+
+        <!-- =================================================
+             PROFILE FORM
+        ================================================== -->
+
+        <form
+            id="artisanProfileForm"
+            action="/artisan/profile/save"
+            method="post"
+            enctype="multipart/form-data">
+
+
+            <!-- =================================================
+                 PERSONAL INFORMATION
+            ================================================== -->
+
+            <div class="card">
+
+
+                <div class="card-title">
+
+
+                    <div class="card-title-icon">
+                        👤
+                    </div>
+
+
+                    Personal Information
+
+                </div>
+
+
+                <div class="form-grid">
+
+
+                    <!-- FIRST NAME -->
+
+                    <div class="form-group">
+
+
+                        <label>
+                            First Name
+                        </label>
+
+
+                        <input
+                            type="text"
+                            th:value="${artisanRequest != null
+                            ? artisanRequest.firstName
+                            : ''}"
+                            readonly>
+
+
+                        <span class="help-text">
+
+                            Taken from your approved artisan
+                            registration.
+
+                        </span>
+
+                    </div>
+
+
+
+                    <!-- LAST NAME -->
+
+                    <div class="form-group">
+
+
+                        <label>
+                            Last Name
+                        </label>
+
+
+                        <input
+                            type="text"
+                            th:value="${artisanRequest != null
+                            ? artisanRequest.lastName
+                            : ''}"
+                            readonly>
+
+
+                        <span class="help-text">
+
+                            Taken from your approved artisan
+                            registration.
+
+                        </span>
+
+                    </div>
+
+
+
+                    <!-- EMAIL -->
+
+                    <div class="form-group">
+
+
+                        <label>
+                            Email
+                        </label>
+
+
+                        <input
+                            type="email"
+                            th:value="${artisanRequest != null
+                            ? artisanRequest.email
+                            : (user != null
+                            ? user.email
+                            : '')}"
+                            readonly>
+
+
+                        <span class="help-text">
+
+                            Email address cannot be changed here.
+
+                        </span>
+
+                    </div>
+
+
+
+                    <!-- CONTACT NUMBER -->
+
+                    <div class="form-group">
+
+
+                        <label>
+                            Contact Number
+                        </label>
+
+
+                        <input
+                            type="text"
+                            name="contactNumber"
+                            th:value="${artisan != null
+                            and artisan.contactNumber != null
+                            and artisan.contactNumber != ''
+                            ? artisan.contactNumber
+                            : (artisanRequest != null
+                            ? artisanRequest.contactNumber
+                            : '')}"
+                            placeholder="Enter your contact number">
+
+
+                    </div>
+
+
+
+                </div>
+
+            </div>
+
+
+
+            <!-- =================================================
+                 CRAFT INFORMATION
+            ================================================== -->
+
+            <div class="card">
+
+
+                <div class="card-title">
+
+
+                    <div class="card-title-icon">
+                        🎨
+                    </div>
+
+
+                    Craft Information
+
+                </div>
+
+
+                <div class="form-grid">
+
+
+                    <!-- CRAFT TYPE -->
+
+                    <div class="form-group full">
+
+
+                        <label>
+
+                            Craft Type
+
+                            <span class="required">
+                                *
+                            </span>
+
+                        </label>
+
+
+                        <input
+                            type="text"
+                            name="craftType"
+                            th:value="${artisan != null
+                            ? artisan.craftType
+                            : ''}"
+                            placeholder="Example: Pottery, Wood Carving, Handloom"
+                            required>
+
+                    </div>
+
+
+
+                    <!-- DESCRIPTION -->
+
+                    <div class="form-group full">
+
+
+                        <label>
+                            Description
+                        </label>
+
+
+                        <textarea
+                            name="bio"
+                            placeholder="Tell customers about yourself, your craft, your experience and the handmade products you create..."
+                            th:text="${artisan != null
+                            ? artisan.bio
+                            : ''}"></textarea>
+
+
+                        <span class="help-text">
+
+                            This description will be visible
+                            to customers and administrators.
+
+                        </span>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+
+
+            <!-- =================================================
+                 LOCATION
+            ================================================== -->
+
+            <div class="card">
+
+
+                <div class="card-title">
+
+
+                    <div class="card-title-icon">
+                        📍
+                    </div>
+
+
+                    Location
+
+                </div>
+
+
+                <div class="form-grid">
+
+
+                    <!-- LOCATION -->
+
+                    <div class="form-group full">
+
+
+                        <label>
+                            Location
+                        </label>
+
+
+                        <input
+                            type="text"
+                            id="location"
+                            name="location"
+                            th:value="${artisan != null
+                            ? artisan.location
+                            : ''}"
+                            placeholder="Example: Pambahinna, Sri Lanka">
+
+                    </div>
+
+
+
+                    <!-- LATITUDE -->
+
+                    <div class="form-group">
+
+
+                        <label>
+                            Latitude
+                        </label>
+
+
+                        <input
+                            type="number"
+                            step="any"
+                            id="latitude"
+                            name="latitude"
+                            th:value="${artisan != null
+                            ? artisan.latitude
+                            : ''}"
+                            placeholder="Example: 6.7128">
+
+                    </div>
+
+
+
+                    <!-- LONGITUDE -->
+
+                    <div class="form-group">
+
+
+                        <label>
+                            Longitude
+                        </label>
+
+
+                        <input
+                            type="number"
+                            step="any"
+                            id="longitude"
+                            name="longitude"
+                            th:value="${artisan != null
+                            ? artisan.longitude
+                            : ''}"
+                            placeholder="Example: 80.7894">
+
+                    </div>
+
+                </div>
+
+
+
+                <!-- MAP NOTE -->
+
+                <div class="map-note">
+
+                    📍 Enter your location and
+                    latitude/longitude.
+                    Customers can later use this information
+                    to find your location.
+
+                </div>
+
+
+
+                <!-- MAP -->
+
+                <div class="map-container">
+
+                    <div id="map">
+
+                    </div>
+
+                </div>
+
+            </div>
+
+
+
+
+            <!-- =================================================
+                 SOCIAL MEDIA
+            ================================================== -->
+
+            <div class="card">
+
+                <div class="card-title">
+
+                    <div class="card-title-icon">
+                        🌐
+                    </div>
+
+                    Social Media & Website
+
+                </div>
+
+                <div class="form-grid">
+
+                    <div class="form-group">
+
+                        <label>
+                            Facebook
+                        </label>
+
+                        <input
+                            type="url"
+                            name="facebook"
+                            th:value="${artisan != null
+                            ? artisan.facebook
+                            : ''}"
+                            placeholder="https://facebook.com/...">
+
+                    </div>
+
+                    <div class="form-group">
+
+                        <label>
+                            Instagram
+                        </label>
+
+                        <input
+                            type="url"
+                            name="instagram"
+                            th:value="${artisan != null
+                            ? artisan.instagram
+                            : ''}"
+                            placeholder="https://instagram.com/...">
+
+                    </div>
+
+                    <div class="form-group full">
+
+                        <label>
+                            Website
+                        </label>
+
+                        <input
+                            type="url"
+                            name="website"
+                            th:value="${artisan != null
+                            ? artisan.website
+                            : ''}"
+                            placeholder="https://example.com">
+
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            <!-- =================================================
+                 BUTTONS
+            ================================================== -->
+
+            <div class="button-row">
+
+
+                <a
+                    href="/artisan-dashboard"
+                    class="btn btn-cancel">
+
+                    Cancel
+
+                </a>
+
+
+                <button
+                    type="submit"
+                    class="btn btn-save">
+
+                    💾 Save Profile
+
+                </button>
+
+            </div>
+
+
+        </form>
+
+    </section>
+
+</main>
+
+
+
+<!-- =========================================================
+     JAVASCRIPT
+========================================================= -->
+
+<script>
+
+
+    /* =====================================================
+       PROFILE IMAGE PREVIEW
+    ===================================================== */
+
+    const profileImageInput =
+        document.getElementById("profileImage");
+
+    const profilePreview =
+        document.getElementById("profilePreview");
+
+    const defaultProfile =
+        document.getElementById("defaultProfile");
+
+
+    if (profileImageInput) {
+
+        profileImageInput.addEventListener("change", function () {
+
+            const file = this.files[0];
+
+            if (!file) {
+                return;
+            }
+
+            if (!file.type.startsWith("image/")) {
+
+                alert("Please select an image file.");
+
+                this.value = "";
+
+                return;
+            }
+
+            const reader = new FileReader();
+
+            reader.onload = function (event) {
+
+                /*
+                 * Always use the SAME image element.
+                 * Therefore, when another photo is selected,
+                 * the old photo is replaced automatically.
+                 */
+
+                profilePreview.src = event.target.result;
+
+                profilePreview.style.display = "block";
+
+                if (defaultProfile) {
+                    defaultProfile.style.display = "none";
+                }
+            };
+
+            reader.readAsDataURL(file);
+        });
+    }
+
+
+    /* =====================================================
+       MAP
+    ===================================================== */
+
+    const latitudeInput =
+        document.getElementById("latitude");
+
+
+    const longitudeInput =
+        document.getElementById("longitude");
+
+
+    const map =
+        document.getElementById("map");
+
+
+    function updateMap() {
+
+
+        if (!latitudeInput ||
+            !longitudeInput ||
+            !map) {
+
+            return;
+        }
+
+
+        const latitude =
+            latitudeInput.value.trim();
+
+
+        const longitude =
+            longitudeInput.value.trim();
+
+
+        if (latitude && longitude) {
+
+
+            map.innerHTML =
+
+                '<iframe ' +
+
+                'width="100%" ' +
+
+                'height="100%" ' +
+
+                'style="border:0;" ' +
+
+                'loading="lazy" ' +
+
+                'allowfullscreen ' +
+
+                'src="https://www.google.com/maps?q=' +
+
+                encodeURIComponent(
+                    latitude + "," + longitude
+                ) +
+
+                '&output=embed">' +
+
+                '</iframe>';
+
+
+        } else {
+
+
+            map.innerHTML =
+
+                '<div style="' +
+
+                'height:100%;' +
+
+                'display:flex;' +
+
+                'align-items:center;' +
+
+                'justify-content:center;' +
+
+                'color:#888;' +
+
+                'font-size:14px;' +
+
+                'background:#f5f2e8;' +
+
+                '">' +
+
+                'Enter latitude and longitude to preview the map' +
+
+                '</div>';
+        }
+
+    }
+
+
+    if (latitudeInput) {
+
+        latitudeInput.addEventListener(
+            "input",
+            updateMap
+        );
+
+    }
+
+
+    if (longitudeInput) {
+
+        longitudeInput.addEventListener(
+            "input",
+            updateMap
+        );
+
+    }
+
+
+    updateMap();
+
+
+</script>
+
+
+</body>
+
+</html>

@@ -1,0 +1,597 @@
+<!DOCTYPE html>
+<html lang="en"
+      xmlns:th="http://www.thymeleaf.org">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
+
+    <title>Edit Admin Profile - Craftora</title>
+
+    <link
+        href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
+        rel="stylesheet">
+
+    <link
+        href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css"
+        rel="stylesheet">
+
+
+    <style>
+
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            min-height: 100vh;
+            background: #f7f3e9;
+            font-family: Arial, sans-serif;
+            color: #24352c;
+        }
+
+        .topbar {
+            background: #123B29;
+            color: white;
+            padding: 12px 35px;
+            min-height: 80px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .brand {
+            display: flex;
+            align-items: center;
+        }
+
+        .craftora-logo {
+            height: 62px;
+            width: auto;
+            display: block;
+            object-fit: contain;
+            border-radius: 12px;
+        }
+
+        .back-btn {
+            color: white;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 15px;
+        }
+
+        .back-btn:hover {
+            color: #e0bd63;
+        }
+
+        .page-wrapper {
+            width: 100%;
+            max-width: 1050px;
+            margin: 45px auto;
+            padding: 0 20px;
+        }
+
+        .page-title {
+            margin-bottom: 25px;
+        }
+
+        .page-title h1 {
+            margin: 0;
+            color: #173f2a;
+            font-size: 30px;
+            font-weight: 700;
+        }
+
+        .page-title p {
+            margin-top: 8px;
+            color: #777;
+        }
+
+        .profile-card {
+            background: white;
+            border-radius: 16px;
+            padding: 35px;
+            box-shadow: 0 8px 30px rgba(0, 0, 0, 0.08);
+            margin-bottom: 25px;
+        }
+
+        .section-title {
+            color: #173f2a;
+            font-size: 20px;
+            font-weight: 700;
+            margin-bottom: 25px;
+            padding-bottom: 12px;
+            border-bottom: 1px solid #e5dfd1;
+        }
+
+        .form-label {
+            font-weight: 600;
+            color: #3e4c43;
+            margin-bottom: 8px;
+        }
+
+        .form-control {
+            min-height: 48px;
+            border: 1px solid #d8d4c8;
+            border-radius: 9px;
+            padding: 10px 14px;
+        }
+
+        .form-control:focus {
+            border-color: #173f2a;
+            box-shadow: 0 0 0 3px rgba(23, 63, 42, 0.10);
+        }
+
+        textarea.form-control {
+            min-height: 130px;
+            resize: vertical;
+        }
+
+        .readonly-field {
+            background: #f2f0ea;
+            cursor: not-allowed;
+        }
+
+        .info-text {
+            font-size: 12px;
+            color: #888;
+            margin-top: 6px;
+        }
+
+        .button-area {
+            display: flex;
+            justify-content: flex-end;
+            gap: 12px;
+            margin-top: 30px;
+        }
+
+        .btn-cancel {
+            background: white;
+            border: 1px solid #cfc8b8;
+            color: #555;
+            padding: 12px 25px;
+            border-radius: 9px;
+            text-decoration: none;
+            font-weight: 600;
+        }
+
+        .btn-cancel:hover {
+            background: #f5f2ea;
+            color: #333;
+        }
+
+        .btn-save {
+            background: #173f2a;
+            color: white;
+            border: none;
+            padding: 12px 28px;
+            border-radius: 9px;
+            font-weight: 600;
+            cursor: pointer;
+        }
+
+        .btn-save:hover {
+            background: #0f2f1e;
+        }
+
+        .alert {
+            border-radius: 10px;
+        }
+
+        @media (max-width: 768px) {
+
+            .topbar {
+                padding: 12px 20px;
+            }
+
+            .profile-card {
+                padding: 22px;
+            }
+
+            .button-area {
+                flex-direction: column;
+            }
+
+            .btn-cancel,
+            .btn-save {
+                width: 100%;
+                text-align: center;
+            }
+        }
+
+    </style>
+
+</head>
+
+
+<body>
+
+
+<!-- =====================================================
+     TOP BAR
+===================================================== -->
+
+<div class="topbar">
+
+    <div class="brand">
+        <img src="/images/craftora-logo.png"
+             alt="Craftora Logo"
+             class="craftora-logo">
+    </div>
+
+    <a
+        href="/admin/profile"
+        class="back-btn">
+
+        <i class="bi bi-arrow-left"></i>
+
+        Back to Profile
+
+    </a>
+
+</div>
+
+
+<!-- =====================================================
+     MAIN CONTENT
+===================================================== -->
+
+<div class="page-wrapper">
+
+
+    <div class="page-title">
+
+        <h1>
+            Edit Profile
+        </h1>
+
+        <p>
+            Update your account and artisan profile information.
+        </p>
+
+    </div>
+
+
+    <!-- SUCCESS MESSAGE -->
+
+    <div
+        th:if="${successMessage}"
+        class="alert alert-success">
+
+        <i class="bi bi-check-circle"></i>
+
+        <span th:text="${successMessage}">
+            Profile updated successfully.
+        </span>
+
+    </div>
+
+
+    <!-- ERROR MESSAGE -->
+
+    <div
+        th:if="${errorMessage}"
+        class="alert alert-danger">
+
+        <i class="bi bi-exclamation-circle"></i>
+
+        <span th:text="${errorMessage}">
+            Something went wrong.
+        </span>
+
+    </div>
+
+
+    <!-- =================================================
+         EDIT ACCOUNT INFORMATION
+    ================================================== -->
+
+    <form
+        action="/admin/profile/edit"
+        method="post">
+
+
+        <div class="profile-card">
+
+            <div class="section-title">
+
+                <i class="bi bi-person-circle"></i>
+
+                Account Information
+
+            </div>
+
+
+            <div class="row g-4">
+
+
+                <!-- FULL NAME -->
+
+                <div class="col-md-6">
+
+                    <label
+                        for="fullName"
+                        class="form-label">
+
+                        Full Name
+
+                    </label>
+
+                    <input
+                        type="text"
+                        id="fullName"
+                        name="fullName"
+                        class="form-control"
+                        th:value="${user.fullName}"
+                        required>
+
+                </div>
+
+
+                <!-- EMAIL -->
+
+                <div class="col-md-6">
+
+                    <label
+                        for="email"
+                        class="form-label">
+
+                        Email
+
+                    </label>
+
+                    <input
+                        type="email"
+                        id="email"
+                        name="email"
+                        class="form-control readonly-field"
+                        th:value="${user.email}"
+                        readonly>
+
+                    <div class="info-text">
+
+                        Email address cannot be changed.
+
+                    </div>
+
+                </div>
+
+
+                <!-- PHONE -->
+
+                <div class="col-md-6">
+
+                    <label
+                        for="phone"
+                        class="form-label">
+
+                        Phone Number
+
+                    </label>
+
+                    <input
+                        type="text"
+                        id="phone"
+                        name="phone"
+                        class="form-control"
+                        th:value="${user.phone}">
+
+                </div>
+
+
+                <!-- USER ID -->
+
+                <div class="col-md-6">
+
+                    <label
+                        for="userId"
+                        class="form-label">
+
+                        Account ID
+
+                    </label>
+
+                    <input
+                        type="text"
+                        id="userId"
+                        class="form-control readonly-field"
+                        th:value="${user.userId}"
+                        readonly>
+
+                    <div class="info-text">
+
+                        Account ID cannot be changed.
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <!-- =================================================
+             ARTISAN INFORMATION
+        ================================================== -->
+
+        <div
+            class="profile-card"
+            th:if="${artisan != null}">
+
+
+            <div class="section-title">
+
+                <i class="bi bi-brush"></i>
+
+                Artisan Information
+
+            </div>
+
+
+            <div class="row g-4">
+
+
+                <!-- CRAFT TYPE -->
+
+                <div class="col-md-6">
+
+                    <label
+                        for="craftType"
+                        class="form-label">
+
+                        Craft Type
+
+                    </label>
+
+                    <input
+                        type="text"
+                        id="craftType"
+                        name="craftType"
+                        class="form-control"
+                        th:value="${artisan.craftType}"
+                        required>
+
+                </div>
+
+
+                <!-- LOCATION -->
+
+                <div class="col-md-6">
+
+                    <label
+                        for="location"
+                        class="form-label">
+
+                        Location
+
+                    </label>
+
+                    <input
+                        type="text"
+                        id="location"
+                        name="location"
+                        class="form-control"
+                        th:value="${artisan.location}"
+                        required>
+
+                </div>
+
+
+                <!-- CONTACT NUMBER -->
+
+                <div class="col-md-6">
+
+                    <label
+                        for="contactNumber"
+                        class="form-label">
+
+                        Contact Number
+
+                    </label>
+
+                    <input
+                        type="text"
+                        id="contactNumber"
+                        name="contactNumber"
+                        class="form-control"
+                        th:value="${artisan.contactNumber}">
+
+                </div>
+
+
+                <!-- STATUS -->
+
+                <div class="col-md-6">
+
+                    <label
+                        class="form-label">
+
+                        Artisan Status
+
+                    </label>
+
+                    <input
+                        type="text"
+                        class="form-control readonly-field"
+                        th:value="${artisan.status}"
+                        readonly>
+
+                    <div class="info-text">
+
+                        Status can only be changed by the administrator.
+
+                    </div>
+
+                </div>
+
+
+                <!-- BIO -->
+
+                <div class="col-12">
+
+                    <label
+                        for="bio"
+                        class="form-label">
+
+                        Bio
+
+                    </label>
+
+                    <textarea
+                        id="bio"
+                        name="bio"
+                        class="form-control"
+                        th:text="${artisan.bio}"></textarea>
+
+                </div>
+
+
+            </div>
+
+        </div>
+
+
+        <!-- =================================================
+             BUTTONS
+        ================================================== -->
+
+        <div class="button-area">
+
+            <a
+                href="/admin/profile"
+                class="btn-cancel">
+
+                Cancel
+
+            </a>
+
+
+            <button
+                type="submit"
+                class="btn-save">
+
+                <i class="bi bi-check-lg"></i>
+
+                Save Changes
+
+            </button>
+
+        </div>
+
+
+    </form>
+
+
+</div>
+
+
+</body>
+
+</html>

@@ -1,0 +1,1262 @@
+<!DOCTYPE html>
+<html lang="en"
+      xmlns:th="http://www.thymeleaf.org">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
+
+    <title>Event Requests | Admin | Craftora</title>
+
+    <link rel="stylesheet"
+          href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+
+    <style>
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --green-dark: #103d2b;
+            --green-main: #174d37;
+            --green-soft: #edf5ef;
+
+            --cream: #f8f4ec;
+            --cream-dark: #eee5d7;
+
+            --gold: #d6b36a;
+            --gold-dark: #a98239;
+            --gold-soft: #f8efd9;
+
+            --white: #ffffff;
+
+            --text-dark: #183c2d;
+            --text-medium: #65736b;
+            --text-light: #929b96;
+
+            --border: #e7dfd2;
+
+            --danger: #a33a3a;
+            --danger-bg: #fdeaea;
+
+            --success: #2d713c;
+            --success-bg: #e5f3e8;
+        }
+
+        body {
+            font-family: "Segoe UI", Arial, sans-serif;
+            background: #f8f6f1;
+            color: var(--text-dark);
+            min-height: 100vh;
+        }
+
+        a {
+            text-decoration: none;
+        }
+
+        /* ================= SIDEBAR ================= */
+
+        .sidebar {
+            position: fixed;
+            left: 0;
+            top: 0;
+            width: 250px;
+            height: 100vh;
+            background: var(--green-dark);
+            color: white;
+            display: flex;
+            flex-direction: column;
+            z-index: 1000;
+        }
+
+        .logo-area {
+            height: 82px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 9px 20px;
+            border-bottom: 1px solid rgba(255,255,255,0.08);
+        }
+
+        .logo-area a {
+            width: 188px;
+            height: 57px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: white;
+            border-radius: 15px;
+            position: relative;
+        }
+
+        .logo-area img {
+            width: 176px;
+            height: 54px;
+            object-fit: contain;
+        }
+
+        .logo-area a::after {
+            content: "";
+            position: absolute;
+            bottom: -8px;
+            left: 50%;
+            width: 7px;
+            height: 7px;
+            background: var(--gold);
+            transform: translateX(-50%) rotate(45deg);
+        }
+
+        .menu {
+            flex: 1;
+            padding: 22px 14px;
+            overflow-y: auto;
+        }
+
+        .menu-label {
+            font-size: 10px;
+            text-transform: uppercase;
+            letter-spacing: 1.6px;
+            color: rgba(255,255,255,0.38);
+            margin: 8px 13px 11px;
+        }
+
+        .menu-link {
+            display: flex;
+            align-items: center;
+            gap: 13px;
+            color: rgba(255,255,255,0.72);
+            padding: 12px 14px;
+            margin-bottom: 4px;
+            border-radius: 10px;
+            font-size: 13.5px;
+            font-weight: 500;
+            transition: all 0.25s ease;
+        }
+
+        .menu-link i {
+            width: 22px;
+            font-size: 17px;
+            text-align: center;
+        }
+
+        .menu-link:hover {
+            background: rgba(255,255,255,0.08);
+            color: white;
+            transform: translateX(3px);
+        }
+
+        .menu-link.active {
+            background: var(--gold);
+            color: var(--green-dark);
+            font-weight: 700;
+        }
+
+        .logout-area {
+            padding: 12px 14px 20px;
+            border-top: 1px solid rgba(255,255,255,0.08);
+        }
+
+        .switch-link {
+            color: var(--gold) !important;
+            border: 1px solid rgba(214,179,106,0.25);
+        }
+
+        .logout {
+            color: #ffdede !important;
+        }
+
+        /* ================= MAIN ================= */
+
+        .main {
+            margin-left: 250px;
+            min-height: 100vh;
+        }
+
+        .top-header {
+            height: 68px;
+            background: rgba(255,255,255,0.97);
+            border-bottom: 1px solid var(--border);
+            display: flex;
+            align-items: center;
+            justify-content: flex-end;
+            gap: 18px;
+            padding: 0 32px;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .notification {
+            width: 40px;
+            height: 40px;
+            border-radius: 11px;
+            background: var(--cream);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--green-dark);
+            font-size: 17px;
+            position: relative;
+        }
+
+        .notification-dot {
+            position: absolute;
+            top: 7px;
+            right: 7px;
+            width: 7px;
+            height: 7px;
+            border-radius: 50%;
+            background: var(--gold);
+        }
+
+        .admin-user {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .admin-profile-link {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            color: var(--text-dark);
+        }
+
+        .admin-avatar {
+            width: 46px;
+            height: 46px;
+            border-radius: 50%;
+            overflow: hidden;
+            background: var(--gold);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--green-dark);
+            font-weight: 800;
+            font-size: 17px;
+        }
+
+        .admin-avatar img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .admin-details {
+            display: flex;
+            flex-direction: column;
+            line-height: 1.2;
+        }
+
+        .admin-name {
+            font-size: 14px;
+            font-weight: 700;
+            color: var(--text-dark);
+        }
+
+        .admin-role {
+            font-size: 12px;
+            color: var(--text-medium);
+            margin-top: 4px;
+        }
+
+        .switch-account-btn {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            padding: 10px 15px;
+            border: 1px solid var(--border);
+            border-radius: 10px;
+            color: var(--green-dark);
+            font-size: 13px;
+            font-weight: 700;
+            background: #fffdf8;
+        }
+
+        /* ================= CONTENT ================= */
+
+        .content {
+            padding: 38px 35px 50px;
+        }
+
+        .page-heading {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 20px;
+            margin-bottom: 28px;
+        }
+
+        .heading-left h1 {
+            font-size: 31px;
+            color: var(--green-dark);
+            margin-bottom: 7px;
+        }
+
+        .heading-left p {
+            font-size: 14px;
+            color: var(--text-medium);
+        }
+
+        .back-button {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 11px 17px;
+            border-radius: 10px;
+            background: var(--green-main);
+            color: white;
+            font-size: 13px;
+            font-weight: 700;
+        }
+
+        .back-button:hover {
+            background: var(--green-dark);
+            color: white;
+        }
+
+        /* ================= ALERTS ================= */
+
+        .alert {
+            padding: 13px 16px;
+            border-radius: 10px;
+            margin-bottom: 20px;
+            font-size: 13px;
+            font-weight: 600;
+        }
+
+        .alert-success {
+            background: var(--success-bg);
+            color: var(--success);
+            border: 1px solid #cde6d2;
+        }
+
+        .alert-error {
+            background: var(--danger-bg);
+            color: var(--danger);
+            border: 1px solid #f1cccc;
+        }
+
+        /* ================= REQUEST LIST ================= */
+
+        .request-list {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        .request-card {
+            background: white;
+            border: 1px solid var(--border);
+            border-radius: 18px;
+            padding: 25px;
+            box-shadow: 0 8px 25px rgba(16,61,43,0.05);
+        }
+
+        .request-top {
+            display: flex;
+            align-items: flex-start;
+            justify-content: space-between;
+            gap: 25px;
+        }
+
+        .artisan-area {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+        }
+
+        .artisan-avatar {
+            width: 52px;
+            height: 52px;
+            border-radius: 50%;
+            background: var(--green-soft);
+            color: var(--green-main);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 19px;
+            font-weight: 800;
+            flex-shrink: 0;
+        }
+
+        .artisan-info {
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+        }
+
+        .artisan-name {
+            font-size: 16px;
+            font-weight: 750;
+            color: var(--green-dark);
+        }
+
+        .artisan-label {
+            font-size: 12px;
+            color: var(--text-medium);
+        }
+
+        .status-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            padding: 7px 11px;
+            border-radius: 20px;
+            background: var(--gold-soft);
+            color: var(--gold-dark);
+            font-size: 11px;
+            font-weight: 800;
+        }
+
+        .request-body {
+            margin-top: 22px;
+            padding-top: 20px;
+            border-top: 1px solid var(--border);
+        }
+
+        .request-label {
+            font-size: 11px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            color: var(--text-light);
+            font-weight: 800;
+            margin-bottom: 9px;
+        }
+
+        .request-description {
+            background: var(--cream);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 16px;
+            color: var(--text-dark);
+            font-size: 14px;
+            line-height: 1.7;
+            white-space: pre-wrap;
+        }
+
+        .request-meta {
+            display: flex;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 20px;
+            margin-top: 17px;
+            color: var(--text-medium);
+            font-size: 12px;
+        }
+
+        .request-meta span {
+            display: inline-flex;
+            align-items: center;
+            gap: 7px;
+        }
+
+        .request-meta i {
+            color: var(--green-main);
+        }
+
+        .request-actions {
+            margin-top: 22px;
+            padding-top: 20px;
+            border-top: 1px solid var(--border);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 20px;
+        }
+
+        .discussion-note {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            color: var(--text-medium);
+            font-size: 12px;
+            line-height: 1.5;
+        }
+
+        .discussion-note i {
+            color: var(--green-main);
+            font-size: 16px;
+        }
+
+        .dismiss-button {
+            border: none;
+            cursor: pointer;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            padding: 11px 18px;
+            border-radius: 10px;
+            background: var(--danger-bg);
+            color: var(--danger);
+            font-size: 13px;
+            font-weight: 700;
+            transition: all 0.2s ease;
+        }
+
+        .dismiss-button:hover {
+            background: #f8dcdc;
+        }
+
+        /* ================= EMPTY ================= */
+
+        .empty-card {
+            background: white;
+            border: 1px solid var(--border);
+            border-radius: 18px;
+            padding: 65px 30px;
+            text-align: center;
+        }
+
+        .empty-icon {
+            width: 65px;
+            height: 65px;
+            margin: 0 auto 18px;
+            border-radius: 18px;
+            background: var(--green-soft);
+            color: var(--green-main);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 28px;
+        }
+
+        .empty-title {
+            font-size: 20px;
+            font-weight: 800;
+            color: var(--green-dark);
+            margin-bottom: 8px;
+        }
+
+        .empty-description {
+            font-size: 13px;
+            color: var(--text-medium);
+        }
+
+        /* ================= RESPONSIVE ================= */
+
+        @media (max-width: 850px) {
+
+            .sidebar {
+                width: 210px;
+            }
+
+            .main {
+                margin-left: 210px;
+            }
+
+            .page-heading {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+
+            .request-actions {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+        }
+
+        @media (max-width: 600px) {
+
+            .sidebar {
+                width: 190px;
+            }
+
+            .main {
+                margin-left: 190px;
+            }
+
+            .content {
+                padding: 25px 18px;
+            }
+
+            .request-top {
+                flex-direction: column;
+            }
+        }
+
+        .clear-all-button {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+
+    padding: 11px 17px;
+
+    border: none;
+    border-radius: 10px;
+
+    background: #fdeaea;
+    color: #a33a3a;
+
+    font-size: 13px;
+    font-weight: 700;
+
+    cursor: pointer;
+
+    transition: all 0.2s ease;
+}
+
+.clear-all-button:hover {
+    background: #f8dcdc;
+    color: #8f2f2f;
+}
+
+.discussion-button {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+
+    padding: 11px 17px;
+
+    border-radius: 10px;
+
+    background: #edf5ef;
+    color: #174d37;
+
+    border: 1px solid #d6e7dc;
+
+    font-size: 13px;
+    font-weight: 700;
+
+    transition: all 0.2s ease;
+    border: 1px solid #d6e7dc;
+cursor: pointer;
+}
+
+.discussion-button:hover {
+    background: #dfeee5;
+    color: #103d2b;
+    transform: translateY(-1px);
+}
+
+
+
+    </style>
+
+</head>
+
+<body>
+
+<!-- =====================================================
+     SIDEBAR
+===================================================== -->
+
+<aside class="sidebar">
+
+
+    <!-- =================================================
+         CRAFTORA LOGO
+    ================================================= -->
+
+    <div class="logo-area">
+
+        <a href="/">
+
+            <img src="/images/craftora-logo.png"
+                 alt="Craftora Logo">
+
+        </a>
+
+    </div>
+
+
+    <!-- =================================================
+         MENU
+    ================================================= -->
+
+    <div class="menu">
+
+
+        <div class="menu-label">
+            Main Menu
+        </div>
+
+
+        <!-- Dashboard -->
+
+        <a href="/admin-dashboard"
+           class="menu-link active">
+
+            <i class="bi bi-grid-1x2-fill"></i>
+
+            <span>
+                Dashboard
+            </span>
+
+        </a>
+
+
+        <!-- Artisans -->
+
+        <a href="/admin/manage-artisans"
+           class="menu-link">
+
+            <i class="bi bi-people-fill"></i>
+
+            <span>
+                Artisans
+            </span>
+
+        </a>
+
+
+        <!-- Events -->
+
+      <!-- Events -->
+
+<a href="/admin/events"
+   class="menu-link">
+
+    <i class="bi bi-calendar-event-fill"></i>
+
+    <span>
+        Events
+    </span>
+
+</a>
+
+
+        <!-- Payments -->
+
+        <a href="/admin/orders"
+           class="menu-link">
+
+            <i class="bi bi-credit-card-fill"></i>
+
+            <span>
+                Payments
+            </span>
+
+        </a>
+
+
+        <!-- Management -->
+
+        <div class="menu-label"
+             style="margin-top: 23px;">
+
+            Management
+
+        </div>
+
+
+        <!-- Reports -->
+
+        <a href="/admin/orders"
+           class="menu-link">
+
+            <i class="bi bi-bar-chart-fill"></i>
+
+            <span>
+                Reports
+            </span>
+
+        </a>
+
+
+        <!-- Ratings -->
+
+        <a href="#"
+           class="menu-link">
+
+            <i class="bi bi-star-fill"></i>
+
+            <span>
+                Ratings
+            </span>
+
+        </a>
+
+<!-- Contact Messages -->
+
+<a href="/admin/contact-messages"
+   class="menu-link">
+
+    <i class="bi bi-envelope-fill"></i>
+
+    <span>
+        Contact Messages
+    </span>
+
+</a>
+
+
+        <!-- Settings -->
+
+        <a href="/admin/settings"
+           class="menu-link">
+
+            <i class="bi bi-gear-fill"></i>
+
+            <span>
+                Settings
+            </span>
+
+        </a>
+
+
+    
+
+        <!-- Reported Reviews -->
+        <a href="/admin/reported-reviews"
+           class="menu-link">
+            <i class="bi bi-flag-fill"></i>
+            <span>Reported Reviews</span>
+        </a>
+
+    </div>
+
+
+    <!-- =================================================
+         BOTTOM ACTIONS
+    ================================================= -->
+
+    <div class="logout-area">
+
+
+        <!-- SWITCH ACCOUNT -->
+
+        <div th:if="${session.userRoles != null and #lists.size(session.userRoles) > 1}">
+
+            <a href="/switch-account"
+               class="menu-link switch-link">
+
+                <i class="bi bi-arrow-left-right"></i>
+
+                <span>
+                    Switch Account
+                </span>
+
+            </a>
+
+        </div>
+
+
+        <!-- LOGOUT -->
+
+        <a href="/logout"
+           class="menu-link logout">
+
+            <i class="bi bi-box-arrow-left"></i>
+
+            <span>
+                Logout
+            </span>
+
+        </a>
+
+
+    </div>
+
+
+</aside>
+
+<!-- ================= MAIN ================= -->
+
+<main class="main">
+
+    <header class="top-header">
+
+        <div class="notification">
+
+            <i class="bi bi-bell"></i>
+
+            <span class="notification-dot"></span>
+
+        </div>
+
+
+        <div class="admin-user">
+
+            <a href="/admin/profile"
+               class="admin-profile-link">
+
+                <div class="admin-avatar">
+
+                    <img th:if="${artisan != null and artisan.profileImage != null and artisan.profileImage != ''}"
+                         th:src="${artisan.profileImage.startsWith('/') ? artisan.profileImage : '/' + artisan.profileImage}"
+                         alt="Admin Profile">
+
+                    <span th:if="${artisan == null or artisan.profileImage == null or artisan.profileImage == ''}">
+                        A
+                    </span>
+
+                </div>
+
+
+                <div class="admin-details">
+
+                    <span class="admin-name"
+                          th:text="${user.fullName}">
+                        Admin
+                    </span>
+
+                    <span class="admin-role">
+                        Administrator
+                    </span>
+
+                </div>
+
+            </a>
+
+
+            <div th:if="${session.userRoles != null and #lists.size(session.userRoles) > 1}">
+
+                <a href="/switch-account"
+                   class="switch-account-btn">
+
+                    <i class="bi bi-arrow-left-right"></i>
+
+                    <span>
+                        Switch Account
+                    </span>
+
+                </a>
+
+            </div>
+
+        </div>
+
+    </header>
+
+
+    <!-- ================= CONTENT ================= -->
+
+    <div class="content">
+
+        <div class="page-heading">
+
+    <div class="heading-left">
+
+        <h1 th:text="${pageTitle}">
+            Workshop Event Requests
+        </h1>
+
+        <p>
+            Review event requests submitted by Craftora artisans.
+        </p>
+
+    </div>
+
+
+    <div style="display:flex; gap:10px; align-items:center; flex-wrap:wrap;">
+
+        <!-- =================================================
+             OPEN EVENT DISCUSSION
+        ================================================= -->
+
+        <form th:action="@{'/admin/events/discussion/' + ${eventType} + '/open'}"
+      method="post"
+      style="margin:0;">
+
+    <button type="submit" class="discussion-button">
+
+        <i class="bi bi-chat-dots-fill"></i>
+
+        <span th:if="${eventType == 'WORKSHOP'}">
+            Open Workshop Discussion
+        </span>
+
+        <span th:if="${eventType == 'EXHIBITION'}">
+            Open Exhibition Discussion
+        </span>
+
+        <span th:if="${eventType == 'COMPETITION'}">
+            Open Competition Discussion
+        </span>
+
+    </button>
+
+</form>
+
+
+
+        <!-- =================================================
+             CLEAR ALL
+        ================================================= -->
+
+        <form action="/admin/events/requests/clear-all"
+              method="post"
+              onsubmit="return confirm(
+                  'WARNING!\n\n' +
+                  'This will permanently delete ALL event requests ' +
+                  '(Workshop, Exhibition and Competition) from the database.\n\n' +
+                  'Are you sure you want to continue?'
+              );">
+
+            <button type="submit"
+                    class="clear-all-button">
+
+                <i class="bi bi-trash3"></i>
+
+                Clear All Requests
+
+            </button>
+
+        </form>
+
+
+        <!-- =================================================
+             BACK
+        ================================================= -->
+
+        <a href="/admin/events"
+           class="back-button">
+
+            <i class="bi bi-arrow-left"></i>
+
+            Back to Events
+
+        </a>
+
+    </div>
+
+</div>
+        </div>
+
+
+        <!-- SUCCESS -->
+
+        <div th:if="${successMessage}"
+             class="alert alert-success"
+             th:text="${successMessage}">
+
+            Event request dismissed successfully.
+
+        </div>
+
+
+        <!-- ERROR -->
+
+        <div th:if="${errorMessage}"
+             class="alert alert-error"
+             th:text="${errorMessage}">
+
+            Error.
+
+        </div>
+
+
+        <!-- ================= REQUEST LIST ================= -->
+
+        <div class="request-list"
+             th:if="${!#lists.isEmpty(requests)}">
+
+
+            <div class="request-card"
+                 th:each="request : ${requests}">
+
+
+                <!-- TOP -->
+
+                <div class="request-top">
+
+
+                    <!-- ARTISAN -->
+
+                    <div class="artisan-area">
+
+                        <div class="artisan-avatar">
+
+                            <span th:if="${request.artisan != null and request.artisan.user != null and request.artisan.user.fullName != null and !#strings.isEmpty(request.artisan.user.fullName)}"
+                                  th:text="${#strings.substring(request.artisan.user.fullName,0,1).toUpperCase()}">
+
+                                A
+
+                            </span>
+
+
+                            <span th:unless="${request.artisan != null and request.artisan.user != null and request.artisan.user.fullName != null and !#strings.isEmpty(request.artisan.user.fullName)}">
+
+                                A
+
+                            </span>
+
+                        </div>
+
+
+                        <div class="artisan-info">
+
+                            <div class="artisan-name"
+                                 th:if="${request.artisan != null and request.artisan.user != null}"
+                                 th:text="${request.artisan.user.fullName}">
+
+                                Artisan Name
+
+                            </div>
+
+                            <div class="artisan-name"
+                                 th:unless="${request.artisan != null and request.artisan.user != null}">
+
+                                Artisan
+
+                            </div>
+
+                            <div class="artisan-label">
+                                Craftora Artisan
+                            </div>
+
+                        </div>
+
+                    </div>
+
+
+                    <!-- STATUS -->
+
+                    <div class="status-badge">
+
+                        <i class="bi bi-clock-fill"></i>
+
+                        PENDING
+
+                    </div>
+
+                </div>
+
+
+                <!-- BODY -->
+
+                <div class="request-body">
+
+
+                    <div class="request-label">
+                        Request Description
+                    </div>
+
+
+                    <div class="request-description"
+                         th:text="${request.requestDescription}">
+
+                        Event request description.
+
+                    </div>
+
+
+                    <div class="request-meta">
+
+                        <span>
+
+                            <i class="bi bi-calendar3"></i>
+
+                            <span th:if="${request.createdAt != null}"
+                                  th:text="${#temporals.format(request.createdAt, 'dd MMM yyyy, hh:mm a')}">
+
+                                07 Oct 2026
+
+                            </span>
+
+                            <span th:if="${request.createdAt == null}">
+                                Date not available
+                            </span>
+
+                        </span>
+
+
+                        <span>
+
+                            <i class="bi bi-tag"></i>
+
+                            <span th:text="${eventType}">
+                                WORKSHOP
+                            </span>
+
+                        </span>
+
+                    </div>
+
+                </div>
+
+
+                <!-- ACTIONS -->
+
+                <div class="request-actions">
+
+
+                    <div class="discussion-note">
+
+                        <i class="bi bi-info-circle"></i>
+
+                        Final event details will be decided during the live discussion.
+
+                    </div>
+
+
+                    <!-- DISMISS -->
+
+                    <form th:action="@{'/admin/events/request/' + ${request.requestId} + '/dismiss'}"
+                          method="post"
+                          onsubmit="return confirm('Are you sure you want to dismiss this event request?');">
+
+
+                        <input type="hidden"
+                               name="eventType"
+                               th:value="${eventType}">
+
+
+                        <button type="submit"
+                                class="dismiss-button">
+
+                            <i class="bi bi-x-circle"></i>
+
+                            Dismiss
+
+                        </button>
+
+                    </form>
+
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <!-- ================= EMPTY ================= -->
+
+        <div class="empty-card"
+             th:if="${#lists.isEmpty(requests)}">
+
+
+            <div class="empty-icon">
+
+                <i class="bi bi-inbox"></i>
+
+            </div>
+
+
+            <div class="empty-title">
+
+                No Pending Requests
+
+            </div>
+
+
+            <div class="empty-description">
+
+                There are currently no pending
+
+                <span th:text="${eventType.toLowerCase()}">
+                    event
+                </span>
+
+                requests from artisans.
+
+            </div>
+
+        </div>
+
+    </div>
+
+</main>
+
+</body>
+</html>

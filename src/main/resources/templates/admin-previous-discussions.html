@@ -1,0 +1,530 @@
+<!DOCTYPE html>
+<html lang="en"
+      xmlns:th="http://www.thymeleaf.org">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
+
+    <title>Previous Discussions | Craftora</title>
+
+    <!-- Bootstrap Icons -->
+    <link rel="stylesheet"
+          href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+
+    <style>
+
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            font-family: "Segoe UI", Arial, sans-serif;
+            background: #f4f2ed;
+            color: #173f32;
+        }
+
+        /* =====================================================
+           PAGE
+        ===================================================== */
+
+        .page {
+            min-height: 100vh;
+            padding: 35px;
+        }
+
+        .container {
+            width: min(1100px, 100%);
+            margin: 0 auto;
+        }
+
+        /* =====================================================
+           HEADER
+        ===================================================== */
+
+        .page-header {
+            background: #103d2b;
+            color: white;
+            border-radius: 18px;
+            padding: 25px 30px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 20px;
+            box-shadow: 0 8px 25px rgba(27, 45, 36, 0.12);
+            margin-bottom: 25px;
+        }
+
+        .header-left {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .back-button {
+            width: 42px;
+            height: 42px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-decoration: none;
+            color: white;
+            background: rgba(255, 255, 255, 0.08);
+            border: 1px solid rgba(255, 255, 255, 0.18);
+            transition: 0.2s ease;
+        }
+
+        .back-button:hover {
+            background: rgba(255, 255, 255, 0.16);
+        }
+
+        .header-icon {
+            width: 48px;
+            height: 48px;
+            border-radius: 50%;
+            background: #d6b36a;
+            color: #103d2b;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 21px;
+        }
+
+        .header-title h1 {
+            margin: 0;
+            font-size: 21px;
+            font-weight: 700;
+        }
+
+        .header-title p {
+            margin: 5px 0 0;
+            color: rgba(255, 255, 255, 0.72);
+            font-size: 13px;
+        }
+
+        /* =====================================================
+           CONTENT CARD
+        ===================================================== */
+
+        .content-card {
+            background: white;
+            border-radius: 18px;
+            border: 1px solid #e8e4dc;
+            box-shadow: 0 8px 30px rgba(27, 45, 36, 0.08);
+            padding: 28px;
+        }
+
+        .section-title {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 15px;
+            margin-bottom: 22px;
+        }
+
+        .section-title h2 {
+            margin: 0;
+            font-size: 18px;
+            color: #174d37;
+        }
+
+        .section-title p {
+            margin: 5px 0 0;
+            font-size: 13px;
+            color: #7b847f;
+        }
+
+        /* =====================================================
+           DISCUSSION LIST
+        ===================================================== */
+
+        .discussion-list {
+            display: flex;
+            flex-direction: column;
+            gap: 14px;
+        }
+
+        .discussion-card {
+            border: 1px solid #e5e1d9;
+            border-radius: 14px;
+            padding: 18px 20px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 20px;
+            background: #fff;
+            transition: 0.2s ease;
+        }
+
+        .discussion-card:hover {
+            border-color: #cfc8ba;
+            transform: translateY(-1px);
+            box-shadow: 0 5px 16px rgba(27, 45, 36, 0.07);
+        }
+
+        .discussion-info {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            min-width: 0;
+        }
+
+        .discussion-icon {
+            width: 45px;
+            height: 45px;
+            flex-shrink: 0;
+            border-radius: 12px;
+            background: #edf3ef;
+            color: #174d37;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 19px;
+        }
+
+        .discussion-details {
+            min-width: 0;
+        }
+
+        .discussion-title {
+            margin: 0;
+            font-size: 15px;
+            font-weight: 700;
+            color: #174d37;
+        }
+
+        .discussion-date {
+            margin: 5px 0 0;
+            color: #858d88;
+            font-size: 12px;
+        }
+
+        /* =====================================================
+           STATUS
+        ===================================================== */
+
+        .status-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            padding: 6px 10px;
+            border-radius: 20px;
+            background: #f1f0ed;
+            border: 1px solid #dedbd4;
+            color: #73746f;
+            font-size: 11px;
+            font-weight: 700;
+            margin-top: 7px;
+        }
+
+        .status-dot {
+            width: 7px;
+            height: 7px;
+            border-radius: 50%;
+            background: #888780;
+        }
+
+        /* =====================================================
+           VIEW CHAT BUTTON
+        ===================================================== */
+
+        .view-chat-button {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            padding: 10px 16px;
+            border-radius: 9px;
+            text-decoration: none;
+            background: #174d37;
+            color: white;
+            font-size: 12px;
+            font-weight: 700;
+            white-space: nowrap;
+            transition: 0.2s ease;
+            flex-shrink: 0;
+        }
+
+        .view-chat-button:hover {
+            background: #103d2b;
+            color: white;
+            transform: translateY(-1px);
+        }
+
+        /* =====================================================
+           EMPTY STATE
+        ===================================================== */
+
+        .empty-state {
+            text-align: center;
+            padding: 60px 20px;
+            border: 1px dashed #d9d5cc;
+            border-radius: 14px;
+            background: #fbfaf7;
+        }
+
+        .empty-icon {
+            width: 58px;
+            height: 58px;
+            margin: 0 auto 15px;
+            border-radius: 50%;
+            background: #f0eee9;
+            color: #85847d;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 23px;
+        }
+
+        .empty-state h3 {
+            margin: 0;
+            font-size: 16px;
+            color: #555c58;
+        }
+
+        .empty-state p {
+            margin: 7px 0 0;
+            font-size: 13px;
+            color: #8b918d;
+        }
+
+        /* =====================================================
+           RESPONSIVE
+        ===================================================== */
+
+        @media (max-width: 700px) {
+
+            .page {
+                padding: 15px;
+            }
+
+            .page-header {
+                padding: 20px;
+            }
+
+            .header-title h1 {
+                font-size: 17px;
+            }
+
+            .header-title p {
+                display: none;
+            }
+
+            .content-card {
+                padding: 20px;
+            }
+
+            .discussion-card {
+                align-items: flex-start;
+                flex-direction: column;
+            }
+
+            .view-chat-button {
+                width: 100%;
+            }
+
+        }
+
+    </style>
+
+</head>
+
+
+<body>
+
+<div class="page">
+
+    <div class="container">
+
+        <!-- =====================================================
+             HEADER
+        ====================================================== -->
+
+        <div class="page-header">
+
+            <div class="header-left">
+
+                <a href="/admin/events"
+                   class="back-button"
+                   title="Back to Events">
+
+                    <i class="bi bi-arrow-left"></i>
+
+                </a>
+
+                <div class="header-icon">
+
+                    <i class="bi bi-clock-history"></i>
+
+                </div>
+
+                <div class="header-title">
+
+                    <h1>
+
+                        <span th:if="${eventType == 'WORKSHOP'}">
+                            Previous Workshop Discussions
+                        </span>
+
+                        <span th:if="${eventType == 'EXHIBITION'}">
+                            Previous Exhibition Discussions
+                        </span>
+
+                        <span th:if="${eventType == 'COMPETITION'}">
+                            Previous Competition Discussions
+                        </span>
+
+                    </h1>
+
+                    <p>
+                        View previous closed community discussions
+                    </p>
+
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <!-- =====================================================
+             CONTENT
+        ====================================================== -->
+
+        <div class="content-card">
+
+            <div class="section-title">
+
+                <div>
+
+                    <h2>
+                        Discussion History
+                    </h2>
+
+                    <p>
+                        Select a discussion to view its previous messages.
+                    </p>
+
+                </div>
+
+            </div>
+
+
+            <!-- =================================================
+                 DISCUSSIONS AVAILABLE
+            ================================================== -->
+
+            <div class="discussion-list"
+                 th:if="${previousDiscussions != null and !#lists.isEmpty(previousDiscussions)}">
+
+
+                <div class="discussion-card"
+                     th:each="discussion, iterStat : ${previousDiscussions}">
+
+
+                    <div class="discussion-info">
+
+                        <div class="discussion-icon">
+
+                            <i class="bi bi-chat-square-text"></i>
+
+                        </div>
+
+
+                        <div class="discussion-details">
+
+                            <h3 class="discussion-title">
+
+                                <span th:text="${eventType}">
+                                    WORKSHOP
+                                </span>
+
+                                Discussion #
+
+                                <span th:text="${iterStat.size - iterStat.index}">
+                                    1
+                                </span>
+
+                            </h3>
+
+
+                            <p class="discussion-date">
+
+                                <i class="bi bi-calendar3"></i>
+
+                                Created:
+
+                                <span th:text="${#temporals.format(discussion.createdAt, 'dd MMM yyyy, hh:mm a')}">
+                                    01 Oct 2026, 10:30 AM
+                                </span>
+
+                            </p>
+
+
+                            <div class="status-badge">
+
+                                <span class="status-dot"></span>
+
+                                CLOSED
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+
+                    <!-- VIEW CHAT -->
+
+                    <a th:href="@{/admin/events/discussion/{discussionId}(discussionId=${discussion.discussionId})}"
+                       class="view-chat-button">
+
+                        View Chat
+
+                        <i class="bi bi-chat-dots"></i>
+
+                    </a>
+
+
+                </div>
+
+            </div>
+
+
+            <!-- =================================================
+                 NO PREVIOUS DISCUSSIONS
+            ================================================== -->
+
+            <div class="empty-state"
+                 th:if="${previousDiscussions == null or #lists.isEmpty(previousDiscussions)}">
+
+                <div class="empty-icon">
+
+                    <i class="bi bi-chat-square"></i>
+
+                </div>
+
+                <h3>
+                    No Previous Discussions
+                </h3>
+
+                <p>
+                    There are no closed discussions for this event type yet.
+                </p>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+</body>
+
+</html>

@@ -1,0 +1,1231 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Events | Admin | Craftora</title>
+
+    <link rel="stylesheet"
+          href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+
+    <style>
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --green-dark: #103d2b;
+            --green-main: #174d37;
+            --green-soft: #edf5ef;
+
+            --cream: #f8f4ec;
+            --cream-dark: #eee5d7;
+
+            --gold: #d6b36a;
+            --gold-dark: #a98239;
+            --gold-soft: #f8efd9;
+
+            --white: #ffffff;
+
+            --text-dark: #183c2d;
+            --text-medium: #65736b;
+            --text-light: #929b96;
+
+            --border: #e7dfd2;
+
+            --success: #2d713c;
+            --success-bg: #e5f3e8;
+        }
+
+        body {
+            font-family: "Segoe UI", Arial, sans-serif;
+            background: #f8f6f1;
+            color: var(--text-dark);
+            min-height: 100vh;
+        }
+
+        a {
+            text-decoration: none;
+        }
+
+        /* ================= SIDEBAR ================= */
+
+        .sidebar {
+            position: fixed;
+            left: 0;
+            top: 0;
+            width: 250px;
+            height: 100vh;
+            background: var(--green-dark);
+            color: white;
+            display: flex;
+            flex-direction: column;
+            z-index: 1000;
+            box-shadow: 7px 0 25px rgba(0,0,0,0.08);
+        }
+
+        .logo-area {
+            height: 82px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 9px 20px;
+            border-bottom: 1px solid rgba(255,255,255,0.08);
+        }
+
+        .logo-area a {
+            width: 188px;
+            height: 57px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: white;
+            border-radius: 15px;
+            position: relative;
+        }
+
+        .logo-area img {
+            width: 176px;
+            height: 54px;
+            object-fit: contain;
+        }
+
+        .logo-area a::after {
+            content: "";
+            position: absolute;
+            bottom: -8px;
+            left: 50%;
+            width: 7px;
+            height: 7px;
+            background: var(--gold);
+            transform: translateX(-50%) rotate(45deg);
+        }
+
+        .menu {
+            flex: 1;
+            padding: 22px 14px;
+            overflow-y: auto;
+        }
+
+        .menu-label {
+            font-size: 10px;
+            text-transform: uppercase;
+            letter-spacing: 1.6px;
+            color: rgba(255,255,255,0.38);
+            margin: 8px 13px 11px;
+        }
+
+        .menu-link {
+            display: flex;
+            align-items: center;
+            gap: 13px;
+            color: rgba(255,255,255,0.72);
+            padding: 12px 14px;
+            margin-bottom: 4px;
+            border-radius: 10px;
+            font-size: 13.5px;
+            font-weight: 500;
+            transition: all 0.25s ease;
+        }
+
+        .menu-link i {
+            width: 22px;
+            font-size: 17px;
+            text-align: center;
+        }
+
+        .menu-link:hover {
+            background: rgba(255,255,255,0.08);
+            color: white;
+            transform: translateX(3px);
+        }
+
+        .menu-link.active {
+            background: var(--gold);
+            color: var(--green-dark);
+            font-weight: 700;
+            box-shadow: 0 7px 18px rgba(0,0,0,0.12);
+        }
+
+        .logout-area {
+            padding: 12px 14px 20px;
+            border-top: 1px solid rgba(255,255,255,0.08);
+        }
+
+        .switch-link {
+            color: var(--gold) !important;
+            border: 1px solid rgba(214,179,106,0.25);
+        }
+
+        .switch-link:hover {
+            background: rgba(214,179,106,0.12) !important;
+            color: #f0d58d !important;
+        }
+
+        .logout {
+            color: #ffdede !important;
+        }
+
+        /* ================= MAIN ================= */
+
+        .main {
+            margin-left: 250px;
+            min-height: 100vh;
+        }
+
+        .top-header {
+            height: 68px;
+            background: rgba(255,255,255,0.97);
+            border-bottom: 1px solid var(--border);
+            display: flex;
+            align-items: center;
+            justify-content: flex-end;
+            gap: 18px;
+            padding: 0 32px;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .notification {
+            width: 40px;
+            height: 40px;
+            border-radius: 11px;
+            background: var(--cream);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--green-dark);
+            font-size: 17px;
+            position: relative;
+        }
+
+        .notification-dot {
+            position: absolute;
+            top: 7px;
+            right: 7px;
+            width: 7px;
+            height: 7px;
+            border-radius: 50%;
+            background: var(--gold);
+        }
+
+        .admin-user {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .admin-profile-link {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            color: var(--text-dark);
+        }
+
+        .admin-avatar {
+            width: 46px;
+            height: 46px;
+            border-radius: 50%;
+            overflow: hidden;
+            background: var(--gold);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--green-dark);
+            font-weight: 800;
+            font-size: 17px;
+        }
+
+        .admin-avatar img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .admin-details {
+            display: flex;
+            flex-direction: column;
+            line-height: 1.2;
+        }
+
+        .admin-name {
+            font-size: 14px;
+            font-weight: 700;
+            color: var(--text-dark);
+        }
+
+        .admin-role {
+            font-size: 12px;
+            color: var(--text-medium);
+            margin-top: 4px;
+        }
+
+        .switch-account-btn {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            padding: 10px 15px;
+            border: 1px solid var(--border);
+            border-radius: 10px;
+            color: var(--green-dark);
+            font-size: 13px;
+            font-weight: 700;
+            background: #fffdf8;
+        }
+
+        /* ================= CONTENT ================= */
+
+        .content {
+            padding: 38px 35px 50px;
+        }
+
+        .page-heading {
+            margin-bottom: 28px;
+        }
+
+        .page-heading h1 {
+            font-size: 31px;
+            color: var(--green-dark);
+            margin-bottom: 7px;
+        }
+
+        .page-heading p {
+            font-size: 14px;
+            color: var(--text-medium);
+        }
+
+        /* ================= REQUEST CARDS ================= */
+
+        .request-grid {
+            display: grid;
+            grid-template-columns: repeat(3, minmax(0, 1fr));
+            gap: 22px;
+            margin-bottom: 30px;
+        }
+
+        .request-card {
+            background: white;
+            border: 1px solid var(--border);
+            border-radius: 18px;
+            padding: 25px;
+            box-shadow: 0 8px 25px rgba(16,61,43,0.05);
+            transition: all 0.25s ease;
+        }
+
+        .request-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 14px 30px rgba(16,61,43,0.10);
+        }
+
+        .request-card-top {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 20px;
+        }
+
+        .request-title {
+            font-size: 13px;
+            font-weight: 800;
+            letter-spacing: 0.7px;
+            color: var(--green-dark);
+        }
+
+        .request-icon {
+            width: 48px;
+            height: 48px;
+            border-radius: 13px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 21px;
+        }
+
+        .workshop-icon {
+            background: var(--green-soft);
+            color: var(--green-main);
+        }
+
+        .exhibition-icon {
+            background: var(--gold-soft);
+            color: var(--gold-dark);
+        }
+
+        .competition-icon {
+            background: #f0eee7;
+            color: var(--green-main);
+        }
+
+        .request-count {
+            font-size: 42px;
+            font-weight: 800;
+            color: var(--green-main);
+            line-height: 1;
+            margin-bottom: 12px;
+        }
+
+        .request-description {
+            color: var(--text-medium);
+            font-size: 13px;
+            line-height: 1.6;
+            min-height: 42px;
+            margin-bottom: 20px;
+        }
+
+        .view-button {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            width: 100%;
+            padding: 11px 15px;
+            border-radius: 10px;
+            background: var(--green-main);
+            color: white;
+            font-size: 13px;
+            font-weight: 700;
+            transition: all 0.2s ease;
+        }
+
+        .view-button:hover {
+            background: var(--green-dark);
+            color: white;
+            transform: translateY(-1px);
+        }
+
+        /* ================= PROCESS ================= */
+
+        .process-card {
+            background: white;
+            border: 1px solid var(--border);
+            border-radius: 18px;
+            padding: 28px;
+            box-shadow: 0 8px 25px rgba(16,61,43,0.04);
+        }
+
+        .process-heading {
+            display: flex;
+            align-items: flex-start;
+            gap: 15px;
+            margin-bottom: 28px;
+        }
+
+        .process-info-icon {
+            width: 46px;
+            height: 46px;
+            flex-shrink: 0;
+            border-radius: 12px;
+            background: var(--green-soft);
+            color: var(--green-main);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 21px;
+        }
+
+        .process-heading h2 {
+            font-size: 20px;
+            color: var(--green-dark);
+            margin-bottom: 7px;
+        }
+
+        .process-heading p {
+            color: var(--text-medium);
+            font-size: 13px;
+            line-height: 1.7;
+        }
+
+        .process-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 18px;
+        }
+
+        .process-step {
+            background: var(--cream);
+            border: 1px solid var(--border);
+            border-radius: 14px;
+            padding: 20px;
+        }
+
+        .process-step-icon {
+            width: 42px;
+            height: 42px;
+            border-radius: 11px;
+            background: var(--green-soft);
+            color: var(--green-main);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 14px;
+        }
+
+        .process-step h3 {
+            font-size: 14px;
+            color: var(--green-dark);
+            margin-bottom: 8px;
+        }
+
+        .process-step p {
+            font-size: 12px;
+            color: var(--text-medium);
+            line-height: 1.6;
+        }
+
+        /* ================= RESPONSIVE ================= */
+
+        @media (max-width: 1050px) {
+
+            .request-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .process-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+        }
+
+        @media (max-width: 700px) {
+
+            .sidebar {
+                width: 210px;
+            }
+
+            .main {
+                margin-left: 210px;
+            }
+
+            .process-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .content {
+                padding: 25px 18px;
+            }
+
+        }
+.page-heading-row {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 20px;
+}
+
+.create-event-button {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 9px;
+    padding: 12px 19px;
+    border-radius: 11px;
+    background: var(--gold);
+    color: var(--green-dark);
+    font-size: 13px;
+    font-weight: 800;
+    white-space: nowrap;
+    box-shadow: 0 7px 18px rgba(16, 61, 43, 0.10);
+    transition: all 0.25s ease;
+}
+
+.create-event-button:hover {
+    background: var(--gold-dark);
+    color: white;
+    transform: translateY(-2px);
+    box-shadow: 0 10px 22px rgba(16, 61, 43, 0.14);
+}
+
+.create-event-button i {
+    font-size: 16px;
+}
+
+
+.event-header-actions {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    flex-wrap: nowrap;
+    gap: 8px;
+}
+
+.event-header-actions .create-event-button {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    white-space: nowrap;
+    flex-shrink: 0;
+}
+
+
+    </style>
+
+</head>
+
+<body>
+
+<!-- =====================================================
+     SIDEBAR
+===================================================== -->
+
+<aside class="sidebar">
+
+    <!-- =================================================
+         CRAFTORA LOGO
+    ================================================= -->
+
+    <div class="logo-area">
+
+        <a href="/">
+
+            <img src="/images/craftora-logo.png"
+                 alt="Craftora Logo">
+
+        </a>
+
+    </div>
+
+
+    <!-- =================================================
+         MENU
+    ================================================= -->
+
+    <div class="menu">
+
+        <div class="menu-label">
+            Main Menu
+        </div>
+
+
+        <!-- Dashboard -->
+
+        <a href="/admin-dashboard"
+           class="menu-link active">
+
+            <i class="bi bi-grid-1x2-fill"></i>
+
+            <span>
+                Dashboard
+            </span>
+
+        </a>
+
+
+        <!-- Artisans -->
+
+        <a href="/admin/manage-artisans"
+           class="menu-link">
+
+            <i class="bi bi-people-fill"></i>
+
+            <span>
+                Artisans
+            </span>
+
+        </a>
+
+
+        <!-- Events -->
+
+        <a href="/admin/events"
+           class="menu-link">
+
+            <i class="bi bi-calendar-event-fill"></i>
+
+            <span>
+                Events
+            </span>
+
+        </a>
+
+
+        <!-- Payments -->
+
+        <a href="/admin/orders"
+           class="menu-link">
+
+            <i class="bi bi-credit-card-fill"></i>
+
+            <span>
+                Payments
+            </span>
+
+        </a>
+
+
+        <!-- Management -->
+
+        <div class="menu-label"
+             style="margin-top: 23px;">
+
+            Management
+
+        </div>
+
+
+        <!-- Reports -->
+
+        <a href="/admin/orders"
+           class="menu-link">
+
+            <i class="bi bi-bar-chart-fill"></i>
+
+            <span>
+                Reports
+            </span>
+
+        </a>
+
+
+        <!-- Ratings -->
+
+        <a href="#"
+           class="menu-link">
+
+            <i class="bi bi-star-fill"></i>
+
+            <span>
+                Ratings
+            </span>
+
+        </a>
+
+
+        <!-- Contact Messages -->
+
+        <a href="/admin/contact-messages"
+           class="menu-link">
+
+            <i class="bi bi-envelope-fill"></i>
+
+            <span>
+                Contact Messages
+            </span>
+
+        </a>
+
+
+        <!-- Settings -->
+
+        <a href="/admin/settings"
+           class="menu-link">
+
+            <i class="bi bi-gear-fill"></i>
+
+            <span>
+                Settings
+            </span>
+
+        </a>
+
+
+        <!-- Reported Reviews -->
+
+        <a href="/admin/reported-reviews"
+           class="menu-link">
+
+            <i class="bi bi-flag-fill"></i>
+
+            <span>
+                Reported Reviews
+            </span>
+
+        </a>
+
+    </div>
+
+
+    <!-- =================================================
+         BOTTOM ACTIONS
+    ================================================= -->
+
+    <div class="logout-area">
+
+
+        <!-- SWITCH ACCOUNT -->
+
+        <div th:if="${session.userRoles != null and #lists.size(session.userRoles) > 1}">
+
+            <a href="/switch-account"
+               class="menu-link switch-link">
+
+                <i class="bi bi-arrow-left-right"></i>
+
+                <span>
+                    Switch Account
+                </span>
+
+            </a>
+
+        </div>
+
+
+        <!-- LOGOUT -->
+
+        <a href="/logout"
+           class="menu-link logout">
+
+            <i class="bi bi-box-arrow-left"></i>
+
+            <span>
+                Logout
+            </span>
+
+        </a>
+
+    </div>
+
+</aside>
+
+
+<!-- ================= MAIN ================= -->
+
+<main class="main">
+
+    <header class="top-header">
+
+        <div class="notification">
+
+            <i class="bi bi-bell"></i>
+
+            <span class="notification-dot"></span>
+
+        </div>
+
+
+        <div class="admin-user">
+
+            <a href="/admin/profile"
+               class="admin-profile-link">
+
+                <div class="admin-avatar">
+
+                    <img th:if="${artisan != null and artisan.profileImage != null and artisan.profileImage != ''}"
+                         th:src="${artisan.profileImage.startsWith('/') ? artisan.profileImage : '/' + artisan.profileImage}"
+                         alt="Admin Profile">
+
+                    <span th:if="${artisan == null or artisan.profileImage == null or artisan.profileImage == ''}">
+                        A
+                    </span>
+
+                </div>
+
+
+                <div class="admin-details">
+
+                    <span class="admin-name"
+                          th:text="${user.fullName}">
+                        Admin
+                    </span>
+
+                    <span class="admin-role">
+                        Administrator
+                    </span>
+
+                </div>
+
+            </a>
+
+
+            <div th:if="${session.userRoles != null and #lists.size(session.userRoles) > 1}">
+
+                <a href="/switch-account"
+                   class="switch-account-btn">
+
+                    <i class="bi bi-arrow-left-right"></i>
+
+                    <span>
+                        Switch Account
+                    </span>
+
+                </a>
+
+            </div>
+
+        </div>
+
+    </header>
+
+
+    <!-- ================= CONTENT ================= -->
+
+    <div class="content">
+
+<div class="page-heading-row">
+
+    <div>
+        <h1>Events</h1>
+        <p>
+            Review event requests and manage Craftora community events.
+        </p>
+    </div>
+
+
+<div class="event-header-actions">
+
+    <a href="/admin/events/create"
+       class="create-event-button">
+        <i class="bi bi-plus-circle-fill"></i>
+        Create Event
+    </a>
+
+    <a href="/admin/events/published"
+       class="create-event-button">
+        <i class="bi bi-calendar-check-fill"></i>
+        Published Events
+    </a>
+
+    <a href="/admin/workshop-attendance"
+       class="create-event-button">
+        <i class="bi bi-clipboard-check-fill"></i>
+        Mark Workshop Attendance
+    </a>
+
+    <a href="/admin/previous-events/create"
+       class="create-event-button">
+        <i class="bi bi-clock-history"></i>
+        Add Previous Event
+    </a>
+
+</div>
+
+</div>
+
+</div>
+
+        <!-- ================= REQUEST CARDS ================= -->
+
+        <div class="request-grid">
+
+
+            <!-- WORKSHOP -->
+
+            <div class="request-card">
+
+                <div class="request-card-top">
+
+                    <div class="request-title">
+                        WORKSHOP REQUESTS
+                    </div>
+
+                    <div class="request-icon workshop-icon">
+                        <i class="bi bi-easel"></i>
+                    </div>
+
+                </div>
+
+                <div class="request-count"
+                     th:text="${workshopRequests}">
+                    0
+                </div>
+
+                <div class="request-description">
+                    Pending workshop requests from artisans.
+                </div>
+
+                <a href="/admin/events/requests/WORKSHOP"
+   class="view-button">
+
+    View Requests
+
+    <i class="bi bi-arrow-right"></i>
+
+</a>
+
+<!-- JOIN CURRENT DISCUSSION -->
+<a th:if="${workshopOpenDiscussion != null}"
+   th:href="@{/admin/events/discussion/{discussionId}(discussionId=${workshopOpenDiscussion.discussionId})}"
+   class="view-button"
+   style="margin-top: 10px; background: var(--gold-dark);">
+
+    Join Discussion
+
+    <i class="bi bi-chat-dots"></i>
+
+</a>
+
+<!-- PREVIOUS CLOSED DISCUSSIONS -->
+<a th:if="${workshopPreviousDiscussions != null and !#lists.isEmpty(workshopPreviousDiscussions)}"
+   href="/admin/events/discussions/previous/WORKSHOP"
+   class="view-button"
+   style="margin-top: 10px; background: #65736b;">
+
+    View Previous Chat
+
+    <i class="bi bi-clock-history"></i>
+
+</a>
+
+            </div>
+
+
+            <!-- EXHIBITION -->
+
+            <div class="request-card">
+
+                <div class="request-card-top">
+
+                    <div class="request-title">
+                        EXHIBITION REQUESTS
+                    </div>
+
+                    <div class="request-icon exhibition-icon">
+                        <i class="bi bi-image"></i>
+                    </div>
+
+                </div>
+
+                <div class="request-count"
+                     th:text="${exhibitionRequests}">
+                    0
+                </div>
+
+                <div class="request-description">
+                    Pending exhibition requests from artisans.
+                </div>
+
+              <a href="/admin/events/requests/EXHIBITION"
+   class="view-button">
+
+    View Requests
+
+    <i class="bi bi-arrow-right"></i>
+
+</a>
+
+<!-- JOIN CURRENT DISCUSSION -->
+<a th:if="${exhibitionOpenDiscussion != null}"
+   th:href="@{/admin/events/discussion/{discussionId}(discussionId=${exhibitionOpenDiscussion.discussionId})}"
+   class="view-button"
+   style="margin-top: 10px; background: var(--gold-dark);">
+
+    Join Discussion
+
+    <i class="bi bi-chat-dots"></i>
+
+</a>
+
+<!-- PREVIOUS CLOSED DISCUSSIONS -->
+<a th:if="${exhibitionPreviousDiscussions != null and !#lists.isEmpty(exhibitionPreviousDiscussions)}"
+   href="/admin/events/discussions/previous/EXHIBITION"
+   class="view-button"
+   style="margin-top: 10px; background: #65736b;">
+
+    View Previous Chat
+
+    <i class="bi bi-clock-history"></i>
+
+</a>
+
+            </div>
+
+
+            <!-- COMPETITION -->
+
+            <div class="request-card">
+
+                <div class="request-card-top">
+
+                    <div class="request-title">
+                        COMPETITION REQUESTS
+                    </div>
+
+                    <div class="request-icon competition-icon">
+                        <i class="bi bi-trophy"></i>
+                    </div>
+
+                </div>
+
+                <div class="request-count"
+                     th:text="${competitionRequests}">
+                    0
+                </div>
+
+                <div class="request-description">
+                    Pending competition requests from artisans.
+                </div>
+
+                <a href="/admin/events/requests/COMPETITION"
+   class="view-button">
+
+    View Requests
+
+    <i class="bi bi-arrow-right"></i>
+
+</a>
+
+<!-- JOIN CURRENT DISCUSSION -->
+<a th:if="${competitionOpenDiscussion != null}"
+   th:href="@{/admin/events/discussion/{discussionId}(discussionId=${competitionOpenDiscussion.discussionId})}"
+   class="view-button"
+   style="margin-top: 10px; background: var(--gold-dark);">
+
+    Join Discussion
+
+    <i class="bi bi-chat-dots"></i>
+
+</a>
+
+<!-- PREVIOUS CLOSED DISCUSSIONS -->
+<a th:if="${competitionPreviousDiscussions != null and !#lists.isEmpty(competitionPreviousDiscussions)}"
+   href="/admin/events/discussions/previous/COMPETITION"
+   class="view-button"
+   style="margin-top: 10px; background: #65736b;">
+
+    View Previous Chat
+
+    <i class="bi bi-clock-history"></i>
+
+</a>
+
+            </div>
+
+
+        </div>
+
+
+        <!-- ================= PROCESS ================= -->
+
+        <div class="process-card">
+
+            <div class="process-heading">
+
+                <div class="process-info-icon">
+
+                    <i class="bi bi-info-circle"></i>
+
+                </div>
+
+
+                <div>
+
+                    <h2>
+                        Event Management Process
+                    </h2>
+
+                    <p>
+
+                        Artisans can submit requests for Workshops,
+                        Exhibitions, or Competitions. The administration
+                        reviews the requests and can open a live discussion
+                        when an event type receives sufficient interest.
+                        Event details such as date, time, location, and
+                        participation requirements are decided during
+                        the discussion before the final event is published.
+
+                    </p>
+
+                </div>
+
+            </div>
+
+
+            <div class="process-grid">
+
+
+                <div class="process-step">
+
+                    <div class="process-step-icon">
+
+                        <i class="bi bi-send"></i>
+
+                    </div>
+
+                    <h3>
+                        1. Requests
+                    </h3>
+
+                    <p>
+
+                        Artisans submit requests for the event type
+                        they would like Craftora to organize.
+
+                    </p>
+
+                </div>
+
+
+                <div class="process-step">
+
+                    <div class="process-step-icon">
+
+                        <i class="bi bi-bar-chart-fill"></i>
+
+                    </div>
+
+                    <h3>
+                        2. Review Interest
+                    </h3>
+
+                    <p>
+
+                        Admin reviews the number of requests and
+                        identifies events with sufficient interest.
+
+                    </p>
+
+                </div>
+
+
+                <div class="process-step">
+
+                    <div class="process-step-icon">
+
+                        <i class="bi bi-chat-dots-fill"></i>
+
+                    </div>
+
+                    <h3>
+                        3. Live Discussion
+                    </h3>
+
+                    <p>
+
+                        Admin opens a discussion where artisans can
+                        discuss the event and its requirements.
+
+                    </p>
+
+                </div>
+
+
+                <div class="process-step">
+
+                    <div class="process-step-icon">
+
+                        <i class="bi bi-calendar-check-fill"></i>
+
+                    </div>
+
+                    <h3>
+                        4. Publish Event
+                    </h3>
+
+                    <p>
+
+                        Final details are decided and the completed
+                        event is published for registration.
+
+                    </p>
+
+                </div>
+
+
+            </div>
+
+        </div>
+
+    </div>
+
+</main>
+
+</body>
+
+</html>

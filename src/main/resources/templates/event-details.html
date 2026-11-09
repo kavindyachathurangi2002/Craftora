@@ -1,0 +1,1597 @@
+<!DOCTYPE html>
+
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+
+<meta charset="UTF-8">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title th:text="${event.eventTitle + ' | Craftora'}">Event Details | Craftora</title>
+
+<link rel="stylesheet" href="/css/style.css">
+
+<link rel="stylesheet"
+      href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css">
+
+
+<style>
+
+* {
+    box-sizing: border-box;
+}
+
+html {
+    scroll-behavior: smooth;
+}
+
+body {
+    margin: 0;
+    padding: 0;
+    font-family: Arial, sans-serif;
+    background: #f8f7f2;
+    color: #173f2d;
+}
+
+a {
+    text-decoration: none;
+}
+
+
+/* =========================
+   NAVBAR
+========================= */
+
+.navbar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 15px 6%;
+    background: #fff;
+    box-shadow: 0 2px 12px rgba(0,0,0,.08);
+    position: relative;
+    z-index: 1000;
+}
+
+.logo img {
+    width: 145px;
+    height: auto;
+    display: block;
+}
+
+.nav-links {
+    display: flex;
+    align-items: center;
+    gap: 25px;
+}
+
+.nav-links > a,
+.dropdown > a {
+    color: #174d3a;
+    font-size: 15px;
+    font-weight: 600;
+    transition: .2s;
+}
+
+.nav-links > a:hover,
+.dropdown > a:hover {
+    color: #c58a25;
+}
+
+
+/* =========================
+   DROPDOWN
+========================= */
+
+.dropdown {
+    position: relative;
+    z-index: 10000;
+}
+
+.dropdown > a {
+    display: inline-block;
+    cursor: pointer;
+}
+
+.dropdown-menu {
+    display: none;
+    position: absolute;
+    top: calc(100% + 5px);
+    left: 0;
+    background: #fff;
+    min-width: 190px;
+    padding: 8px 0;
+    margin: 0;
+    border-radius: 8px;
+    box-shadow: 0 8px 25px rgba(0,0,0,.15);
+    z-index: 99999;
+    pointer-events: auto;
+}
+
+.dropdown-menu a {
+    display: block;
+    width: 100%;
+    padding: 11px 18px;
+    color: #174d3a;
+    font-size: 14px;
+    font-weight: 600;
+    white-space: nowrap;
+    cursor: pointer;
+    transition: .2s ease;
+}
+
+.dropdown-menu a:hover {
+    background: #f1f7f3;
+    color: #c58a25;
+}
+
+.dropdown:hover .dropdown-menu,
+.dropdown:focus-within .dropdown-menu {
+    display: block;
+}
+
+
+/* =========================
+   DASHBOARD
+========================= */
+
+.sign-in a {
+    display: inline-block;
+    background: #08724d;
+    color: #fff;
+    padding: 10px 20px;
+    border-radius: 7px;
+    font-weight: 600;
+    transition: .3s;
+}
+
+.sign-in a:hover {
+    background: #c58a25;
+    color: #fff;
+}
+
+
+/* =========================
+   HERO
+========================= */
+
+.event-hero {
+    min-height: 250px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    padding: 45px 25px;
+
+    background:
+        linear-gradient(
+            rgba(0,70,45,.82),
+            rgba(0,70,45,.88)
+        ),
+        url('/images/hero2.jpg')
+        center/cover no-repeat;
+
+    color: #fff;
+}
+
+.event-hero-content {
+    max-width: 900px;
+}
+
+.event-type {
+    display: inline-block;
+    color: #f0c96d;
+    font-size: 14px;
+    letter-spacing: 3px;
+    font-weight: 700;
+    margin-bottom: 15px;
+}
+
+.event-hero h1 {
+    font-size: 48px;
+    margin: 0;
+    line-height: 1.2;
+    color: #fff;
+}
+
+
+/* =========================
+   MAIN
+========================= */
+
+.event-details-section {
+    width: 100%;
+    max-width: 1150px;
+    margin: 0 auto;
+    padding: 70px 25px;
+}
+
+.event-details-card {
+    width: 100%;
+    background: #fff;
+    border-radius: 20px;
+    overflow: hidden;
+    box-shadow: 0 10px 35px rgba(20,61,43,.10);
+}
+
+
+/* =========================
+   IMAGE
+========================= */
+
+.event-details-image {
+    position: relative;
+    width: 100%;
+    height: 430px;
+    background: #eeeeea;
+    overflow: hidden;
+}
+
+.event-details-image img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+}
+
+
+/* =========================
+   FREE BADGE
+========================= */
+
+.free-badge {
+    position: absolute;
+    top: 15px;
+    right: 15px;
+    z-index: 20;
+    background: #e91d25;
+    color: #fff;
+    padding: 7px 13px;
+    border-radius: 20px;
+    font-size: 12px;
+    font-weight: 800;
+    letter-spacing: 1px;
+    line-height: 1;
+    box-shadow: 0 4px 10px rgba(0,0,0,.18);
+}
+
+
+/* =========================
+   CONTENT
+========================= */
+
+.event-details-content {
+    padding: 45px;
+}
+
+.event-details-category {
+    display: inline-block;
+    background: #edf6f1;
+    color: #08724d;
+    padding: 7px 14px;
+    border-radius: 20px;
+    font-size: 13px;
+    font-weight: 700;
+    margin-bottom: 15px;
+}
+
+.event-details-content h2 {
+    color: #174d3a;
+    font-size: 34px;
+    margin: 0 0 18px;
+}
+
+.event-full-description {
+    color: #606d68;
+    font-size: 16px;
+    line-height: 1.8;
+    margin: 0 0 30px;
+    white-space: pre-line;
+}
+
+
+/* =========================
+   EVENT INFORMATION
+========================= */
+
+.event-info-grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0,1fr));
+    gap: 18px;
+    margin-bottom: 30px;
+}
+
+.event-info-item {
+    background: #f8f7f2;
+    border-radius: 12px;
+    padding: 18px 20px;
+    display: flex;
+    align-items: flex-start;
+    gap: 12px;
+}
+
+.event-info-icon {
+    font-size: 22px;
+    min-width: 28px;
+    line-height: 1;
+}
+
+.event-info-text {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+    min-width: 0;
+}
+
+.event-info-label {
+    font-size: 12px;
+    color: #888;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: .5px;
+}
+
+.event-info-value {
+    font-size: 15px;
+    color: #174d3a;
+    font-weight: 600;
+    word-break: break-word;
+}
+
+
+/* =========================
+   EVENT RULES
+========================= */
+
+.event-rules {
+    border-top: 1px solid #eee;
+    padding-top: 28px;
+    margin-top: 10px;
+    margin-bottom: 35px;
+}
+
+.event-rules h3 {
+    color: #174d3a;
+    font-size: 22px;
+    margin: 0 0 12px;
+}
+
+.event-rules p {
+    color: #666;
+    line-height: 1.8;
+    white-space: pre-line;
+    margin: 0;
+}
+
+
+/* =========================
+   NOTICES
+========================= */
+
+.event-notice {
+    width: 100%;
+    display: flex;
+    align-items: flex-start;
+    gap: 18px;
+    padding: 22px 24px;
+    margin-top: 28px;
+    border-radius: 14px;
+    border: 1px solid #e2ebe5;
+    background: #f4f8f5;
+}
+
+.notice-icon {
+    width: 48px;
+    height: 48px;
+    min-width: 48px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    background: #fff;
+    font-size: 23px;
+}
+
+.notice-content {
+    flex: 1;
+    min-width: 0;
+}
+
+.notice-content h3 {
+    margin: 0 0 7px;
+    color: #174d3a;
+    font-size: 19px;
+    font-weight: 700;
+}
+
+.notice-content p {
+    margin: 0;
+    color: #63716b;
+    font-size: 14px;
+    line-height: 1.7;
+}
+
+.workshop-certificate {
+    background: #f1f7f3;
+    border-color: #dcebe3;
+}
+
+.competition-notice {
+    background: #fff8eb;
+    border-color: #f1dfb7;
+}
+
+
+/* =========================
+   MAP
+========================= */
+
+.event-location-map {
+    width: 100%;
+    margin-top: 40px;
+    padding-top: 35px;
+    border-top: 1px solid #e8e8e8;
+}
+
+.location-heading {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 18px;
+}
+
+.location-heading-left {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+}
+
+.location-label {
+    color: #c58a25;
+    font-size: 12px;
+    font-weight: 800;
+    letter-spacing: 2px;
+}
+
+.location-heading h3 {
+    margin: 0;
+    color: #174d3a;
+    font-size: 25px;
+}
+
+.location-heading p {
+    margin: 0;
+    color: #69746f;
+    font-size: 14px;
+}
+
+.location-icon {
+    font-size: 34px;
+}
+
+#eventMap {
+    width: 100%;
+    height: 420px;
+    border-radius: 16px;
+    overflow: hidden;
+    border: 1px solid #e1e6e3;
+}
+
+.map-footer {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 20px;
+    padding: 15px 18px;
+    background: #f8f7f2;
+    border-radius: 0 0 12px 12px;
+}
+
+.map-footer-location {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    color: #174d3a;
+    font-size: 14px;
+}
+
+.map-footer a {
+    color: #08724d;
+    font-weight: 700;
+    font-size: 14px;
+}
+
+.map-footer a:hover {
+    color: #c58a25;
+}
+
+
+/* =========================
+   REGISTER
+========================= */
+
+.event-register-area {
+    margin-top: 40px;
+    padding: 25px 28px;
+    background: #edf6f1;
+    border: 1px solid #dcebe3;
+    border-radius: 16px;
+
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 25px;
+}
+
+.register-text h3 {
+    margin: 0 0 8px;
+    color: #174d3a;
+    font-size: 22px;
+}
+
+.register-text p {
+    margin: 0;
+    color: #65716c;
+    font-size: 14px;
+    line-height: 1.6;
+}
+
+.register-btn {
+    display: inline-block;
+    background: #08724d;
+    color: #fff;
+    padding: 13px 24px;
+    border-radius: 8px;
+    font-weight: 700;
+    white-space: nowrap;
+    transition: .3s;
+}
+
+.register-btn:hover {
+    background: #c58a25;
+    color: #fff;
+}
+
+
+/* =========================
+   BACK BUTTON
+========================= */
+
+.back-area {
+    width: 100%;
+    max-width: 1150px;
+    margin: -35px auto 60px;
+    padding: 0 25px;
+}
+
+.back-btn {
+    display: inline-block;
+    color: #08724d;
+    font-weight: 700;
+    font-size: 14px;
+}
+
+.back-btn:hover {
+    color: #c58a25;
+}
+
+
+/* =========================
+   RESPONSIVE
+========================= */
+
+@media (max-width:1000px) {
+
+    .nav-links {
+        gap: 15px;
+    }
+
+    .nav-links > a,
+    .dropdown > a {
+        font-size: 14px;
+    }
+
+    .event-hero h1 {
+        font-size: 40px;
+    }
+
+}
+
+
+@media (max-width:768px) {
+
+    .navbar {
+        flex-wrap: wrap;
+        gap: 15px;
+        padding: 15px 4%;
+    }
+
+    .logo img {
+        width: 125px;
+    }
+
+    .nav-links {
+        width: 100%;
+        justify-content: center;
+        flex-wrap: wrap;
+        gap: 14px;
+    }
+
+    .sign-in {
+        position: absolute;
+        top: 15px;
+        right: 4%;
+    }
+
+    .event-hero {
+        min-height: 220px;
+        padding: 40px 20px;
+    }
+
+    .event-hero h1 {
+        font-size: 34px;
+    }
+
+    .event-details-section {
+        padding: 45px 15px;
+    }
+
+    .event-details-image {
+        height: 300px;
+    }
+
+    .event-details-content {
+        padding: 30px 22px;
+    }
+
+    .event-info-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .event-register-area {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    .map-footer {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    #eventMap {
+        height: 350px;
+    }
+
+    .back-area {
+        padding: 0 15px;
+        margin-bottom: 45px;
+    }
+
+}
+
+
+@media (max-width:480px) {
+
+    .event-hero h1 {
+        font-size: 28px;
+    }
+
+    .event-details-image {
+        height: 240px;
+    }
+
+    .event-details-content h2 {
+        font-size: 27px;
+    }
+
+    .event-details-content {
+        padding: 25px 18px;
+    }
+
+    .event-notice {
+        flex-direction: column;
+    }
+
+    .location-heading {
+        align-items: flex-start;
+    }
+
+    .location-icon {
+        font-size: 28px;
+    }
+
+}
+
+</style>
+
+</head>
+
+
+<body>
+
+
+<!-- =========================
+     NAVBAR
+========================= -->
+
+<nav class="navbar">
+
+
+    <div class="logo">
+
+        <a href="/">
+
+            <img src="/images/craftora-logo.png"
+                 alt="Craftora Logo">
+
+        </a>
+
+    </div>
+
+
+    <div class="nav-links">
+
+        <a href="/">
+            Home
+        </a>
+
+        <a href="/about-us">
+            About Us
+        </a>
+
+
+        <!-- EVENTS DROPDOWN -->
+
+        <div class="dropdown">
+
+            <a href="javascript:void(0);"
+               class="active">
+
+                Events ▾
+
+            </a>
+
+
+            <div class="dropdown-menu">
+
+                <a href="/workshops">
+                    Workshops
+                </a>
+
+                <a href="/exhibitions">
+                    Exhibitions
+                </a>
+
+                <a href="/competitions">
+                    Competitions
+                </a>
+
+            </div>
+
+        </div>
+
+
+        <a href="/marketplace">
+            Marketplace
+        </a>
+
+        <a href="/ratings">
+            Ratings
+        </a>
+
+        <a href="/contact">
+            Contact Us
+        </a>
+
+    </div>
+
+
+    <!-- SIGN IN -->
+
+    <div class="sign-in"
+         th:if="${session.loggedInUserId == null}">
+
+        <a href="/login">
+            Sign In
+        </a>
+
+    </div>
+
+
+    <!-- DASHBOARD -->
+
+    <div class="sign-in"
+         th:if="${session.loggedInUserId != null}">
+
+        <a th:href="${
+            session.selectedRole != null
+            and session.selectedRole.equalsIgnoreCase('CUSTOMER')
+            ? '/customer-dashboard'
+            : (
+                session.selectedRole != null
+                and session.selectedRole.equalsIgnoreCase('ARTISAN')
+                ? '/artisan-dashboard'
+                : '/admin-dashboard'
+            )
+        }">
+
+            Dashboard
+
+        </a>
+
+    </div>
+
+</nav>
+
+
+<!-- =========================
+     HERO
+========================= -->
+
+<section class="event-hero">
+
+    <div class="event-hero-content">
+
+        <span class="event-type"
+              th:text="${event.eventType}">
+
+            EVENT
+
+        </span>
+
+
+        <h1 th:text="${event.eventTitle}">
+
+            Event Title
+
+        </h1>
+
+    </div>
+
+</section>
+
+
+<!-- =========================
+     MAIN EVENT
+========================= -->
+
+<section class="event-details-section">
+
+    <div class="event-details-card">
+
+
+        <!-- EVENT IMAGE -->
+
+        <div class="event-details-image">
+
+            <img th:src="${event.eventImage}"
+                 alt="Event Image">
+
+
+            <!-- CUSTOMER / GUEST FREE -->
+
+            <div class="free-badge"
+                 th:if="${(session.loggedInUserId == null
+                          and (event.customerRegistrationFee == null
+                               or event.customerRegistrationFee.doubleValue() <= 0))
+                         or
+                          (session.loggedInUserId != null
+                           and session.selectedRole != null
+                           and session.selectedRole.equalsIgnoreCase('CUSTOMER')
+                           and (event.customerRegistrationFee == null
+                                or event.customerRegistrationFee.doubleValue() <= 0))}">
+
+                FREE
+
+            </div>
+
+
+            <!-- ARTISAN FREE -->
+
+            <div class="free-badge"
+                 th:if="${session.loggedInUserId != null
+                         and session.selectedRole != null
+                         and session.selectedRole.equalsIgnoreCase('ARTISAN')
+                         and (event.artisanRegistrationFee == null
+                              or event.artisanRegistrationFee.doubleValue() <= 0)}">
+
+                FREE
+
+            </div>
+
+        </div>
+
+
+        <!-- =========================
+             EVENT CONTENT
+        ========================= -->
+
+        <div class="event-details-content">
+
+
+            <span class="event-details-category"
+                  th:text="${event.eventType}">
+
+                EVENT
+
+            </span>
+
+
+            <h2 th:text="${event.eventTitle}">
+
+                Event Title
+
+            </h2>
+
+
+            <!-- EVENT DESCRIPTION -->
+
+            <p class="event-full-description"
+               th:text="${event.description}">
+
+                Event Description
+
+            </p>
+
+
+            <!-- =========================
+                 EVENT INFORMATION
+            ========================= -->
+
+            <div class="event-info-grid">
+
+
+                <!-- DATE -->
+
+                <div class="event-info-item">
+
+                    <div class="event-info-icon">
+                        📅
+                    </div>
+
+                    <div class="event-info-text">
+
+                        <span class="event-info-label">
+                            Event Date
+                        </span>
+
+                        <span class="event-info-value"
+                              th:text="${event.eventDate}">
+
+                            Event Date
+
+                        </span>
+
+                    </div>
+
+                </div>
+
+
+                <!-- TIME -->
+
+                <div class="event-info-item">
+
+                    <div class="event-info-icon">
+                        ⏰
+                    </div>
+
+                    <div class="event-info-text">
+
+                        <span class="event-info-label">
+                            Time
+                        </span>
+
+                        <span class="event-info-value">
+
+                            <span th:text="${event.startTime}">
+                                Start Time
+                            </span>
+
+                            -
+
+                            <span th:text="${event.endTime}">
+                                End Time
+                            </span>
+
+                        </span>
+
+                    </div>
+
+                </div>
+
+
+                <!-- CAPACITY -->
+
+                <div class="event-info-item">
+
+                    <div class="event-info-icon">
+                        👥
+                    </div>
+
+                    <div class="event-info-text">
+
+                        <span class="event-info-label">
+                            Capacity
+                        </span>
+
+
+                        <!-- LIMITED -->
+
+                        <span class="event-info-value"
+                              th:if="${event.capacity != null
+                                      and event.capacity > 0}"
+                              th:text="${event.capacity + ' Participants'}">
+
+                            60 Participants
+
+                        </span>
+
+
+                        <!-- UNLIMITED -->
+
+                        <span class="event-info-value"
+                              th:if="${event.capacity == null
+                                      or event.capacity <= 0}">
+
+                            Unlimited
+
+                        </span>
+
+                    </div>
+
+                </div>
+
+
+                <!-- AVAILABLE SEATS -->
+
+                <div class="event-info-item">
+
+                    <div class="event-info-icon">
+                        🪑
+                    </div>
+
+                    <div class="event-info-text">
+
+                        <span class="event-info-label">
+                            Available Seats
+                        </span>
+
+
+                        <!-- LIMITED -->
+
+                        <span class="event-info-value"
+                              th:if="${event.capacity != null
+                                      and event.capacity > 0}"
+                              th:text="${availableSeats + ' Seats'}">
+
+                            60 Seats
+
+                        </span>
+
+
+                        <!-- UNLIMITED -->
+
+                        <span class="event-info-value"
+                              th:if="${event.capacity == null
+                                      or event.capacity <= 0}">
+
+                            Unlimited
+
+                        </span>
+
+                    </div>
+
+                </div>
+
+
+                <!-- REGISTRATION DEADLINE -->
+
+                <div class="event-info-item">
+
+                    <div class="event-info-icon">
+                        ⏳
+                    </div>
+
+                    <div class="event-info-text">
+
+                        <span class="event-info-label">
+                            Registration Deadline
+                        </span>
+
+                        <span class="event-info-value"
+                              th:text="${event.registrationDeadline}">
+
+                            Registration Deadline
+
+                        </span>
+
+                    </div>
+
+                </div>
+
+
+                <!-- CUSTOMER FEE -->
+
+                <div class="event-info-item"
+                     th:if="${session.selectedRole != null
+                             and session.selectedRole.equalsIgnoreCase('CUSTOMER')}">
+
+                    <div class="event-info-icon">
+                        💰
+                    </div>
+
+                    <div class="event-info-text">
+
+                        <span class="event-info-label">
+                            Customer Registration Fee
+                        </span>
+
+                        <span class="event-info-value">
+
+
+                            <span th:if="${event.customerRegistrationFee == null
+                                         or event.customerRegistrationFee.doubleValue() <= 0}">
+
+                                FREE
+
+                            </span>
+
+
+                            <span th:if="${event.customerRegistrationFee != null
+                                         and event.customerRegistrationFee.doubleValue() > 0}"
+                                  th:text="${'LKR ' + event.customerRegistrationFee}">
+
+                                Fee
+
+                            </span>
+
+                        </span>
+
+                    </div>
+
+                </div>
+
+
+                <!-- ARTISAN FEE -->
+
+                <div class="event-info-item"
+                     th:if="${session.selectedRole != null
+                             and session.selectedRole.equalsIgnoreCase('ARTISAN')}">
+
+                    <div class="event-info-icon">
+                        💰
+                    </div>
+
+                    <div class="event-info-text">
+
+                        <span class="event-info-label">
+                            Artisan Registration Fee
+                        </span>
+
+                        <span class="event-info-value">
+
+
+                            <span th:if="${event.artisanRegistrationFee == null
+                                         or event.artisanRegistrationFee.doubleValue() <= 0}">
+
+                                FREE
+
+                            </span>
+
+
+                            <span th:if="${event.artisanRegistrationFee != null
+                                         and event.artisanRegistrationFee.doubleValue() > 0}"
+                                  th:text="${'LKR ' + event.artisanRegistrationFee}">
+
+                                Fee
+
+                            </span>
+
+                        </span>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            <!-- =========================
+                 EVENT RULES
+            ========================= -->
+
+            <div class="event-rules"
+                 th:if="${event.rules != null
+                         and !event.rules.isEmpty()}">
+
+                <h3>
+                    Event Rules
+                </h3>
+
+                <p th:text="${event.rules}">
+                    Event Rules
+                </p>
+
+            </div>
+
+
+            <!-- =========================
+                 WORKSHOP CERTIFICATE
+            ========================= -->
+
+            <div class="event-notice workshop-certificate"
+                 th:if="${event.eventType != null
+                         and event.eventType.equalsIgnoreCase('WORKSHOP')}">
+
+                <div class="notice-icon">
+                    🎓
+                </div>
+
+                <div class="notice-content">
+
+                    <h3>
+                        Workshop Certificate
+                    </h3>
+
+                    <p>
+                        Participants who complete this workshop
+                        can download their certificate through the
+                        Craftora website from the day after the
+                        workshop date.
+                    </p>
+
+                </div>
+
+            </div>
+
+
+            <!-- =========================
+                 COMPETITION NOTICE
+            ========================= -->
+
+            <div class="event-notice competition-notice"
+                 th:if="${event.eventType != null
+                         and event.eventType.equalsIgnoreCase('COMPETITION')}">
+
+                <div class="notice-icon">
+                    🏆
+                </div>
+
+                <div class="notice-content">
+
+                    <h3>
+                        Competition Awards
+                    </h3>
+
+                    <p>
+                        Winners of the competition will receive
+                        physical prizes and certificates.
+                    </p>
+
+                </div>
+
+            </div>
+
+
+            <!-- =========================
+                 LOCATION + MAP
+            ========================= -->
+
+            <div class="event-location-map"
+                 th:if="${event.latitude != null
+                         and event.longitude != null}">
+
+                <div class="location-heading">
+
+                    <div class="location-heading-left">
+
+                        <span class="location-label">
+                            EVENT LOCATION
+                        </span>
+
+                        <h3>
+                            Find Us Here
+                        </h3>
+
+                        <p th:text="${event.location}">
+                            Event Location
+                        </p>
+
+                    </div>
+
+                    <span class="location-icon">
+                        📍
+                    </span>
+
+                </div>
+
+
+                <div id="eventMap"></div>
+
+
+                <div class="map-footer">
+
+                    <div class="map-footer-location">
+
+                        <span>
+                            📍
+                        </span>
+
+                        <strong th:text="${event.location}">
+                            Event Location
+                        </strong>
+
+                    </div>
+
+
+                    <a th:href="'https://www.openstreetmap.org/?mlat='
+                                + ${event.latitude}
+                                + '&mlon='
+                                + ${event.longitude}
+                                + '#map=17/'
+                                + ${event.latitude}
+                                + '/'
+                                + ${event.longitude}"
+                       target="_blank"
+                       rel="noopener noreferrer">
+
+                        Open Map ↗
+
+                    </a>
+
+                </div>
+
+            </div>
+
+
+            <!-- =========================
+                 ONLY ONE REGISTER BOX
+            ========================= -->
+
+            <div class="event-register-area">
+
+                <div class="register-text">
+
+                    <h3>
+                        Ready to Participate?
+                    </h3>
+
+                    <p>
+                        Register for this Craftora event.
+                    </p>
+
+                </div>
+
+
+                <a th:href="@{/events/{id}/register(id=${event.eventId})}"
+                   class="register-btn">
+
+                    Register Now →
+
+                </a>
+
+            </div>
+
+
+        </div>
+
+    </div>
+
+
+    <!-- =========================
+         BACK BUTTON
+    ========================= -->
+
+    <div class="back-area">
+
+        <a href="javascript:history.back()"
+           class="back-btn">
+
+            ← Back to Events
+
+        </a>
+
+    </div>
+
+</section>
+
+
+<!-- =========================
+     LEAFLET
+========================= -->
+
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+
+
+<script th:inline="javascript">
+
+const eventLatitude =
+    /*[[${event.latitude}]]*/ 7.8731;
+
+const eventLongitude =
+    /*[[${event.longitude}]]*/ 80.7718;
+
+const eventTitle =
+    /*[[${event.eventTitle}]]*/
+    'Craftora Event';
+
+const eventLocation =
+    /*[[${event.location}]]*/
+    'Event Location';
+
+
+const latitude =
+    Number(eventLatitude);
+
+const longitude =
+    Number(eventLongitude);
+
+const mapElement =
+    document.getElementById('eventMap');
+
+
+if (
+    mapElement &&
+    Number.isFinite(latitude) &&
+    Number.isFinite(longitude) &&
+    latitude >= -90 &&
+    latitude <= 90 &&
+    longitude >= -180 &&
+    longitude <= 180
+) {
+
+    const eventMap =
+        L.map(
+            mapElement,
+            {
+                zoomControl: true,
+                scrollWheelZoom: true,
+                dragging: true,
+                doubleClickZoom: true,
+                boxZoom: true,
+                keyboard: true,
+                touchZoom: true
+            }
+        );
+
+
+    L.tileLayer(
+        'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
+        {
+            attribution:
+                '&copy; OpenStreetMap contributors',
+
+            maxZoom: 19,
+
+            minZoom: 2
+        }
+    ).addTo(eventMap);
+
+
+    const eventCoordinates = [
+        latitude,
+        longitude
+    ];
+
+
+    eventMap.setView(
+        eventCoordinates,
+        16,
+        {
+            animate: false
+        }
+    );
+
+
+    const eventMarker =
+        L.marker(eventCoordinates)
+            .addTo(eventMap);
+
+
+    eventMarker.bindPopup(
+
+        '<div style="min-width:190px;padding:5px;">' +
+
+        '<h3 style="' +
+        'margin:0 0 8px;' +
+        'color:#174d3a;' +
+        'font-size:16px;' +
+        'font-weight:700;">' +
+
+        eventTitle +
+
+        '</h3>' +
+
+        '<p style="' +
+        'margin:0;' +
+        'color:#666;' +
+        'font-size:13px;' +
+        'line-height:1.5;">' +
+
+        '📍 ' +
+
+        eventLocation +
+
+        '</p>' +
+
+        '</div>'
+
+    );
+
+
+    eventMarker.openPopup();
+
+
+    function refreshEventMap() {
+
+        eventMap.invalidateSize(true);
+
+        eventMap.setView(
+            eventCoordinates,
+            16,
+            {
+                animate: false
+            }
+        );
+
+    }
+
+
+    setTimeout(
+        refreshEventMap,
+        100
+    );
+
+
+    setTimeout(
+        refreshEventMap,
+        500
+    );
+
+
+    setTimeout(
+        refreshEventMap,
+        1000
+    );
+
+
+    window.addEventListener(
+        'resize',
+        function () {
+
+            eventMap.invalidateSize(true);
+
+        }
+    );
+
+
+    window.addEventListener(
+        'load',
+        function () {
+
+            setTimeout(
+                refreshEventMap,
+                200
+            );
+
+        }
+    );
+
+} else {
+
+    console.error(
+        'Invalid event map coordinates:',
+        latitude,
+        longitude
+    );
+
+}
+
+</script>
+
+
+</body>
+
+</html>

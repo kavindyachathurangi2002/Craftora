@@ -1,0 +1,1019 @@
+
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Payments - Craftora</title>
+
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css" rel="stylesheet">
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+            background: #F8F6F1;
+            color: #333;
+        }
+
+        .sidebar {
+            position: fixed;
+            left: 0;
+            top: 0;
+            width: 250px;
+            height: 100vh;
+            background: #103D2B;
+            color: white;
+            padding: 18px 16px;
+            z-index: 1000;
+            overflow-y: auto;
+        }
+
+        .logo {
+            width: 100%;
+            height: 60px;
+            background: white;
+            border-radius: 15px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 35px;
+            overflow: hidden;
+        }
+
+        .logo img {
+            width: 215px;
+            max-width: 95%;
+            height: auto;
+        }
+
+        .menu-title {
+            font-size: 11px;
+            text-transform: uppercase;
+            color: #B9C8C0;
+            margin: 20px 10px 10px;
+            letter-spacing: 1px;
+        }
+
+        .sidebar a {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            color: #E8EEEB;
+            text-decoration: none;
+            padding: 12px 14px;
+            border-radius: 9px;
+            margin-bottom: 5px;
+            transition: 0.3s;
+            font-size: 15px;
+        }
+
+        .sidebar a i {
+            font-size: 18px;
+        }
+
+        .sidebar a:hover {
+            background: rgba(217, 179, 95, 0.18);
+            color: white;
+        }
+
+        .sidebar a.active {
+            background: #D9B35F;
+            color: #103D2B;
+            font-weight: 600;
+        }
+
+        .sidebar a.active i {
+            color: #103D2B;
+        }
+
+        .logout-link {
+            position: absolute;
+            bottom: 20px;
+            left: 16px;
+            right: 16px;
+        }
+
+        .logout-link a {
+            color: #F5C6C6;
+        }
+
+        .main-content {
+            margin-left: 250px;
+            min-height: 100vh;
+        }
+
+        .topbar {
+            background: white;
+            padding: 18px 35px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+        }
+
+        .topbar h4 {
+            margin: 0;
+            color: #103D2B;
+            font-weight: 700;
+        }
+
+        .customer-mini {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-weight: 600;
+        }
+
+        .customer-mini img,
+        .default-avatar {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            object-fit: cover;
+        }
+
+        .default-avatar {
+            background: #D9B35F;
+            color: #103D2B;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 20px;
+        }
+
+        .content {
+            padding: 35px;
+        }
+
+        .page-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 25px;
+            flex-wrap: wrap;
+            gap: 15px;
+        }
+
+        .page-header h2 {
+            color: #103D2B;
+            font-weight: 700;
+            margin-bottom: 6px;
+        }
+
+        .page-header p {
+            color: #777;
+            margin: 0;
+        }
+
+        .back-btn {
+            background: #103D2B;
+            color: white;
+            border: none;
+            padding: 10px 18px;
+            border-radius: 8px;
+            text-decoration: none;
+            transition: 0.3s;
+        }
+
+        .back-btn:hover {
+            background: #D9B35F;
+            color: #103D2B;
+        }
+
+        .summary-card {
+            background: white;
+            border-radius: 15px;
+            padding: 24px;
+            height: 100%;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.04);
+            border: 1px solid #eee;
+            display: flex;
+            align-items: center;
+            gap: 18px;
+        }
+
+        .summary-icon {
+            width: 55px;
+            height: 55px;
+            border-radius: 13px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 25px;
+            flex-shrink: 0;
+        }
+
+        .icon-green {
+            background: #E5F1E9;
+            color: #103D2B;
+        }
+
+        .icon-gold {
+            background: #FBF1D9;
+            color: #B58B2E;
+        }
+
+        .icon-blue {
+            background: #E7F0FA;
+            color: #3976B9;
+        }
+
+        .summary-card h6 {
+            color: #777;
+            font-size: 13px;
+            margin-bottom: 7px;
+        }
+
+        .summary-card h3 {
+            color: #103D2B;
+            font-weight: 700;
+            margin: 0;
+            word-break: break-word;
+        }
+
+        .payment-section {
+            background: white;
+            border-radius: 15px;
+            margin-top: 30px;
+            padding: 25px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.04);
+            border: 1px solid #eee;
+        }
+
+        .section-heading {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+
+        .section-heading h5 {
+            color: #103D2B;
+            font-weight: 700;
+            margin: 0;
+        }
+
+        .table {
+            vertical-align: middle;
+            min-width: 850px;
+        }
+
+        .table thead th {
+            background: #F3F5F2;
+            color: #103D2B;
+            font-size: 13px;
+            padding: 15px;
+            white-space: nowrap;
+            border-bottom: 2px solid #E5E8E4;
+        }
+
+        .table tbody td {
+            padding: 16px 15px;
+            font-size: 14px;
+            color: #555;
+        }
+
+        .table tbody tr:hover {
+            background: #FCFBF7;
+        }
+
+        .payment-id,
+        .amount {
+            font-weight: 700;
+            color: #103D2B;
+        }
+
+        .amount {
+            white-space: nowrap;
+        }
+
+        .status {
+            display: inline-block;
+            padding: 6px 12px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 700;
+            white-space: nowrap;
+        }
+
+        .status-paid {
+            background: #DDF4E5;
+            color: #18723B;
+        }
+
+        .status-pending {
+            background: #FFF1CC;
+            color: #956B00;
+        }
+
+        .status-failed {
+            background: #FCE0E0;
+            color: #B42318;
+        }
+
+        .status-other {
+            background: #E9E9E9;
+            color: #555;
+        }
+
+        .transaction-id {
+            max-width: 180px;
+            overflow-wrap: anywhere;
+            font-size: 12px;
+        }
+
+        .empty-state {
+            text-align: center;
+            padding: 45px 20px;
+        }
+
+        .empty-state i {
+            font-size: 48px;
+            color: #D9B35F;
+            display: block;
+            margin-bottom: 15px;
+        }
+
+        .empty-state h5 {
+            color: #103D2B;
+            font-weight: 700;
+        }
+
+        .empty-state p {
+            color: #777;
+        }
+
+        .shop-btn {
+            display: inline-block;
+            margin-top: 10px;
+            background: #103D2B;
+            color: white;
+            padding: 11px 22px;
+            border-radius: 8px;
+            text-decoration: none;
+        }
+
+        .shop-btn:hover {
+            background: #D9B35F;
+            color: #103D2B;
+        }
+
+        .payment-actions {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+
+        .payment-action-btn {
+            border: none;
+            border-radius: 8px;
+            padding: 9px 15px;
+            font-size: 13px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: 0.2s;
+        }
+
+        .print-btn {
+            background: #103D2B;
+            color: white;
+        }
+
+        .print-btn:hover {
+            background: #1B5B40;
+        }
+
+        .clear-btn {
+            background: #FCE0E0;
+            color: #B42318;
+        }
+
+        .clear-btn:hover {
+            background: #F7CACA;
+        }
+
+        .footer-note {
+            text-align: center;
+            color: #999;
+            font-size: 12px;
+            margin-top: 25px;
+        }
+
+        @media (max-width: 992px) {
+            .sidebar {
+                width: 210px;
+            }
+
+            .main-content {
+                margin-left: 210px;
+            }
+
+            .content {
+                padding: 25px;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .sidebar {
+                position: relative;
+                width: 100%;
+                height: auto;
+            }
+
+            .logout-link {
+                position: static;
+            }
+
+            .main-content {
+                margin-left: 0;
+            }
+
+            .topbar {
+                padding: 15px 20px;
+            }
+
+            .content {
+                padding: 20px;
+            }
+
+            .summary-card {
+                padding: 18px;
+            }
+        }
+
+        /* Print both product and event payment tables */
+
+/* PRINT PAYMENT HISTORY */
+@media print {
+
+    
+@page {
+    size: A4 portrait;
+    margin: 8mm;
+}
+
+
+    html,
+    body {
+       
+body {
+    background: white !important;
+    color: black !important;
+    font-size: 10px !important;
+    width: 100% !important;
+    height: auto !important;
+    transform: none !important;
+}
+
+    }
+
+    .sidebar,
+    .topbar,
+    .page-header .back-btn,
+    .payment-actions,
+    .footer-note,
+    .shop-btn {
+        display: none !important;
+    }
+
+    .main-content {
+        width: 100% !important;
+        margin: 0 !important;
+        padding: 0 !important;
+    }
+
+    .content {
+        width: 100% !important;
+        margin: 0 !important;
+        padding: 0 !important;
+    }
+
+    .page-header {
+        margin: 0 0 10px 0 !important;
+    }
+
+    .page-header h2 {
+        font-size: 20px !important;
+    }
+
+    .page-header p {
+        font-size: 11px !important;
+    }
+
+    .row.g-4 {
+        display: flex !important;
+        flex-wrap: nowrap !important;
+        gap: 8px !important;
+        margin: 0 0 10px 0 !important;
+    }
+
+    .row.g-4 > div {
+        width: 33.333% !important;
+        padding: 0 !important;
+    }
+
+    .summary-card {
+        min-height: 65px !important;
+        padding: 10px !important;
+        border: 1px solid #ddd !important;
+        box-shadow: none !important;
+        gap: 8px !important;
+    }
+
+    .summary-icon {
+        width: 30px !important;
+        height: 30px !important;
+        font-size: 16px !important;
+    }
+
+    .summary-card h6 {
+        font-size: 10px !important;
+    }
+
+    .summary-card h3 {
+        font-size: 15px !important;
+    }
+
+    .payment-section {
+        width: 100% !important;
+        margin: 0 !important;
+        padding: 0 !important;
+        border: none !important;
+        box-shadow: none !important;
+    }
+
+    .section-heading {
+        margin-bottom: 8px !important;
+    }
+
+    .section-heading h5,
+    .payment-section h5 {
+        font-size: 13px !important;
+    }
+
+    .table-responsive {
+        width: 100% !important;
+        overflow: visible !important;
+    }
+
+    .table {
+        width: 100% !important;
+        min-width: 0 !important;
+        margin-bottom: 12px !important;
+        table-layout: auto !important;
+        border-collapse: collapse !important;
+        font-size: 9px !important;
+    }
+
+    .table thead {
+        display: table-header-group !important;
+    }
+
+    .table th,
+    .table td {
+        padding: 5px 4px !important;
+        font-size: 9px !important;
+        white-space: normal !important;
+        overflow-wrap: anywhere !important;
+        word-break: normal !important;
+        vertical-align: middle !important;
+        border-bottom: 1px solid #ddd !important;
+    }
+
+    .table tr {
+        break-inside: avoid !important;
+        page-break-inside: avoid !important;
+    }
+
+    .transaction-id {
+        max-width: none !important;
+        font-size: 8px !important;
+    }
+
+    .status {
+        padding: 3px 5px !important;
+        font-size: 8px !important;
+    }
+
+    .empty-state {
+        padding: 10px !important;
+    }
+}
+
+    </style>
+</head>
+
+<body>
+
+<!-- SIDEBAR -->
+<div class="sidebar">
+    <div class="logo">
+        <img src="/images/craftora-logo.png" alt="Craftora Logo">
+    </div>
+
+    <div class="menu-title">Customer</div>
+
+    <a href="/customer-dashboard">
+        <i class="bi bi-grid-1x2-fill"></i>
+        <span>Dashboard</span>
+    </a>
+
+    <a href="/marketplace">
+        <i class="bi bi-shop"></i>
+        <span>Marketplace</span>
+    </a>
+
+    <a href="/">
+        <i class="bi bi-calendar-event"></i>
+        <span>Events</span>
+    </a>
+
+    <div class="menu-title">My Activities</div>
+
+    <a href="/cart">
+        <i class="bi bi-cart3"></i>
+        <span>My Cart</span>
+    </a>
+
+    <a href="/customer/orders">
+        <i class="bi bi-bag-check"></i>
+        <span>My Orders</span>
+    </a>
+
+   
+<a th:href="@{/customer/events/registrations}">
+    <i class="bi bi-bookmark-heart"></i>
+    <span>My Events</span>
+</a>
+
+
+    <a href="/customer/payments" class="active">
+        <i class="bi bi-credit-card"></i>
+        <span>My Payments</span>
+    </a>
+
+    <a href="/customer/profile">
+        <i class="bi bi-person-circle"></i>
+        <span>My Profile</span>
+    </a>
+
+    <div th:if="${session.userRoles != null and #lists.size(session.userRoles) > 1}"
+         class="logout-link"
+         style="bottom: 78px;">
+        <a href="/switch-account">
+            <i class="bi bi-arrow-left-right"></i>
+            <span>Switch Account</span>
+        </a>
+    </div>
+
+    <div class="logout-link">
+        <a href="/logout">
+            <i class="bi bi-box-arrow-right"></i>
+            <span>Logout</span>
+        </a>
+    </div>
+</div>
+
+<!-- MAIN CONTENT -->
+<div class="main-content">
+
+    <!-- TOP BAR -->
+    <div class="topbar">
+        <h4>My Payments</h4>
+
+        <div class="customer-mini">
+            <div th:if="${customer.profileImage != null and !customer.profileImage.isEmpty()}">
+                <img th:src="${customer.profileImage}" alt="Customer Profile">
+            </div>
+
+            <div th:unless="${customer.profileImage != null and !customer.profileImage.isEmpty()}"
+                 class="default-avatar">
+                <i class="bi bi-person"></i>
+            </div>
+
+            <span th:text="${customer.user.fullName}">Customer Name</span>
+        </div>
+    </div>
+
+    <!-- PAGE CONTENT -->
+    <div class="content">
+
+        <!-- PAGE HEADER -->
+        <div class="page-header">
+            <div>
+                <h2>Payment History</h2>
+                <p>View and track all your transactions in one place.</p>
+            </div>
+
+            <a href="/customer-dashboard" class="back-btn">
+                <i class="bi bi-arrow-left"></i>
+                Back to Dashboard
+            </a>
+        </div>
+
+        <!-- SUMMARY CARDS -->
+        <div class="row g-4">
+
+            <div class="col-lg-4 col-md-6">
+                <div class="summary-card">
+                    <div class="summary-icon icon-green">
+                        <i class="bi bi-wallet2"></i>
+                    </div>
+                    <div>
+                        <h6>Total Amount Paid</h6>
+                        <h3>
+                            LKR
+                            <span th:text="${#numbers.formatDecimal(totalAmountPaid, 1, 'COMMA', 2, 'POINT')}">0.00</span>
+                        </h3>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-lg-4 col-md-6">
+                <div class="summary-card">
+                    <div class="summary-icon icon-gold">
+                        <i class="bi bi-check-circle"></i>
+                    </div>
+                    <div>
+                        <h6>Successful Payments</h6>
+                        <h3 th:text="${totalPayments}">0</h3>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-lg-4 col-md-6">
+                <div class="summary-card">
+                    <div class="summary-icon icon-blue">
+                        <i class="bi bi-receipt"></i>
+                    </div>
+                    <div>
+                        <h6>Total Transactions</h6>
+                        <h3 th:text="${totalTransactions}">0</h3>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+        <!-- TRANSACTION HISTORY HEADING AND BUTTONS -->
+        <div class="payment-section">
+
+            <div class="section-heading">
+                <h5>
+                    <i class="bi bi-clock-history me-2"></i>
+                    Transaction History
+                </h5>
+
+                <div class="d-flex flex-column flex-sm-row align-items-sm-center gap-3">
+                    <span class="text-muted small">All your payment records</span>
+
+                    <div class="payment-actions">
+                        <button type="button"
+                                class="payment-action-btn print-btn"
+                                onclick="window.print()">
+                            <i class="bi bi-printer me-1"></i>
+                            Print
+                        </button>
+
+                        <button type="button"
+                                class="payment-action-btn clear-btn"
+                                onclick="clearPaymentHistory()">
+                            <i class="bi bi-trash me-1"></i>
+                            Clear All
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- PRODUCT ORDER PAYMENTS -->
+            <div class="mb-4">
+                <h5 class="mb-3" style="color:#103D2B;font-weight:700;">
+                    <i class="bi bi-bag-check me-2"></i>
+                    Product Order Payments
+                </h5>
+
+                <div th:if="${#lists.isEmpty(payments) and #lists.isEmpty(eventPayments)}"
+                     class="empty-state">
+                    <i class="bi bi-credit-card"></i>
+                    <h5>No Payments Yet</h5>
+                    <p>Your product and event payment records will appear here.</p>
+                    <a href="/marketplace" class="shop-btn">
+                        Explore Marketplace
+                        <i class="bi bi-arrow-right ms-1"></i>
+                    </a>
+                </div>
+
+                <div th:if="${!#lists.isEmpty(payments)}"
+                     class="table-responsive">
+                    <table class="table table-hover">
+                        <thead>
+                        <tr>
+                            <th>Payment ID</th>
+                            <th>Order ID</th>
+                            <th>Date</th>
+                            <th>Amount</th>
+                            <th>Method</th>
+                            <th>Transaction ID</th>
+                            <th>Status</th>
+                        </tr>
+                        </thead>
+
+                        <tbody>
+                        <tr th:each="payment : ${payments}">
+
+                            <td>
+                                <span class="payment-id"
+                                      th:text="${'#' + payment.paymentId}">#1</span>
+                            </td>
+
+                            <td th:text="${'#' + payment.orderId}">#1001</td>
+
+                            <td>
+                                <span th:if="${payment.paidAt != null}"
+                                      th:text="${#temporals.format(payment.paidAt, 'dd MMM yyyy')}">Date</span>
+
+                                <span th:if="${payment.paidAt == null and payment.createdAt != null}"
+                                      th:text="${#temporals.format(payment.createdAt, 'dd MMM yyyy')}">Date</span>
+
+                                <span th:if="${payment.paidAt == null and payment.createdAt == null}">-</span>
+                            </td>
+
+                            <td class="amount">
+                                LKR
+                                <span th:text="${#numbers.formatDecimal(payment.amount, 1, 'COMMA', 2, 'POINT')}">0.00</span>
+                            </td>
+
+                            <td th:text="${payment.paymentMethod != null ? payment.paymentMethod : 'N/A'}">PAYHERE</td>
+
+                            <td class="transaction-id"
+                                th:text="${payment.transactionId != null ? payment.transactionId : 'N/A'}">
+                                Transaction ID
+                            </td>
+
+                            <td>
+                                <span th:if="${#strings.equalsIgnoreCase(payment.paymentStatus, 'PAID')}"
+                                      class="status status-paid">
+                                    <i class="bi bi-check-circle-fill me-1"></i>PAID
+                                </span>
+
+                                <span th:if="${#strings.equalsIgnoreCase(payment.paymentStatus, 'PENDING')}"
+                                      class="status status-pending">
+                                    <i class="bi bi-hourglass-split me-1"></i>PENDING
+                                </span>
+
+                                <span th:if="${#strings.equalsIgnoreCase(payment.paymentStatus, 'FAILED')}"
+                                      class="status status-failed">
+                                    <i class="bi bi-x-circle-fill me-1"></i>FAILED
+                                </span>
+
+                                <span th:if="${!#strings.equalsIgnoreCase(payment.paymentStatus, 'PAID') and !#strings.equalsIgnoreCase(payment.paymentStatus, 'PENDING') and !#strings.equalsIgnoreCase(payment.paymentStatus, 'FAILED')}"
+                                      class="status status-other"
+                                      th:text="${payment.paymentStatus}">OTHER</span>
+                            </td>
+
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <!-- EVENT REGISTRATION PAYMENTS -->
+            <div class="mt-5">
+                <h5 class="mb-3" style="color:#103D2B;font-weight:700;">
+                    <i class="bi bi-calendar-event me-2"></i>
+                    Event Registration Payments
+                </h5>
+
+                <div th:if="${#lists.isEmpty(eventPayments)}"
+                     class="text-muted py-3 event-empty-message">
+                    No event registration payments found.
+                </div>
+
+                <div th:if="${!#lists.isEmpty(eventPayments)}"
+                     class="table-responsive">
+                    <table class="table table-hover">
+                        <thead>
+                        <tr>
+                            <th>Payment ID</th>
+                            <th>Registration ID</th>
+                            <th>Event Name</th>
+                            <th>Date</th>
+                            <th>Amount</th>
+                            <th>Method</th>
+                            <th>Transaction ID</th>
+                            <th>Status</th>
+                        </tr>
+                        </thead>
+
+                        <tbody>
+                        <tr th:each="eventPayment : ${eventPayments}">
+
+                            <td>
+                                <span class="payment-id"
+                                      th:text="${'#' + eventPayment.paymentId}">#1</span>
+                            </td>
+
+                            <td th:text="${'#' + eventPayment.registrationId}">#1</td>
+
+                            <td th:text="${eventNames[eventPayment.eventId] != null ? eventNames[eventPayment.eventId] : 'Event'}">
+                                Event Name
+                            </td>
+
+                            <td>
+                                <span th:if="${eventPayment.paidAt != null}"
+                                      th:text="${#temporals.format(eventPayment.paidAt, 'dd MMM yyyy')}">Date</span>
+
+                                <span th:if="${eventPayment.paidAt == null and eventPayment.createdAt != null}"
+                                      th:text="${#temporals.format(eventPayment.createdAt, 'dd MMM yyyy')}">Date</span>
+
+                                <span th:if="${eventPayment.paidAt == null and eventPayment.createdAt == null}">-</span>
+                            </td>
+
+                            <td class="amount">
+                                LKR
+                                <span th:text="${#numbers.formatDecimal(eventPayment.amount, 1, 'COMMA', 2, 'POINT')}">0.00</span>
+                            </td>
+
+                            <td th:text="${eventPayment.paymentMethod != null ? eventPayment.paymentMethod : 'N/A'}">
+                                PAYHERE
+                            </td>
+
+                            <td class="transaction-id"
+                                th:text="${eventPayment.transactionId != null ? eventPayment.transactionId : 'N/A'}">
+                                Transaction ID
+                            </td>
+
+                            <td>
+                                <span th:if="${#strings.equalsIgnoreCase(eventPayment.paymentStatus, 'PAID')}"
+                                      class="status status-paid">
+                                    <i class="bi bi-check-circle-fill me-1"></i>PAID
+                                </span>
+
+                                <span th:if="${#strings.equalsIgnoreCase(eventPayment.paymentStatus, 'PENDING')}"
+                                      class="status status-pending">
+                                    <i class="bi bi-hourglass-split me-1"></i>PENDING
+                                </span>
+
+                                <span th:if="${#strings.equalsIgnoreCase(eventPayment.paymentStatus, 'FAILED')}"
+                                      class="status status-failed">
+                                    <i class="bi bi-x-circle-fill me-1"></i>FAILED
+                                </span>
+
+                                <span th:if="${!#strings.equalsIgnoreCase(eventPayment.paymentStatus, 'PAID') and !#strings.equalsIgnoreCase(eventPayment.paymentStatus, 'PENDING') and !#strings.equalsIgnoreCase(eventPayment.paymentStatus, 'FAILED')}"
+                                      class="status status-other"
+                                      th:text="${eventPayment.paymentStatus}">OTHER</span>
+                            </td>
+
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+        </div>
+
+        <div class="footer-note">
+            <i class="bi bi-shield-lock me-1"></i>
+            Your payment information is securely maintained by Craftora.
+        </div>
+
+    </div>
+</div>
+
+<script>
+    function clearPaymentHistory() {
+        const confirmed = confirm(
+            "Clear all product and event payment records from this page view? " +
+            "This will not delete any records from the database."
+        );
+
+        if (!confirmed) {
+            return;
+        }
+
+        document.querySelectorAll(
+            ".payment-section tbody tr"
+        ).forEach(function (row) {
+            row.style.display = "none";
+        });
+
+        document.querySelectorAll(
+            ".payment-section .empty-state, " +
+            ".payment-section .event-empty-message"
+        ).forEach(function (message) {
+            message.style.display = "block";
+        });
+    }
+</script>
+
+</body>
+</html>

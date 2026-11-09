@@ -1,0 +1,1186 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title th:text="${room.eventType + ' Discussion | Craftora'}">
+        Discussion | Craftora
+    </title>
+
+    <!-- Bootstrap Icons -->
+    <link rel="stylesheet"
+          href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+
+    <!-- SockJS -->
+    <script src="https://cdn.jsdelivr.net/npm/sockjs-client@1.6.1/dist/sockjs.min.js"></script>
+
+    <!-- STOMP -->
+    <script src="https://cdn.jsdelivr.net/npm/@stomp/stompjs@7.0.0/bundles/stomp.umd.min.js"></script>
+
+
+    <style>
+
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            font-family: "Segoe UI", Arial, sans-serif;
+            background: #f4f2ed;
+            color: #173f32;
+            height: 100vh;
+            overflow: hidden;
+        }
+
+
+        /* =====================================================
+           MAIN CHAT PAGE
+        ===================================================== */
+
+        .chat-page {
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+
+        /* =====================================================
+           HEADER
+        ===================================================== */
+
+        .chat-header {
+            height: 76px;
+            background: #103d2b;
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 28px;
+            box-shadow: 0 3px 12px rgba(0, 0, 0, 0.12);
+            flex-shrink: 0;
+        }
+
+        .header-left {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .back-button {
+            width: 42px;
+            height: 42px;
+            border-radius: 50%;
+            border: 1px solid rgba(255, 255, 255, 0.18);
+            background: rgba(255, 255, 255, 0.08);
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-decoration: none;
+            transition: 0.2s ease;
+        }
+
+        .back-button:hover {
+            background: rgba(255, 255, 255, 0.16);
+        }
+
+        .chat-icon {
+            width: 44px;
+            height: 44px;
+            border-radius: 50%;
+            background: #d6b36a;
+            color: #103d2b;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 21px;
+        }
+
+        .header-title h1 {
+            margin: 0;
+            font-size: 19px;
+            font-weight: 700;
+        }
+
+        .header-title p {
+            margin: 4px 0 0;
+            font-size: 12px;
+            color: rgba(255, 255, 255, 0.72);
+        }
+
+        .header-right {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+
+        /* =====================================================
+           STATUS
+        ===================================================== */
+
+        .status-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 7px;
+            padding: 8px 13px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 700;
+        }
+
+        .status-open {
+            background: rgba(74, 170, 110, 0.18);
+            color: #a9e5bd;
+            border: 1px solid rgba(169, 229, 189, 0.25);
+        }
+
+        .status-closed {
+            background: rgba(255, 255, 255, 0.10);
+            color: #e4e4e4;
+            border: 1px solid rgba(255, 255, 255, 0.16);
+        }
+
+        .status-dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: currentColor;
+        }
+
+
+        /* =====================================================
+           CHAT CONTENT
+        ===================================================== */
+
+        .chat-content {
+            flex: 1;
+            display: flex;
+            justify-content: center;
+            min-height: 0;
+            padding: 22px;
+        }
+
+        .chat-wrapper {
+            width: min(1050px, 100%);
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            background: white;
+            border-radius: 18px;
+            overflow: hidden;
+            box-shadow: 0 8px 30px rgba(27, 45, 36, 0.09);
+            border: 1px solid #e8e4dc;
+        }
+
+
+        /* =====================================================
+           MESSAGES AREA
+        ===================================================== */
+
+        .messages-area {
+            flex: 1;
+            overflow-y: auto;
+            padding: 28px 30px;
+
+            background:
+                radial-gradient(
+                    circle at 15% 20%,
+                    rgba(214, 179, 106, 0.06) 0,
+                    transparent 24%
+                ),
+                radial-gradient(
+                    circle at 85% 75%,
+                    rgba(23, 77, 55, 0.045) 0,
+                    transparent 25%
+                ),
+                #fbfaf7;
+        }
+
+        .empty-chat {
+            height: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #8b948f;
+            font-size: 14px;
+        }
+
+
+        /* =====================================================
+           MESSAGE ROW
+        ===================================================== */
+
+        .message-row {
+            display: flex;
+            margin-bottom: 18px;
+        }
+
+        .message-row.mine {
+            justify-content: flex-end;
+        }
+
+        .message-row.other {
+            justify-content: flex-start;
+        }
+
+        .message-bubble {
+            max-width: min(72%, 650px);
+            padding: 12px 15px 9px;
+            border-radius: 15px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.04);
+        }
+
+        .message-row.mine .message-bubble {
+            background: #e8f2eb;
+            border-bottom-right-radius: 4px;
+        }
+
+        .message-row.other .message-bubble {
+            background: white;
+            border: 1px solid #e9e6df;
+            border-bottom-left-radius: 4px;
+        }
+
+        .sender-name {
+            font-size: 12px;
+            font-weight: 700;
+            color: #174d37;
+            margin-bottom: 5px;
+        }
+
+        .message-text {
+            font-size: 14px;
+            line-height: 1.55;
+            color: #27352f;
+            white-space: pre-wrap;
+            word-break: break-word;
+        }
+
+        .message-time {
+            text-align: right;
+            margin-top: 6px;
+            font-size: 10px;
+            color: #8a948e;
+        }
+
+
+        /* =====================================================
+           CLOSED NOTICE
+        ===================================================== */
+
+        .closed-notice {
+            margin: 0 30px 15px;
+            padding: 12px 15px;
+            background: #f3f1ed;
+            border: 1px solid #e3dfd7;
+            border-radius: 10px;
+            color: #77766f;
+            font-size: 13px;
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+        }
+
+
+        /* =====================================================
+           INPUT AREA
+        ===================================================== */
+
+        .message-input-area {
+            padding: 14px 18px;
+            background: white;
+            border-top: 1px solid #ece8e0;
+
+            display: flex;
+            align-items: flex-end;
+            gap: 10px;
+        }
+
+        .message-input {
+            flex: 1;
+            min-height: 45px;
+            max-height: 120px;
+            resize: none;
+
+            border: 1px solid #dcd8cf;
+            border-radius: 13px;
+
+            padding: 12px 14px;
+
+            font-family: inherit;
+            font-size: 14px;
+            color: #263a31;
+
+            outline: none;
+        }
+
+        .message-input:focus {
+            border-color: #174d37;
+            box-shadow: 0 0 0 3px rgba(23, 77, 55, 0.08);
+        }
+
+
+        /* =====================================================
+           SEND BUTTON
+        ===================================================== */
+
+        .send-button {
+            width: 46px;
+            height: 46px;
+
+            border: none;
+            border-radius: 50%;
+
+            background: #174d37;
+            color: white;
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            font-size: 18px;
+            cursor: pointer;
+
+            transition: 0.2s ease;
+            flex-shrink: 0;
+        }
+
+        .send-button:hover {
+            background: #103d2b;
+            transform: translateY(-1px);
+        }
+
+        .send-button:disabled {
+            background: #b9c0bc;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+
+        /* =====================================================
+           ADMIN CLOSE BUTTON
+        ===================================================== */
+
+        .close-discussion-button {
+            display: inline-flex;
+            align-items: center;
+            gap: 7px;
+
+            padding: 9px 14px;
+
+            border: none;
+            border-radius: 9px;
+
+            background: #8f3b3b;
+            color: white;
+
+            font-size: 12px;
+            font-weight: 700;
+
+            cursor: pointer;
+            transition: 0.2s ease;
+        }
+
+        .close-discussion-button:hover {
+            background: #752e2e;
+        }
+
+
+        /* =====================================================
+           RESPONSIVE
+        ===================================================== */
+
+        @media (max-width: 700px) {
+
+            .chat-header {
+                padding: 0 14px;
+            }
+
+            .header-title h1 {
+                font-size: 16px;
+            }
+
+            .header-title p {
+                display: none;
+            }
+
+            .chat-content {
+                padding: 0;
+            }
+
+            .chat-wrapper {
+                border-radius: 0;
+                border: none;
+            }
+
+            .messages-area {
+                padding: 20px 15px;
+            }
+
+            .message-bubble {
+                max-width: 84%;
+            }
+
+            .closed-notice {
+                margin-left: 15px;
+                margin-right: 15px;
+            }
+
+            .close-discussion-button span {
+                display: none;
+            }
+        }
+
+    </style>
+
+</head>
+
+
+<body>
+
+<div class="chat-page">
+
+
+    <!-- =====================================================
+         HEADER
+    ====================================================== -->
+
+    <header class="chat-header">
+
+        <div class="header-left">
+
+      <a th:href="${backUrl}"
+   class="back-button"
+   th:title="${backTitle}">
+
+    <i class="bi bi-arrow-left"></i>
+
+</a>
+
+            <!-- Chat icon -->
+            <div class="chat-icon">
+
+                <i class="bi bi-chat-dots-fill"></i>
+
+            </div>
+
+
+            <!-- Chat title -->
+            <div class="header-title">
+
+                <h1>
+
+                    <span th:if="${room.eventType == 'WORKSHOP'}">
+                        Workshop Discussion
+                    </span>
+
+                    <span th:if="${room.eventType == 'EXHIBITION'}">
+                        Exhibition Discussion
+                    </span>
+
+                    <span th:if="${room.eventType == 'COMPETITION'}">
+                        Competition Discussion
+                    </span>
+
+                </h1>
+
+                <p>
+                    Craftora Community Discussion
+                </p>
+
+            </div>
+
+        </div>
+
+
+        <div class="header-right">
+
+
+            <!-- OPEN STATUS -->
+
+            <div th:if="${room.status == 'OPEN'}"
+                 class="status-badge status-open">
+
+                <span class="status-dot"></span>
+
+                Live Discussion
+
+            </div>
+
+
+            <!-- CLOSED STATUS -->
+
+            <div th:if="${room.status == 'CLOSED'}"
+                 class="status-badge status-closed">
+
+                <span class="status-dot"></span>
+
+                Discussion Closed
+
+            </div>
+
+
+            <!-- ADMIN CLOSE BUTTON -->
+
+            <form th:if="${isAdmin and room.status == 'OPEN'}"
+                  th:action="@{'/admin/events/discussion/' + ${room.discussionId} + '/close'}"
+                  method="post"
+                  onsubmit="return confirm('Are you sure you want to close this discussion?\n\nAfter closing, no one will be able to send new messages. The chat history will remain available.');">
+
+                <button type="submit"
+                        class="close-discussion-button">
+
+                    <i class="bi bi-x-circle"></i>
+
+                    <span>
+                        Close Discussion
+                    </span>
+
+                </button>
+
+            </form>
+
+        </div>
+
+    </header>
+
+
+    <!-- =====================================================
+         CHAT CONTENT
+    ====================================================== -->
+
+    <main class="chat-content">
+
+        <section class="chat-wrapper">
+
+
+            <!-- =================================================
+                 MESSAGES
+            ================================================== -->
+
+            <div id="messagesArea"
+                 class="messages-area">
+
+
+                <!-- No messages -->
+
+                <div th:if="${#lists.isEmpty(messages)}"
+                     id="emptyChat"
+                     class="empty-chat">
+
+                    <span>
+                        No messages yet.
+                    </span>
+
+                </div>
+
+
+                <!-- Existing messages -->
+
+                <div th:each="message : ${messages}"
+                     class="message-row"
+                     th:classappend="${message.sender.userId == currentUser.userId} ? 'mine' : 'other'">
+
+                    <div class="message-bubble">
+
+                        <div class="sender-name"
+                             th:text="${message.sender.fullName}">
+                            Sender
+                        </div>
+
+                        <div class="message-text"
+                             th:text="${message.messageText}">
+                            Message
+                        </div>
+
+                        <div class="message-time"
+                             th:text="${#temporals.format(message.sentAt, 'hh:mm a')}">
+                            12:00 PM
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            <!-- =================================================
+                 CLOSED NOTICE
+            ================================================== -->
+
+            <div th:if="${room.status == 'CLOSED'}"
+                 class="closed-notice">
+
+                <i class="bi bi-lock-fill"></i>
+
+                This discussion has been closed by the administrator.
+                You can view the previous messages, but new messages
+                cannot be sent.
+
+            </div>
+
+
+            <!-- =================================================
+                 MESSAGE INPUT
+            ================================================== -->
+
+            <div th:if="${room.status == 'OPEN'}"
+                 class="message-input-area">
+
+                <textarea id="messageInput"
+                          class="message-input"
+                          placeholder="Type your message..."
+                          rows="1"></textarea>
+
+
+                <button id="sendButton"
+                        class="send-button"
+                        type="button"
+                        title="Send message">
+
+                    <i class="bi bi-send-fill"></i>
+
+                </button>
+
+            </div>
+
+        </section>
+
+    </main>
+
+</div>
+
+
+<!-- =========================================================
+     THYMELEAF DATA
+========================================================= -->
+
+<script th:inline="javascript">
+
+    const discussionId =
+        /*[[${room.discussionId}]]*/ 0;
+
+    const currentUserId =
+        /*[[${currentUser.userId}]]*/ 0;
+
+    const currentUserName =
+        /*[[${currentUser.fullName}]]*/ '';
+
+    const roomStatus =
+        /*[[${room.status}]]*/ 'CLOSED';
+
+</script>
+
+
+<!-- =========================================================
+     WEBSOCKET / STOMP
+========================================================= -->
+
+<script>
+
+    let stompClient = null;
+
+
+    // =========================================================
+    // CONNECT TO WEBSOCKET
+    // =========================================================
+
+    function connectWebSocket() {
+
+        if (roomStatus !== "OPEN") {
+            console.log("Discussion is closed.");
+            return;
+        }
+
+
+        console.log("Connecting to Craftora WebSocket...");
+
+
+        stompClient = new StompJs.Client({
+
+            webSocketFactory: function () {
+
+                return new SockJS("/ws");
+
+            },
+
+
+            reconnectDelay: 5000,
+
+
+            debug: function (message) {
+
+                console.log(
+                    "[STOMP]",
+                    message
+                );
+
+            }
+
+        });
+
+
+        // =====================================================
+        // SUCCESSFUL CONNECTION
+        // =====================================================
+
+        stompClient.onConnect = function () {
+
+            console.log(
+                "✅ Connected to Craftora Live Chat."
+            );
+
+
+            // Subscribe to this discussion room
+
+            stompClient.subscribe(
+
+                "/topic/discussion/"
+                + discussionId,
+
+                function (message) {
+
+                    console.log(
+                        "📩 Message received:",
+                        message.body
+                    );
+
+
+                    const data =
+                        JSON.parse(message.body);
+
+
+                    addMessage(
+
+                        data.senderId,
+
+                        data.senderName,
+
+                        data.messageText
+
+                    );
+
+                }
+
+            );
+
+        };
+
+
+        // =====================================================
+        // STOMP ERROR
+        // =====================================================
+
+        stompClient.onStompError = function (frame) {
+
+            console.error(
+                "❌ STOMP error:",
+                frame.headers["message"]
+            );
+
+            console.error(
+                "STOMP details:",
+                frame.body
+            );
+
+        };
+
+
+        // =====================================================
+        // WEBSOCKET ERROR
+        // =====================================================
+
+        stompClient.onWebSocketError = function (error) {
+
+            console.error(
+                "❌ WebSocket error:",
+                error
+            );
+
+        };
+
+
+        // =====================================================
+        // WEBSOCKET CLOSED
+        // =====================================================
+
+        stompClient.onWebSocketClose = function () {
+
+            console.log(
+                "⚠️ WebSocket connection closed."
+            );
+
+        };
+
+
+        // =====================================================
+        // ACTIVATE
+        // =====================================================
+
+        stompClient.activate();
+
+    }
+
+
+    // =========================================================
+    // SEND MESSAGE
+    // =========================================================
+
+    function sendMessage() {
+
+        if (!stompClient) {
+
+            console.error(
+                "❌ WebSocket client is not initialized."
+            );
+
+            return;
+        }
+
+
+        if (!stompClient.connected) {
+
+            console.error(
+                "❌ WebSocket is not connected yet."
+            );
+
+            alert(
+                "The live chat is still connecting. Please wait a moment and try again."
+            );
+
+            return;
+        }
+
+
+        const input =
+            document.getElementById("messageInput");
+
+
+        const text =
+            input.value.trim();
+
+
+        if (text === "") {
+            return;
+        }
+
+
+        const chatMessage = {
+
+            discussionId: discussionId,
+
+            senderId: currentUserId,
+
+            senderName: currentUserName,
+
+            messageText: text
+
+        };
+
+
+        console.log(
+            "📤 Sending message:",
+            chatMessage
+        );
+
+
+        // =====================================================
+        // STOMP 7 METHOD
+        // =====================================================
+
+        stompClient.publish({
+
+            destination:
+                "/app/discussion/"
+                + discussionId
+                + "/send",
+
+            body:
+                JSON.stringify(chatMessage)
+
+        });
+
+
+        // Clear input
+
+        input.value = "";
+
+        input.style.height = "45px";
+
+    }
+
+
+    // =========================================================
+    // ADD NEW MESSAGE
+    // =========================================================
+
+    function addMessage(
+        senderId,
+        senderName,
+        messageText
+    ) {
+
+        const messagesArea =
+            document.getElementById("messagesArea");
+
+
+        const emptyChat =
+            document.getElementById("emptyChat");
+
+
+        if (emptyChat) {
+            emptyChat.remove();
+        }
+
+
+        const row =
+            document.createElement("div");
+
+
+        row.className =
+            "message-row "
+            +
+            (
+                Number(senderId)
+                ===
+                Number(currentUserId)
+
+                    ? "mine"
+
+                    : "other"
+            );
+
+
+        const bubble =
+            document.createElement("div");
+
+        bubble.className =
+            "message-bubble";
+
+
+        const sender =
+            document.createElement("div");
+
+        sender.className =
+            "sender-name";
+
+        sender.textContent =
+            senderName;
+
+
+        const text =
+            document.createElement("div");
+
+        text.className =
+            "message-text";
+
+        text.textContent =
+            messageText;
+
+
+        const time =
+            document.createElement("div");
+
+        time.className =
+            "message-time";
+
+        time.textContent =
+            formatCurrentTime();
+
+
+        bubble.appendChild(sender);
+
+        bubble.appendChild(text);
+
+        bubble.appendChild(time);
+
+
+        row.appendChild(bubble);
+
+
+        messagesArea.appendChild(row);
+
+
+        scrollToBottom();
+
+    }
+
+
+    // =========================================================
+    // CURRENT TIME
+    // =========================================================
+
+    function formatCurrentTime() {
+
+        const now =
+            new Date();
+
+
+        return now.toLocaleTimeString(
+
+            [],
+
+            {
+
+                hour: "2-digit",
+
+                minute: "2-digit"
+
+            }
+
+        );
+
+    }
+
+
+    // =========================================================
+    // SCROLL TO BOTTOM
+    // =========================================================
+
+    function scrollToBottom() {
+
+        const messagesArea =
+            document.getElementById("messagesArea");
+
+
+        if (!messagesArea) {
+            return;
+        }
+
+
+        messagesArea.scrollTop =
+            messagesArea.scrollHeight;
+
+    }
+
+
+    // =========================================================
+    // PAGE LOAD
+    // =========================================================
+
+    document.addEventListener(
+
+        "DOMContentLoaded",
+
+        function () {
+
+
+            // Scroll old messages to bottom
+
+            scrollToBottom();
+
+
+            // If discussion closed,
+            // do not start WebSocket
+
+            if (roomStatus !== "OPEN") {
+                return;
+            }
+
+
+            const input =
+                document.getElementById("messageInput");
+
+
+            const sendButton =
+                document.getElementById("sendButton");
+
+
+            if (!input || !sendButton) {
+                return;
+            }
+
+
+            // =================================================
+            // SEND BUTTON
+            // =================================================
+
+            sendButton.addEventListener(
+
+                "click",
+
+                sendMessage
+
+            );
+
+
+            // =================================================
+            // ENTER TO SEND
+            // =================================================
+
+            input.addEventListener(
+
+                "keydown",
+
+                function (event) {
+
+                    if (
+
+                        event.key === "Enter"
+
+                        &&
+
+                        !event.shiftKey
+
+                    ) {
+
+                        event.preventDefault();
+
+                        sendMessage();
+
+                    }
+
+                }
+
+            );
+
+
+            // =================================================
+            // AUTO GROW TEXTAREA
+            // =================================================
+
+            input.addEventListener(
+
+                "input",
+
+                function () {
+
+                    this.style.height =
+                        "45px";
+
+
+                    this.style.height =
+                        Math.min(
+                            this.scrollHeight,
+                            120
+                        )
+                        + "px";
+
+                }
+
+            );
+
+
+            // =================================================
+            // CONNECT
+            // =================================================
+
+            connectWebSocket();
+
+        }
+
+    );
+
+</script>
+
+
+</body>
+
+</html>

@@ -1,0 +1,848 @@
+<!DOCTYPE html>
+<html lang="en"
+      xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
+
+    <title>Admin Profile | Craftora</title>
+
+    <link
+        href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
+        rel="stylesheet">
+
+    <link
+        href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css"
+        rel="stylesheet">
+
+    <style>
+
+        :root {
+            --forest: #173f35;
+            --forest-dark: #103229;
+            --cream: #f7f3eb;
+            --gold: #d5ad5b;
+            --text: #26332f;
+            --muted: #78837f;
+            --white: #ffffff;
+            --border: #e8e2d7;
+        }
+
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            font-family: "Segoe UI", Arial, sans-serif;
+            background: var(--cream);
+            color: var(--text);
+        }
+
+        /* ==========================================
+           TOP BAR
+        ========================================== */
+
+        .topbar {
+            height: 78px;
+            background: var(--white);
+            border-bottom: 1px solid var(--border);
+
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+
+            padding: 0 40px;
+        }
+
+        .page-title {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .page-title-icon {
+            width: 42px;
+            height: 42px;
+
+            border-radius: 12px;
+
+            background: var(--forest);
+            color: white;
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            font-size: 19px;
+        }
+
+        .page-title h2 {
+            margin: 0;
+            font-size: 21px;
+            font-weight: 700;
+            color: var(--forest);
+        }
+
+        .page-title span {
+            display: block;
+            font-size: 12px;
+            color: var(--muted);
+            margin-top: 2px;
+        }
+
+        .back-btn {
+            text-decoration: none;
+
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+
+            padding: 10px 17px;
+
+            border: 1px solid var(--border);
+            border-radius: 10px;
+
+            color: var(--forest);
+            background: white;
+
+            font-size: 13px;
+            font-weight: 600;
+
+            transition: 0.2s;
+        }
+
+        .back-btn:hover {
+            background: var(--forest);
+            color: white;
+        }
+
+        /* ==========================================
+           MAIN
+        ========================================== */
+
+        .main-content {
+            padding: 35px 40px 50px;
+        }
+
+        .profile-container {
+            max-width: 1050px;
+            margin: auto;
+        }
+
+        /* ==========================================
+           PROFILE HEADER
+        ========================================== */
+
+        .profile-header {
+            background: var(--forest);
+
+            border-radius: 18px;
+
+            padding: 30px 35px;
+
+            color: white;
+
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+
+            margin-bottom: 24px;
+
+            position: relative;
+            overflow: hidden;
+        }
+
+        .profile-header::after {
+            content: "";
+
+            position: absolute;
+
+            width: 220px;
+            height: 220px;
+
+            border: 1px solid rgba(213, 173, 91, 0.25);
+
+            border-radius: 50%;
+
+            right: -80px;
+            top: -80px;
+        }
+
+        .profile-user {
+            display: flex;
+            align-items: center;
+            gap: 22px;
+
+            position: relative;
+            z-index: 1;
+        }
+
+        /* ==========================================
+           PROFILE PHOTO
+        ========================================== */
+
+        .profile-photo-wrapper {
+            position: relative;
+        }
+
+        .profile-photo {
+            width: 90px;
+            height: 90px;
+
+            border-radius: 50%;
+
+            background: var(--gold);
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            color: var(--forest);
+
+            font-size: 34px;
+            font-weight: 700;
+
+            overflow: hidden;
+
+            border: 4px solid rgba(255,255,255,0.25);
+        }
+
+        .profile-photo img {
+            width: 100%;
+            height: 100%;
+
+            object-fit: cover;
+        }
+
+        .camera-btn {
+            position: absolute;
+
+            right: -3px;
+            bottom: -3px;
+
+            width: 31px;
+            height: 31px;
+
+            border-radius: 50%;
+
+            background: white;
+            color: var(--forest);
+
+            border: 2px solid var(--forest);
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            font-size: 13px;
+
+            cursor: pointer;
+        }
+
+        .profile-name h1 {
+            margin: 0;
+
+            font-size: 25px;
+            font-weight: 700;
+        }
+
+        .profile-name p {
+            margin: 5px 0 0;
+
+            font-size: 13px;
+
+            color: rgba(255,255,255,0.75);
+        }
+
+        .role-badges {
+            display: flex;
+            gap: 8px;
+            margin-top: 12px;
+        }
+
+        .role-badge {
+            display: inline-flex;
+
+            align-items: center;
+            gap: 5px;
+
+            padding: 5px 11px;
+
+            border-radius: 20px;
+
+            background: rgba(255,255,255,0.12);
+
+            border: 1px solid rgba(255,255,255,0.2);
+
+            font-size: 11px;
+            font-weight: 600;
+        }
+
+        /* ==========================================
+           CARDS
+        ========================================== */
+
+        .profile-card {
+            background: white;
+
+            border: 1px solid var(--border);
+
+            border-radius: 16px;
+
+            padding: 28px;
+
+            margin-bottom: 22px;
+        }
+
+        .card-heading {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+
+            padding-bottom: 18px;
+
+            margin-bottom: 22px;
+
+            border-bottom: 1px solid var(--border);
+        }
+
+        .card-heading-icon {
+            width: 39px;
+            height: 39px;
+
+            border-radius: 10px;
+
+            background: #f2ead9;
+
+            color: var(--forest);
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .card-heading h3 {
+            margin: 0;
+
+            font-size: 17px;
+
+            color: var(--forest);
+
+            font-weight: 700;
+        }
+
+        .card-heading p {
+            margin: 2px 0 0;
+
+            font-size: 12px;
+
+            color: var(--muted);
+        }
+
+        /* ==========================================
+           INFO GRID
+        ========================================== */
+
+        .info-grid {
+            display: grid;
+
+            grid-template-columns: repeat(2, 1fr);
+
+            gap: 20px 30px;
+        }
+
+        .info-item label {
+            display: block;
+
+            font-size: 11px;
+
+            text-transform: uppercase;
+
+            letter-spacing: 0.5px;
+
+            color: var(--muted);
+
+            margin-bottom: 6px;
+        }
+
+        .info-value {
+            font-size: 14px;
+
+            font-weight: 600;
+
+            color: var(--text);
+
+            padding-bottom: 10px;
+
+            border-bottom: 1px solid #eee;
+        }
+
+        /* ==========================================
+           EDIT BUTTON
+        ========================================== */
+
+        .edit-btn {
+            display: inline-flex;
+
+            align-items: center;
+            gap: 8px;
+
+            padding: 10px 17px;
+
+            border: none;
+
+            border-radius: 9px;
+
+            background: var(--forest);
+
+            color: white;
+
+            font-size: 13px;
+
+            font-weight: 600;
+
+            cursor: pointer;
+        }
+
+        .edit-btn:hover {
+            background: var(--forest-dark);
+        }
+
+        .switch-artisan-btn {
+            display: inline-flex;
+
+            align-items: center;
+            gap: 8px;
+
+            padding: 10px 17px;
+
+            border-radius: 9px;
+
+            background: #f2ead9;
+
+            color: var(--forest);
+
+            text-decoration: none;
+
+            font-size: 13px;
+
+            font-weight: 600;
+        }
+
+        .switch-artisan-btn:hover {
+            background: var(--gold);
+        }
+
+        .action-buttons {
+            display: flex;
+
+            justify-content: flex-end;
+
+            gap: 10px;
+
+            margin-top: 25px;
+        }
+
+        /* ==========================================
+           RESPONSIVE
+        ========================================== */
+
+        @media (max-width: 768px) {
+
+            .topbar {
+                padding: 0 20px;
+            }
+
+            .main-content {
+                padding: 25px 20px;
+            }
+
+            .profile-header {
+                padding: 25px;
+            }
+
+            .info-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .profile-name h1 {
+                font-size: 21px;
+            }
+
+            .action-buttons {
+                justify-content: stretch;
+                flex-direction: column;
+            }
+
+            .action-buttons a,
+            .action-buttons button {
+                width: 100%;
+                justify-content: center;
+            }
+        }
+
+    </style>
+</head>
+
+<body>
+
+<!-- ==========================================
+     TOP BAR
+========================================== -->
+
+<header class="topbar">
+
+    <div class="page-title">
+
+        <div class="page-title-icon">
+            <i class="bi bi-person"></i>
+        </div>
+
+        <div>
+            <h2>Admin Profile</h2>
+            <span>Manage your account and artisan information</span>
+        </div>
+
+    </div>
+
+    <a href="/admin-dashboard"
+       class="back-btn">
+
+        <i class="bi bi-arrow-left"></i>
+
+        Back to Dashboard
+
+    </a>
+
+</header>
+
+
+<!-- ==========================================
+     MAIN CONTENT
+========================================== -->
+
+<main class="main-content">
+
+    <div class="profile-container">
+
+
+        <!-- ======================================
+             PROFILE HEADER
+        ======================================= -->
+
+        <section class="profile-header">
+
+            <div class="profile-user">
+
+                <div class="profile-photo-wrapper">
+
+                    <div class="profile-photo">
+
+                        <!-- Existing Artisan Profile Image -->
+                        <img
+                            th:if="${artisan != null and artisan.profileImage != null and !#strings.isEmpty(artisan.profileImage)}"
+                            th:src="@{'/' + ${artisan.profileImage}}"
+                            alt="Profile Photo">
+
+                        <!-- First Letter when no image -->
+                        <span
+                            th:if="${artisan == null or artisan.profileImage == null or #strings.isEmpty(artisan.profileImage)}"
+                            th:text="${#strings.substring(user.fullName,0,1).toUpperCase()}">
+                            A
+                        </span>
+
+                    </div>
+
+                    <label for="profileImage"
+                           class="camera-btn"
+                           title="Change profile photo">
+
+                        <i class="bi bi-camera"></i>
+
+                    </label>
+
+                </div>
+
+
+                <div class="profile-name">
+
+                    <h1 th:text="${user.fullName}">
+                        Admin
+                    </h1>
+
+                    <p>
+                        Administrator & Artisan
+                    </p>
+
+                    <div class="role-badges">
+
+                        <span class="role-badge">
+                            <i class="bi bi-shield-check"></i>
+                            ADMIN
+                        </span>
+
+                        <span class="role-badge">
+                            <i class="bi bi-brush"></i>
+                            ARTISAN
+                        </span>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </section>
+
+
+        <!-- ======================================
+             ACCOUNT INFORMATION
+        ======================================= -->
+
+        <section class="profile-card">
+
+            <div class="card-heading">
+
+                <div class="card-heading-icon">
+                    <i class="bi bi-person-vcard"></i>
+                </div>
+
+                <div>
+                    <h3>Account Information</h3>
+
+                    <p>
+                        Your common account details
+                    </p>
+                </div>
+
+            </div>
+
+
+            <div class="info-grid">
+
+                <div class="info-item">
+
+                    <label>Full Name</label>
+
+                    <div class="info-value"
+                         th:text="${user.fullName}">
+                        Admin
+                    </div>
+
+                </div>
+
+
+                <div class="info-item">
+
+                    <label>Email Address</label>
+
+                    <div class="info-value"
+                         th:text="${user.email}">
+                        admin@craftora.com
+                    </div>
+
+                </div>
+
+
+                <div class="info-item">
+
+                    <label>Phone Number</label>
+
+                    <div class="info-value"
+                         th:text="${user.phone}">
+                        0771234567
+                    </div>
+
+                </div>
+
+
+                <div class="info-item">
+
+                    <label>Account ID</label>
+
+                    <div class="info-value"
+                         th:text="${user.userId}">
+                        1
+                    </div>
+
+                </div>
+
+            </div>
+
+        </section>
+
+
+        <!-- ======================================
+             ARTISAN INFORMATION
+        ======================================= -->
+
+        <section class="profile-card"
+                 th:if="${artisan != null}">
+
+            <div class="card-heading">
+
+                <div class="card-heading-icon">
+                    <i class="bi bi-brush"></i>
+                </div>
+
+                <div>
+
+                    <h3>Artisan Information</h3>
+
+                    <p>
+                        Your Artisan profile details
+                    </p>
+
+                </div>
+
+            </div>
+
+
+            <div class="info-grid">
+
+                <div class="info-item">
+
+                    <label>Craft Type</label>
+
+                    <div class="info-value"
+                         th:text="${artisan.craftType}">
+                        Handloom
+                    </div>
+
+                </div>
+
+
+                <div class="info-item">
+
+                    <label>Location</label>
+
+                    <div class="info-value"
+                         th:text="${artisan.location}">
+                        Kandy
+                    </div>
+
+                </div>
+
+
+                <div class="info-item">
+
+                    <label>Contact Number</label>
+
+                    <div class="info-value"
+                         th:text="${artisan.contactNumber}">
+                        0771234567
+                    </div>
+
+                </div>
+
+
+                <div class="info-item">
+
+                    <label>Artisan Status</label>
+
+                    <div class="info-value"
+                         th:text="${artisan.status}">
+                        APPROVED
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            <div style="margin-top: 22px;">
+
+                <div class="info-item">
+
+                    <label>Craft Description</label>
+
+                    <div class="info-value"
+                         th:text="${artisan.bio}">
+                        Traditional handicraft artisan
+                    </div>
+
+                </div>
+
+            </div>
+
+        </section>
+
+
+        <!-- ======================================
+             ACTIONS
+        ======================================= -->
+
+        <section class="profile-card">
+
+            <div class="card-heading">
+
+                <div class="card-heading-icon">
+                    <i class="bi bi-gear"></i>
+                </div>
+
+                <div>
+
+                    <h3>Profile Actions</h3>
+
+                    <p>
+                        Manage your profile and account
+                    </p>
+
+                </div>
+
+            </div>
+
+
+            <!-- Hidden image upload -->
+            <form
+                action="/admin/profile/photo"
+                method="post"
+                enctype="multipart/form-data">
+
+                <input
+                    type="file"
+                    id="profileImage"
+                    name="profileImage"
+                    accept="image/png,image/jpeg,image/jpg"
+                    style="display:none;"
+                    onchange="this.form.submit();">
+
+            </form>
+
+
+            <div class="action-buttons">
+
+                <a href="/admin/profile/edit"
+                   class="edit-btn"
+                   style="text-decoration:none;">
+
+                    <i class="bi bi-pencil-square"></i>
+
+                    Edit Profile
+
+                </a>
+
+
+                <a href="/switch-to-artisan"
+                   class="switch-artisan-btn">
+
+                    <i class="bi bi-arrow-left-right"></i>
+
+                    Continue as Artisan
+
+                </a>
+
+            </div>
+
+        </section>
+
+    </div>
+
+</main>
+
+
+</body>
+</html>

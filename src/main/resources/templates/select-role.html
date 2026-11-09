@@ -1,0 +1,308 @@
+<!DOCTYPE html>
+<html lang="en"
+      xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Select Role | Craftora</title>
+
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+
+    <link rel="stylesheet"
+          href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+
+    <style>
+
+        body {
+            margin: 0;
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            background: #F4E8D3;
+
+            font-family: Arial, sans-serif;
+        }
+
+        .role-container {
+            width: 90%;
+            max-width: 850px;
+
+            background: white;
+
+            border-radius: 18px;
+
+            padding: 45px;
+
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.12);
+
+            text-align: center;
+        }
+
+        .role-logo {
+            width: 100px;
+            margin-bottom: 20px;
+        }
+
+        .role-container h1 {
+            margin: 0;
+
+            color: #123B29;
+
+            font-size: 30px;
+        }
+
+        .role-container p {
+            margin-top: 10px;
+
+            color: #666;
+
+            font-size: 15px;
+        }
+
+        .role-options {
+            display: flex;
+
+            justify-content: center;
+
+            flex-wrap: wrap;
+
+            gap: 22px;
+
+            margin-top: 35px;
+        }
+
+        .role-card {
+            width: 220px;
+
+            min-height: 190px;
+
+            border: 2px solid #e4dccd;
+
+            border-radius: 14px;
+
+            padding: 25px 20px;
+
+            background: #fffdf9;
+
+            transition: 0.3s;
+
+            display: flex;
+
+            flex-direction: column;
+
+            align-items: center;
+
+            justify-content: center;
+        }
+
+        .role-card:hover {
+            border-color: #C98A2E;
+
+            transform: translateY(-4px);
+
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.10);
+        }
+
+        .role-icon {
+            width: 65px;
+            height: 65px;
+
+            border-radius: 50%;
+
+            background: #123B29;
+
+            color: white;
+
+            display: flex;
+
+            align-items: center;
+
+            justify-content: center;
+
+            font-size: 26px;
+
+            margin-bottom: 15px;
+        }
+
+        .role-card h2 {
+            margin: 5px 0 15px;
+
+            color: #123B29;
+
+            font-size: 20px;
+        }
+
+        .continue-btn {
+            width: 100%;
+
+            padding: 11px 18px;
+
+            border: none;
+
+            border-radius: 8px;
+
+            background: #123B29;
+
+            color: white;
+
+            font-size: 14px;
+
+            font-weight: bold;
+
+            cursor: pointer;
+
+            transition: 0.3s;
+        }
+
+        .continue-btn:hover {
+            background: #C98A2E;
+        }
+
+        .logout-link {
+            display: inline-block;
+
+            margin-top: 30px;
+
+            color: #123B29;
+
+            text-decoration: none;
+
+            font-size: 14px;
+        }
+
+        .logout-link:hover {
+            color: #C98A2E;
+
+            text-decoration: underline;
+        }
+
+        @media (max-width: 600px) {
+
+            .role-container {
+                padding: 30px 20px;
+            }
+
+            .role-container h1 {
+                font-size: 25px;
+            }
+
+            .role-card {
+                width: 100%;
+
+                max-width: 280px;
+            }
+        }
+
+    </style>
+</head>
+
+
+<body>
+
+<div class="role-container">
+
+    <!-- Craftora Logo -->
+    <img src="/images/craftora-logo.png"
+         alt="Craftora Logo"
+         class="role-logo">
+
+
+    <!-- Page Title -->
+    <h1>
+        Choose Your Role
+    </h1>
+
+
+    <p>
+        You have more than one role in Craftora.
+        Please select how you want to continue.
+    </p>
+
+
+    <!-- Role Cards -->
+    <div class="role-options">
+
+        <!-- Automatically creates a card for each role -->
+        <div class="role-card"
+             th:each="role : ${roles}">
+
+
+            <!-- ADMIN Icon -->
+            <div class="role-icon"
+                 th:if="${role.equalsIgnoreCase('ADMIN')}">
+
+                <i class="fa-solid fa-user-shield"></i>
+
+            </div>
+
+
+            <!-- ARTISAN Icon -->
+            <div class="role-icon"
+                 th:if="${role.equalsIgnoreCase('ARTISAN')}">
+
+                <i class="fa-solid fa-palette"></i>
+
+            </div>
+
+
+            <!-- CUSTOMER Icon -->
+            <div class="role-icon"
+                 th:if="${role.equalsIgnoreCase('CUSTOMER')}">
+
+                <i class="fa-solid fa-user"></i>
+
+            </div>
+
+
+            <!-- Role Name -->
+            <h2 th:text="${role}">
+                Role
+            </h2>
+
+
+            <!-- Continue Button -->
+            <form th:action="@{/select-role}"
+                  method="post">
+
+                <input type="hidden"
+                       name="role"
+                       th:value="${role}">
+
+
+                <button type="submit"
+                        class="continue-btn">
+
+                    Continue as
+
+                    <span th:text="${role}">
+                        Role
+                    </span>
+
+                </button>
+
+            </form>
+
+        </div>
+
+    </div>
+
+
+    <!-- Sign Out -->
+    <a href="/logout"
+       class="logout-link">
+
+        <i class="fa-solid fa-arrow-left"></i>
+
+        Sign out
+
+    </a>
+
+</div>
+
+</body>
+
+</html>

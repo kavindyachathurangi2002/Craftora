@@ -1,0 +1,617 @@
+<!DOCTYPE html>
+<html lang="en"
+      xmlns:th="http://www.thymeleaf.org">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
+
+    <title>Event Registration - Craftora</title>
+
+    <style>
+
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            min-height: 100vh;
+            font-family: Arial, sans-serif;
+            background: #f5f7f6;
+            color: #333;
+        }
+
+        .page {
+            width: 100%;
+            min-height: 100vh;
+            padding: 50px 20px;
+        }
+
+        .container {
+            width: 900px;
+            max-width: 100%;
+            margin: auto;
+            background: #ffffff;
+            border-radius: 16px;
+            box-shadow: 0 8px 30px rgba(0, 0, 0, 0.10);
+            overflow: hidden;
+        }
+
+        .header {
+            background: #0b6b45;
+            color: white;
+            padding: 30px 35px;
+        }
+
+        .header h1 {
+            margin: 0 0 8px;
+            font-size: 28px;
+        }
+
+        .header p {
+            margin: 0;
+            opacity: 0.9;
+        }
+
+        .content {
+            padding: 35px;
+        }
+
+        .event-card {
+            background: #f7faf8;
+            border: 1px solid #e0e8e4;
+            border-radius: 12px;
+            padding: 25px;
+            margin-bottom: 30px;
+        }
+
+        .event-card h2 {
+            margin: 0 0 20px;
+            color: #0b6b45;
+            font-size: 24px;
+        }
+
+        .event-info {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 18px;
+        }
+
+        .info-item {
+            padding: 12px 15px;
+            background: white;
+            border-radius: 8px;
+            border: 1px solid #e6ece9;
+        }
+
+        .label {
+            display: block;
+            font-size: 13px;
+            color: #777;
+            margin-bottom: 5px;
+        }
+
+        .value {
+            display: block;
+            font-weight: bold;
+            color: #333;
+        }
+
+        .section-title {
+            font-size: 20px;
+            color: #0b6b45;
+            margin: 0 0 18px;
+        }
+
+        .user-details {
+            margin-bottom: 30px;
+        }
+
+        .role-box {
+            padding: 18px;
+            background: #eef7f2;
+            border: 1px solid #cfe5d9;
+            border-radius: 10px;
+            margin-bottom: 30px;
+        }
+
+        .role-label {
+            font-size: 13px;
+            color: #666;
+            margin-bottom: 5px;
+        }
+
+        .role-value {
+            font-size: 18px;
+            font-weight: bold;
+            color: #0b6b45;
+        }
+
+        .fee-box {
+            margin: 25px 0;
+            padding: 22px;
+            border-radius: 10px;
+            background: #fafafa;
+            border: 1px solid #e5e5e5;
+            text-align: center;
+        }
+
+        .fee-label {
+            color: #666;
+            font-size: 14px;
+            margin-bottom: 8px;
+        }
+
+        .fee {
+            font-size: 28px;
+            font-weight: bold;
+            color: #0b6b45;
+        }
+
+        .notice {
+            background: #fff8e8;
+            border: 1px solid #f0dfb1;
+            color: #765b19;
+            padding: 15px 18px;
+            border-radius: 8px;
+            line-height: 1.6;
+            margin-bottom: 25px;
+        }
+
+        .terms {
+            display: flex;
+            align-items: flex-start;
+            gap: 10px;
+            margin: 25px 0;
+            font-size: 14px;
+            color: #555;
+            line-height: 1.5;
+        }
+
+        .terms input {
+            margin-top: 4px;
+            width: 17px;
+            height: 17px;
+        }
+
+        .actions {
+            display: flex;
+            justify-content: space-between;
+            gap: 15px;
+            margin-top: 30px;
+        }
+
+        .btn {
+            display: inline-block;
+            padding: 13px 28px;
+            border-radius: 7px;
+            text-decoration: none;
+            font-weight: bold;
+            border: none;
+            cursor: pointer;
+            font-size: 15px;
+        }
+
+        .back-btn {
+            background: #eeeeee;
+            color: #444;
+        }
+
+        .back-btn:hover {
+            background: #dddddd;
+        }
+
+        .confirm-btn {
+            background: #0b6b45;
+            color: white;
+        }
+
+        .confirm-btn:hover {
+            background: #084f34;
+        }
+
+        @media (max-width: 700px) {
+
+            .content {
+                padding: 22px;
+            }
+
+            .header {
+                padding: 25px 22px;
+            }
+
+            .event-info {
+                grid-template-columns: 1fr;
+            }
+
+            .actions {
+                flex-direction: column;
+            }
+
+            .btn {
+                width: 100%;
+                text-align: center;
+            }
+
+        }
+
+    </style>
+
+</head>
+
+
+<body>
+
+<div class="page">
+
+    <div class="container">
+
+        <!-- =========================
+             HEADER
+        ========================== -->
+
+        <div class="header">
+
+            <h1>
+                Event Registration
+            </h1>
+
+            <p>
+                Review your registration details before confirming.
+            </p>
+
+        </div>
+
+
+        <div class="content">
+
+
+            <!-- =========================
+                 EVENT DETAILS
+            ========================== -->
+
+            <div class="event-card">
+
+                <h2 th:text="${event.eventTitle}">
+                    Event Title
+                </h2>
+
+
+                <div class="event-info">
+
+                    <!-- EVENT TYPE -->
+
+                    <div class="info-item">
+
+                        <span class="label">
+                            Event Type
+                        </span>
+
+                        <span class="value"
+                              th:text="${event.eventType}">
+                            Event Type
+                        </span>
+
+                    </div>
+
+
+                    <!-- EVENT DATE -->
+
+                    <div class="info-item">
+
+                        <span class="label">
+                            Event Date
+                        </span>
+
+                        <span class="value"
+                              th:text="${event.eventDate}">
+                            Event Date
+                        </span>
+
+                    </div>
+
+
+                    <!-- START TIME -->
+
+                    <div class="info-item">
+
+                        <span class="label">
+                            Start Time
+                        </span>
+
+                        <span class="value"
+                              th:text="${event.startTime}">
+                            Start Time
+                        </span>
+
+                    </div>
+
+
+                    <!-- END TIME -->
+
+                    <div class="info-item">
+
+                        <span class="label">
+                            End Time
+                        </span>
+
+                        <span class="value"
+                              th:text="${event.endTime}">
+                            End Time
+                        </span>
+
+                    </div>
+
+
+                    <!-- LOCATION -->
+
+                    <div class="info-item">
+
+                        <span class="label">
+                            Location
+                        </span>
+
+                        <span class="value"
+                              th:text="${event.location}">
+                            Location
+                        </span>
+
+                    </div>
+
+
+                    <!-- CAPACITY -->
+
+                    <div class="info-item">
+
+                        <span class="label">
+                            Event Capacity
+                        </span>
+
+                        <span class="value"
+                              th:text="${event.capacity}">
+                            Capacity
+                        </span>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            <!-- =========================
+                 USER DETAILS
+            ========================== -->
+
+            <div class="user-details">
+
+                <h3 class="section-title">
+                    Your Registration Details
+                </h3>
+
+
+                <div class="event-info">
+
+                    <!-- NAME -->
+
+                    <div class="info-item">
+
+                        <span class="label">
+                            Name
+                        </span>
+
+                        <span class="value"
+                              th:text="${user.fullName}">
+                            User Name
+                        </span>
+
+                    </div>
+
+
+                    <!-- EMAIL -->
+
+                    <div class="info-item">
+
+                        <span class="label">
+                            Email
+                        </span>
+
+                        <span class="value"
+                              th:text="${user.email}">
+                            user@example.com
+                        </span>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            <!-- =========================
+                 REGISTRATION ROLE
+            ========================== -->
+
+            <div class="role-box">
+
+                <div class="role-label">
+                    Registering As
+                </div>
+
+                <div class="role-value"
+                     th:text="${selectedRole}">
+                    CUSTOMER
+                </div>
+
+            </div>
+
+
+            <!-- =========================
+                 REGISTRATION FEE
+            ========================== -->
+
+            <div class="fee-box">
+
+                <div class="fee-label">
+                    Registration Fee
+                </div>
+
+
+                <!-- CUSTOMER FREE -->
+
+                <div class="fee"
+                     th:if="${selectedRole.equalsIgnoreCase('CUSTOMER')
+                             and (event.customerRegistrationFee == null
+                                  or event.customerRegistrationFee.compareTo(T(java.math.BigDecimal).ZERO) <= 0)}">
+
+                    FREE
+
+                </div>
+
+
+                <!-- CUSTOMER PAID -->
+
+                <div class="fee"
+                     th:if="${selectedRole.equalsIgnoreCase('CUSTOMER')
+                             and event.customerRegistrationFee != null
+                             and event.customerRegistrationFee.compareTo(T(java.math.BigDecimal).ZERO) > 0}"
+                     th:text="'LKR ' + ${event.customerRegistrationFee}">
+
+                    LKR 0.00
+
+                </div>
+
+
+                <!-- ARTISAN FREE -->
+
+                <div class="fee"
+                     th:if="${selectedRole.equalsIgnoreCase('ARTISAN')
+                             and (event.artisanRegistrationFee == null
+                                  or event.artisanRegistrationFee.compareTo(T(java.math.BigDecimal).ZERO) <= 0)}">
+
+                    FREE
+
+                </div>
+
+
+                <!-- ARTISAN PAID -->
+
+                <div class="fee"
+                     th:if="${selectedRole.equalsIgnoreCase('ARTISAN')
+                             and event.artisanRegistrationFee != null
+                             and event.artisanRegistrationFee.compareTo(T(java.math.BigDecimal).ZERO) > 0}"
+                     th:text="'LKR ' + ${event.artisanRegistrationFee}">
+
+                    LKR 0.00
+
+                </div>
+
+            </div>
+
+
+            <!-- =========================
+                 NOTICE
+            ========================== -->
+
+            <div class="notice">
+
+                <strong>
+                    Important:
+                </strong>
+
+                Please make sure that the event details
+                and your registration information are correct
+                before confirming your registration.
+
+                <span th:if="${selectedRole.equalsIgnoreCase('CUSTOMER')
+                              and event.customerRegistrationFee != null
+                              and event.customerRegistrationFee.compareTo(T(java.math.BigDecimal).ZERO) > 0}">
+
+                    You will be redirected to PayHere after
+                    confirming your registration.
+
+                </span>
+
+                <span th:if="${selectedRole.equalsIgnoreCase('ARTISAN')
+                              and event.artisanRegistrationFee != null
+                              and event.artisanRegistrationFee.compareTo(T(java.math.BigDecimal).ZERO) > 0}">
+
+                    You will be redirected to PayHere after
+                    confirming your registration.
+
+                </span>
+
+            </div>
+
+
+            <!-- =========================
+                 REGISTRATION FORM
+            ========================== -->
+
+            <form th:action="@{/events/{id}/register(id=${event.eventId})}"
+                  method="post">
+
+
+                <!-- Selected Role -->
+
+                <input type="hidden"
+                       name="registrationRole"
+                       th:value="${selectedRole}">
+
+
+                <!-- TERMS -->
+
+                <label class="terms">
+
+                    <input type="checkbox"
+                           name="agree"
+                           value="true"
+                           required>
+
+                    <span>
+                        I confirm that the information above is correct
+                        and I agree to register for this Craftora event.
+                    </span>
+
+                </label>
+
+
+                <!-- =========================
+                     BUTTONS
+                ========================== -->
+
+                <div class="actions">
+
+                    <a th:href="@{/events/{id}(id=${event.eventId})}"
+                       class="btn back-btn">
+
+                        ← Back to Event
+
+                    </a>
+
+
+                    <button type="submit"
+                            class="btn confirm-btn">
+
+                        Confirm Registration →
+
+                    </button>
+
+                </div>
+
+            </form>
+
+
+        </div>
+
+    </div>
+
+</div>
+
+</body>
+
+</html>

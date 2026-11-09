@@ -1,0 +1,2812 @@
+/* =================================
+   GENERAL
+================================= */
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+html {
+    scroll-behavior: smooth;
+}
+
+body {
+    font-family: Arial, sans-serif;
+    color: #123d2a;
+    background-color: #ffffff;
+}
+
+
+/* =================================
+   NAVIGATION BAR
+================================= */
+
+.navbar {
+    height: 90px;
+
+    display: flex;
+    align-items: center;
+
+    padding: 0 50px;
+
+    background-color: #ffffff;
+
+    border-bottom: 1px solid #e5e5e5;
+
+    position: relative;
+    z-index: 100;
+}
+
+
+/* Logo */
+
+.logo {
+    display: flex;
+    align-items: center;
+}
+
+.logo img {
+    width: 190px;
+    height: auto;
+    display: block;
+}
+
+
+/* Navigation Links */
+
+.nav-links {
+    display: flex;
+    align-items: center;
+
+    gap: 30px;
+
+    margin-left: auto;
+}
+
+.nav-links a,
+.sign-in a {
+    text-decoration: none;
+
+    color: #123d2a;
+
+    font-size: 16px;
+
+    font-weight: 600;
+
+    transition: 0.3s;
+}
+
+
+/* Hover */
+
+.nav-links a:hover {
+    color: #b87924;
+}
+
+
+/* Active Home */
+
+.nav-links .active {
+    color: #b87924;
+}
+
+
+/* =================================
+   SIGN IN
+================================= */
+
+.sign-in {
+    margin-left: 30px;
+}
+
+.sign-in a {
+    background-color: #123d2a;
+
+    color: white;
+
+    padding: 11px 22px;
+
+    border-radius: 6px;
+
+    transition: 0.3s;
+}
+
+.sign-in a:hover {
+    background-color: #b87924;
+    color: white;
+}
+
+
+/* =================================
+   EVENTS DROPDOWN
+================================= */
+
+.dropdown {
+    position: relative;
+}
+
+.dropdown > a {
+    display: block;
+}
+
+
+/* Dropdown menu */
+
+.dropdown-menu {
+    display: none;
+
+    position: absolute;
+
+    top: 100%;
+    left: 0;
+
+    width: 190px;
+
+    background-color: white;
+
+    border-radius: 6px;
+
+    box-shadow: 0 5px 20px rgba(0, 0, 0, 0.15);
+
+    padding: 10px 0;
+}
+
+
+/* Dropdown links */
+
+.dropdown-menu a {
+    display: block;
+
+    padding: 12px 18px;
+
+    color: #123d2a;
+
+    font-size: 15px;
+}
+
+
+/* Dropdown hover */
+
+.dropdown-menu a:hover {
+    background-color: #f5f1e8;
+
+    color: #b87924;
+}
+
+
+/* Show dropdown */
+
+.dropdown:hover .dropdown-menu {
+    display: block;
+}
+
+
+/* =================================
+   HERO SLIDER
+================================= */
+
+.hero {
+    position: relative;
+
+    width: 100%;
+
+    height: 600px;
+
+    overflow: hidden;
+
+    background-color: #123d2a;
+}
+
+
+/* Slider */
+
+.slider {
+    width: 100%;
+    height: 100%;
+
+    position: relative;
+}
+
+
+/* Each slide */
+
+.slide {
+    display: none;
+
+    position: absolute;
+
+    width: 100%;
+    height: 100%;
+
+    top: 0;
+    left: 0;
+}
+
+
+/* Active slide */
+
+.slide.active {
+    display: block;
+}
+
+
+/* Images */
+
+.slide img {
+    width: 100%;
+    height: 100%;
+
+    object-fit: cover;
+
+    display: block;
+}
+
+
+/* =================================
+   IMAGE DARK OVERLAY
+================================= */
+
+.hero-overlay {
+    position: absolute;
+
+    top: 0;
+    left: 0;
+
+    width: 100%;
+    height: 100%;
+
+    background: rgba(0, 0, 0, 0.35);
+}
+
+
+/* =================================
+   HERO TEXT
+================================= */
+
+.hero-text {
+    position: absolute;
+
+    z-index: 5;
+
+    top: 50%;
+    left: 8%;
+
+    transform: translateY(-50%);
+
+    max-width: 600px;
+
+    color: white;
+}
+
+.hero-text h1 {
+    font-size: 54px;
+
+    margin-bottom: 18px;
+
+    line-height: 1.1;
+}
+
+.hero-text p {
+    font-size: 20px;
+
+    line-height: 1.6;
+
+    margin-bottom: 30px;
+}
+
+
+/* =================================
+   HERO BUTTON
+================================= */
+
+.hero-button {
+    display: inline-block;
+
+    text-decoration: none;
+
+    background-color: #b87924;
+
+    color: white;
+
+    padding: 13px 28px;
+
+    border-radius: 5px;
+
+    font-size: 16px;
+
+    font-weight: bold;
+
+    transition: 0.3s;
+}
+
+.hero-button:hover {
+    background-color: #ffffff;
+
+    color: #123d2a;
+}
+
+
+/* =================================
+   SLIDER BUTTONS
+================================= */
+
+.slider-btn {
+    position: absolute;
+
+    top: 50%;
+
+    transform: translateY(-50%);
+
+    z-index: 10;
+
+    width: 48px;
+    height: 48px;
+
+    border: none;
+
+    border-radius: 50%;
+
+    background-color: rgba(255, 255, 255, 0.8);
+
+    color: #123d2a;
+
+    font-size: 22px;
+
+    cursor: pointer;
+
+    transition: 0.3s;
+}
+
+.slider-btn:hover {
+    background-color: #b87924;
+
+    color: white;
+}
+
+
+/* Previous */
+
+.slider-btn.prev {
+    left: 25px;
+}
+
+
+/* Next */
+
+.slider-btn.next {
+    right: 25px;
+}
+
+
+/* =================================
+   SLIDER DOTS
+================================= */
+
+.slider-dots {
+    position: absolute;
+
+    z-index: 10;
+
+    bottom: 25px;
+
+    left: 50%;
+
+    transform: translateX(-50%);
+
+    display: flex;
+
+    gap: 10px;
+}
+
+.dot {
+    width: 12px;
+    height: 12px;
+
+    background-color: white;
+
+    border-radius: 50%;
+
+    cursor: pointer;
+
+    opacity: 0.6;
+
+    transition: 0.3s;
+}
+
+.dot.active {
+    opacity: 1;
+
+    transform: scale(1.2);
+}
+
+
+/* =================================
+   WELCOME SECTION
+================================= */
+
+.welcome {
+    text-align: center;
+
+    width: 80%;
+    max-width: 1000px;
+
+    margin: 0 auto;
+
+    padding: 70px 20px;
+}
+
+.welcome h2 {
+    font-size: 36px;
+
+    color: #123d2a;
+
+    margin-bottom: 15px;
+}
+
+.welcome p {
+    font-size: 18px;
+
+    color: #555;
+
+    max-width: 700px;
+
+    margin: auto;
+
+    line-height: 1.6;
+}
+
+
+/* =================================
+   RESPONSIVE - NAVBAR / HERO
+================================= */
+
+@media (max-width: 900px) {
+
+    .navbar {
+        padding: 0 20px;
+    }
+
+    .nav-links {
+        gap: 15px;
+    }
+
+    .logo img {
+        width: 150px;
+    }
+
+    .hero-text h1 {
+        font-size: 40px;
+    }
+
+    .hero-text p {
+        font-size: 17px;
+    }
+}
+
+
+@media (max-width: 700px) {
+
+    .navbar {
+        height: auto;
+
+        padding: 15px;
+
+        flex-wrap: wrap;
+    }
+
+    .nav-links {
+        order: 3;
+
+        width: 100%;
+
+        justify-content: center;
+
+        margin-top: 15px;
+
+        flex-wrap: wrap;
+    }
+
+    .sign-in {
+        margin-left: auto;
+    }
+
+    .hero {
+        height: 500px;
+    }
+
+    .hero-text {
+        left: 6%;
+
+        right: 6%;
+    }
+
+    .hero-text h1 {
+        font-size: 34px;
+    }
+
+    .hero-text p {
+        font-size: 16px;
+    }
+}
+
+
+/* =================================
+   CRAFTORA ANIMATED FEATURES
+================================= */
+
+.craft-features {
+    width: 100%;
+
+    padding: 80px 6%;
+
+    display: grid;
+
+    grid-template-columns: repeat(4, 1fr);
+
+    gap: 25px;
+
+    background-color: #f8f5ef;
+}
+
+
+/* Cards */
+
+.feature-card {
+    opacity: 0;
+
+    transform: translateY(100px);
+
+    min-height: 300px;
+
+    padding: 35px 25px;
+
+    background-color: white;
+
+    border-radius: 18px;
+
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.10);
+
+    transition:
+        opacity 0.8s ease,
+        transform 0.8s ease,
+        box-shadow 0.3s ease;
+}
+
+
+/* When visible */
+
+.feature-card.show {
+    opacity: 1;
+
+    transform: translateY(0);
+}
+
+
+/* One-by-one animation */
+
+.feature-card:nth-child(1) {
+    transition-delay: 0.1s;
+}
+
+.feature-card:nth-child(2) {
+    transition-delay: 0.25s;
+}
+
+.feature-card:nth-child(3) {
+    transition-delay: 0.4s;
+}
+
+.feature-card:nth-child(4) {
+    transition-delay: 0.55s;
+}
+
+
+/* Hover */
+
+.feature-card:hover {
+    transform: translateY(-8px);
+
+    box-shadow: 0 15px 30px rgba(0, 0, 0, 0.15);
+}
+
+
+/* Icon */
+
+.feature-icon {
+    font-size: 45px;
+
+    margin-bottom: 15px;
+}
+
+
+/* Heading */
+
+.feature-card h3 {
+    position: static;
+
+    font-size: 30px;
+
+    color: #123d2a;
+
+    margin-bottom: 15px;
+}
+
+
+/* Text */
+
+.feature-card p {
+    margin-top: 0;
+
+    color: #536170;
+
+    font-size: 16px;
+
+    line-height: 1.7;
+
+    text-align: left;
+}
+
+
+/* Features Responsive */
+
+@media (max-width: 1000px) {
+
+    .craft-features {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+@media (max-width: 600px) {
+
+    .craft-features {
+        grid-template-columns: 1fr;
+
+        padding: 50px 20px;
+    }
+}
+
+
+/* =================================
+   CURRENTLY REGISTERED ARTISANS
+================================= */
+
+.artisans-section {
+    padding: 70px 5%;
+
+    background: #f8f7f3;
+}
+
+.artisan-heading {
+    text-align: center;
+
+    margin-bottom: 45px;
+}
+
+.artisan-heading span {
+    color: #123d2a;
+
+    font-size: 14px;
+
+    font-weight: 700;
+
+    letter-spacing: 2px;
+}
+
+.artisan-heading h2 {
+    color: #123d2a;
+
+    font-size: 36px;
+
+    margin: 10px 0;
+}
+
+.artisan-heading p {
+    color: #666;
+
+    font-size: 16px;
+
+    max-width: 700px;
+
+    margin: 0 auto;
+
+    line-height: 1.6;
+}
+
+
+/* =================================
+   ARTISAN CARDS
+================================= */
+
+.artisan-container {
+    max-width: 1200px;
+
+    margin: 0 auto;
+
+    display: grid;
+
+    grid-template-columns: repeat(4, 1fr);
+
+    gap: 28px;
+}
+
+.artisan-card {
+    background: #ffffff;
+
+    border-radius: 16px;
+
+    padding: 25px 20px 22px;
+
+    text-align: center;
+
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.08);
+
+    opacity: 0;
+
+    transform: rotateY(90deg);
+
+    transition:
+        opacity 0.8s ease,
+        transform 0.8s ease,
+        box-shadow 0.35s ease;
+
+    transform-style: preserve-3d;
+}
+
+.artisan-card.show {
+    opacity: 1;
+
+    transform: rotateY(0deg);
+}
+
+
+/* One by one */
+
+.artisan-card:nth-child(1) {
+    transition-delay: 0.1s;
+}
+
+.artisan-card:nth-child(2) {
+    transition-delay: 0.25s;
+}
+
+.artisan-card:nth-child(3) {
+    transition-delay: 0.4s;
+}
+
+.artisan-card:nth-child(4) {
+    transition-delay: 0.55s;
+}
+
+
+/* Hover */
+
+.artisan-card:hover {
+    transform: translateY(-8px);
+
+    box-shadow: 0 12px 28px rgba(0, 0, 0, 0.14);
+}
+
+
+/* =================================
+   ARTISAN IMAGE
+================================= */
+
+.artisan-image {
+    width: 130px;
+
+    height: 130px;
+
+    margin: 0 auto 18px;
+
+    overflow: hidden;
+
+    border-radius: 50%;
+}
+
+.artisan-image img {
+    width: 100%;
+
+    height: 100%;
+
+    object-fit: cover;
+
+    border-radius: 50%;
+}
+
+
+/* Placeholder */
+
+.artisan-placeholder {
+    width: 100%;
+
+    height: 100%;
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+    background: #e8e5dc;
+
+    border-radius: 50%;
+
+    font-size: 55px;
+}
+
+
+/* =================================
+   CRAFT BADGE
+================================= */
+
+.craft-badge {
+    display: inline-block;
+
+    padding: 5px 13px;
+
+    margin-bottom: 10px;
+
+    background: #f3eee5;
+
+    color: #8B5A2B;
+
+    border-radius: 20px;
+
+    font-size: 13px;
+
+    font-weight: 600;
+}
+
+
+/* =================================
+   ARTISAN NAME
+================================= */
+
+.artisan-info h3 {
+    color: #123d2a;
+
+    font-size: 21px;
+
+    margin: 3px 0 8px;
+}
+
+
+/* =================================
+   ARTISAN LOCATION
+================================= */
+
+.artisan-location {
+    color: #666;
+
+    margin: 0 0 12px;
+
+    font-size: 15px;
+}
+
+.location-icon {
+    margin-right: 4px;
+}
+
+
+/* =================================
+   ARTISAN RATING
+================================= */
+
+.artisan-rating {
+    margin-bottom: 18px;
+}
+
+.stars {
+    color: #b8860b;
+
+    font-size: 17px;
+
+    letter-spacing: 1px;
+}
+
+.rating-number {
+    color: #999;
+
+    font-size: 14px;
+
+    margin-left: 4px;
+}
+
+
+/* =================================
+   VIEW PROFILE BUTTON
+================================= */
+
+.view-profile-btn {
+    display: block;
+
+    width: 100%;
+
+    padding: 9px 15px;
+
+    border: 2px solid #8B5A2B;
+
+    border-radius: 25px;
+
+    background: transparent;
+
+    color: #8B5A2B;
+
+    text-decoration: none;
+
+    font-size: 15px;
+
+    font-weight: 600;
+
+    transition: all 0.3s ease;
+
+    box-sizing: border-box;
+}
+
+.view-profile-btn:hover {
+    background: #8B5A2B;
+
+    color: white;
+}
+
+
+/* =================================
+   VIEW ALL ARTISANS
+================================= */
+
+.view-all-artisans {
+    text-align: center;
+
+    margin-top: 40px;
+}
+
+.view-all-btn {
+    display: inline-block;
+
+    padding: 12px 28px;
+
+    background: #123d2a;
+
+    color: white;
+
+    text-decoration: none;
+
+    border-radius: 25px;
+
+    font-weight: 600;
+
+    transition: all 0.3s ease;
+}
+
+.view-all-btn:hover {
+    background: #1d6042;
+
+    transform: translateY(-2px);
+}
+
+
+/* =================================
+   NO ARTISANS
+================================= */
+
+.no-artisans {
+    grid-column: 1 / -1;
+
+    text-align: center;
+
+    padding: 40px;
+
+    color: #666;
+}
+
+
+/* Artisan Responsive */
+
+@media (max-width: 1000px) {
+
+    .artisan-container {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+@media (max-width: 600px) {
+
+    .artisan-container {
+        grid-template-columns: 1fr;
+    }
+}
+
+/* =================================
+   LATEST NEWS & CALENDAR
+================================= */
+
+.news-section {
+    padding: 70px 5%;
+    background: #f8f7f3;
+}
+
+.news-heading {
+    text-align: center;
+    margin-bottom: 45px;
+}
+
+.news-heading span {
+    color: #b87924;
+    font-size: 14px;
+    font-weight: 700;
+    letter-spacing: 2px;
+}
+
+.news-heading h2 {
+    color: #123d2a;
+    font-size: 36px;
+    margin: 10px 0;
+}
+
+.news-heading p {
+    color: #666;
+    font-size: 16px;
+    max-width: 700px;
+    margin: 0 auto;
+    line-height: 1.6;
+}
+
+
+/* News + Calendar layout */
+
+.news-layout {
+    max-width: 1200px;
+    margin: 0 auto;
+    display: grid;
+    grid-template-columns: 2fr 1fr;
+    gap: 35px;
+    align-items: start;
+}
+
+
+/* =================================
+   NEWS SLIDER
+================================= */
+
+.news-slider {
+    width: 100%;
+    overflow: hidden;
+    border-radius: 16px;
+}
+
+.news-track {
+    display: flex;
+    transition: transform 0.8s ease-in-out;
+}
+
+.news-card {
+    min-width: 100%;
+    background: white;
+    border-radius: 16px;
+    overflow: hidden;
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.08);
+}
+
+
+/* News Image */
+
+.news-image {
+    width: 100%;
+    height: 260px;
+    overflow: hidden;
+}
+
+.news-image img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+
+/* News Content */
+
+.news-content {
+    padding: 25px;
+}
+
+.news-date {
+    color: #b87924;
+    font-size: 13px;
+    font-weight: 700;
+    text-transform: uppercase;
+}
+
+.news-content h3 {
+    color: #123d2a;
+    font-size: 23px;
+    margin: 10px 0;
+}
+
+.news-content p {
+    color: #666;
+    font-size: 15px;
+    line-height: 1.6;
+    margin-bottom: 15px;
+}
+
+.news-content a {
+    color: #8B5A2B;
+    text-decoration: none;
+    font-weight: 600;
+}
+
+.news-content a:hover {
+    color: #123d2a;
+}
+
+
+/* =================================
+   CALENDAR
+================================= */
+
+.news-calendar {
+    background: white;
+    padding: 25px;
+    border-radius: 16px;
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.08);
+}
+
+.calendar-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    text-align: center;
+    margin-bottom: 25px;
+}
+
+.calendar-header h3 {
+    color: #123d2a;
+    font-size: 22px;
+    margin-bottom: 4px;
+}
+
+.calendar-header span {
+    color: #b87924;
+    font-size: 15px;
+    font-weight: 600;
+}
+
+.calendar-header button {
+    width: 35px;
+    height: 35px;
+    border: none;
+    border-radius: 50%;
+    background: #123d2a;
+    color: white;
+    font-size: 22px;
+    cursor: pointer;
+}
+
+.calendar-header button:hover {
+    background: #b87924;
+}
+
+
+/* Weekdays */
+
+.calendar-weekdays {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    text-align: center;
+    margin-bottom: 10px;
+}
+
+.calendar-weekdays span {
+    color: #8B5A2B;
+    font-size: 12px;
+    font-weight: 700;
+}
+
+
+/* Days */
+
+.calendar-days {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    gap: 7px;
+    text-align: center;
+}
+
+.calendar-days span {
+    padding: 8px 0;
+    color: #555;
+    font-size: 14px;
+}
+
+.calendar-days span.today {
+    background: #123d2a;
+    color: white;
+    border-radius: 50%;
+    font-weight: bold;
+}
+
+
+/* Responsive */
+
+@media (max-width: 900px) {
+    .news-layout {
+        grid-template-columns: 1fr;
+    }
+
+    .news-calendar {
+        max-width: 500px;
+        width: 100%;
+        margin: 0 auto;
+    }
+}
+
+@media (max-width: 600px) {
+    .news-section {
+        padding: 50px 20px;
+    }
+
+    .news-heading h2 {
+        font-size: 30px;
+    }
+
+    .news-image {
+        height: 210px;
+    }
+}
+/* =================================
+   CRAFTORA FOOTER
+   LOGO COLOR THEME
+================================= */
+
+.site-footer {
+    background: #123B29;
+    color: #E7D8BE;
+
+    padding: 70px 8% 0;
+
+    /* Logo gold color */
+    border-top: 28px solid #C98A2E;
+}
+
+
+/* =================================
+   FOOTER CONTAINER
+================================= */
+
+.footer-container {
+    max-width: 1450px;
+    margin: 0 auto;
+
+    display: grid;
+
+    grid-template-columns:
+        1.7fr
+        1fr
+        1.15fr
+        1.25fr
+        1.15fr;
+
+    gap: 45px;
+}
+
+
+/* =================================
+   HEADINGS
+================================= */
+
+.footer-column h3 {
+    font-family: Georgia, "Times New Roman", serif;
+
+    font-size: 25px;
+    font-weight: 600;
+
+    color: #F4E8D3;
+
+    margin: 0 0 25px;
+
+    letter-spacing: 0.3px;
+}
+
+
+/* =================================
+   CRAFTORA DESCRIPTION
+================================= */
+
+.footer-about p {
+    max-width: 500px;
+
+    color: #E7D8BE;
+
+    font-size: 16px;
+
+    line-height: 1.65;
+
+    margin: 0;
+}
+
+
+/* =================================
+   QUICK LINKS
+================================= */
+
+.footer-column ul {
+    list-style: none;
+
+    padding: 0;
+    margin: 0;
+}
+
+.footer-column ul li {
+    margin-bottom: 14px;
+}
+
+.footer-column ul li a {
+    color: #E7D8BE;
+
+    text-decoration: none;
+
+    font-size: 16px;
+
+    transition: all 0.3s ease;
+}
+
+.footer-column ul li a:hover {
+    color: #C98A2E;
+
+    padding-left: 5px;
+}
+
+
+/* =================================
+   CONTACT US
+================================= */
+
+.footer-contact-item {
+    display: flex;
+
+    align-items: flex-start;
+
+    gap: 10px;
+
+    margin-bottom: 17px;
+
+    color: #E7D8BE;
+
+    font-size: 15px;
+
+    line-height: 1.5;
+}
+
+
+/* Contact icons */
+
+.footer-contact-icon {
+    width: 22px;
+
+    display: inline-flex;
+
+    justify-content: center;
+
+    flex-shrink: 0;
+
+    color: #C98A2E;
+
+    font-size: 16px;
+}
+
+
+/* =================================
+   ACADEMIC CREDIT
+================================= */
+
+.academic-credit p {
+    color: #E7D8BE;
+
+    font-size: 15px;
+
+    line-height: 1.6;
+
+    margin: 0 0 12px;
+}
+
+.academic-credit strong {
+    color: #F4E8D3;
+}
+
+
+/* =================================
+   FOOTER BOTTOM
+================================= */
+
+.footer-bottom {
+    max-width: 1450px;
+
+    margin: 65px auto 0;
+
+    padding: 28px 0 35px;
+
+    border-top: 1px solid rgba(244, 232, 211, 0.15);
+
+    text-align: center;
+}
+
+.footer-bottom p {
+    margin: 0;
+
+    color: #E7D8BE;
+
+    font-size: 15px;
+}
+
+
+/* =================================
+   RESPONSIVE
+================================= */
+
+@media (max-width: 1200px) {
+
+    .footer-container {
+        grid-template-columns:
+            1.5fr
+            1fr
+            1fr;
+
+        row-gap: 45px;
+    }
+}
+
+
+@media (max-width: 768px) {
+
+    .site-footer {
+        padding: 55px 7% 0;
+
+        border-top-width: 20px;
+    }
+
+    .footer-container {
+        grid-template-columns: 1fr 1fr;
+
+        gap: 40px 30px;
+    }
+
+    .footer-about {
+        grid-column: 1 / -1;
+    }
+
+    .footer-column h3 {
+        font-size: 22px;
+    }
+}
+
+
+@media (max-width: 500px) {
+
+    .footer-container {
+        grid-template-columns: 1fr;
+    }
+
+    .footer-about {
+        grid-column: auto;
+    }
+
+    .footer-bottom {
+        margin-top: 45px;
+    }
+
+    .footer-bottom p {
+        font-size: 13px;
+
+        line-height: 1.6;
+    }
+}
+
+/* =================================
+   LOGIN PAGE
+   CRAFTORA LOGO COLOR THEME
+================================= */
+
+.login-page {
+    margin: 0;
+
+    min-height: 100vh;
+
+    background: #F4E8D3;
+
+    font-family: Arial, sans-serif;
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+    padding: 30px;
+
+    box-sizing: border-box;
+}
+
+
+/* =================================
+   MAIN LOGIN CONTAINER
+================================= */
+
+.login-container {
+
+    width: 100%;
+
+    max-width: 1100px;
+
+    min-height: 650px;
+
+    background: #ffffff;
+
+    border-radius: 20px;
+
+    overflow: hidden;
+
+    box-shadow:
+        0 15px 45px rgba(18, 59, 41, 0.15);
+
+    display: grid;
+
+    grid-template-columns: 45% 55%;
+}
+
+
+/* =================================
+   LEFT BRAND AREA
+================================= */
+
+.login-brand {
+
+    background: #123B29;
+
+    position: relative;
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+    padding: 50px;
+}
+
+
+.login-brand::before {
+
+    content: "";
+
+    position: absolute;
+
+    width: 280px;
+
+    height: 280px;
+
+    border-radius: 50%;
+
+    border: 1px solid
+        rgba(201, 138, 46, 0.25);
+
+    top: -100px;
+
+    left: -100px;
+}
+
+
+.login-brand::after {
+
+    content: "";
+
+    position: absolute;
+
+    width: 220px;
+
+    height: 220px;
+
+    border-radius: 50%;
+
+    border: 1px solid
+        rgba(201, 138, 46, 0.20);
+
+    bottom: -80px;
+
+    right: -80px;
+}
+
+
+/* =================================
+   BRAND CONTENT
+================================= */
+
+.login-brand-content {
+
+    position: relative;
+
+    z-index: 2;
+
+    text-align: center;
+
+    max-width: 400px;
+}
+
+
+.login-logo {
+
+    width: 230px;
+
+    max-width: 100%;
+
+    height: auto;
+
+    margin-bottom: 35px;
+
+    background: #ffffff;
+
+    padding: 12px;
+
+    border-radius: 12px;
+}
+
+
+.login-brand h1 {
+
+    font-family:
+        Georgia,
+        "Times New Roman",
+        serif;
+
+    color: #F4E8D3;
+
+    font-size: 36px;
+
+    margin: 0 0 15px;
+}
+
+
+.login-brand-content > p {
+
+    color: #E7D8BE;
+
+    font-size: 16px;
+
+    line-height: 1.7;
+
+    margin-bottom: 35px;
+}
+
+
+/* =================================
+   LOGIN FEATURES
+================================= */
+
+.login-features {
+
+    text-align: left;
+
+    display: flex;
+
+    flex-direction: column;
+
+    gap: 15px;
+}
+
+
+.login-features div {
+
+    color: #E7D8BE;
+
+    font-size: 14px;
+}
+
+
+.login-features span {
+
+    color: #C98A2E;
+
+    margin-right: 10px;
+
+    font-size: 17px;
+}
+
+
+/* =================================
+   RIGHT FORM SECTION
+================================= */
+
+.login-form-section {
+
+    background: #ffffff;
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+    padding: 50px;
+}
+
+
+.login-form-container {
+
+    width: 100%;
+
+    max-width: 430px;
+}
+
+
+/* =================================
+   LOGIN HEADING
+================================= */
+
+.login-heading {
+
+    margin-bottom: 35px;
+}
+
+
+.login-heading > span {
+
+    display: block;
+
+    color: #C98A2E;
+
+    font-size: 13px;
+
+    font-weight: 700;
+
+    letter-spacing: 2px;
+
+    margin-bottom: 10px;
+}
+
+
+.login-heading h2 {
+
+    font-family:
+        Georgia,
+        "Times New Roman",
+        serif;
+
+    color: #123B29;
+
+    font-size: 32px;
+
+    margin: 0 0 10px;
+}
+
+
+.login-heading p {
+
+    color: #777;
+
+    font-size: 14px;
+
+    margin: 0;
+}
+
+
+/* =================================
+   FORM GROUP
+================================= */
+
+.login-form-group {
+
+    margin-bottom: 22px;
+}
+
+
+.login-form-group label {
+
+    display: block;
+
+    color: #123B29;
+
+    font-size: 14px;
+
+    font-weight: 600;
+
+    margin-bottom: 8px;
+}
+
+
+.login-form-group input {
+
+    width: 100%;
+
+    height: 50px;
+
+    padding: 0 15px;
+
+    border: 1px solid #D8C9B8;
+
+    border-radius: 8px;
+
+    background: #FFFCF7;
+
+    color: #123B29;
+
+    font-size: 14px;
+
+    box-sizing: border-box;
+
+    outline: none;
+
+    transition: 0.3s ease;
+}
+
+
+.login-form-group input:focus {
+
+    border-color: #C98A2E;
+
+    box-shadow:
+        0 0 0 3px
+        rgba(201, 138, 46, 0.12);
+}
+
+
+.login-form-group input::placeholder {
+
+    color: #A99A88;
+}
+
+
+/* =================================
+   PASSWORD
+================================= */
+
+.password-wrapper {
+
+    position: relative;
+}
+
+
+.password-wrapper input {
+
+    padding-right: 50px;
+}
+
+
+.password-toggle {
+
+    position: absolute;
+
+    right: 10px;
+
+    top: 50%;
+
+    transform: translateY(-50%);
+
+    border: none;
+
+    background: transparent;
+
+    cursor: pointer;
+
+    font-size: 17px;
+
+    padding: 5px;
+}
+
+
+/* =================================
+   ERROR MESSAGE
+================================= */
+
+.error-message {
+
+    display: block;
+
+    color: #A33A25;
+
+    font-size: 12px;
+
+    margin-top: 6px;
+
+    min-height: 15px;
+}
+
+
+/* =================================
+   LOGIN OPTIONS
+================================= */
+
+.login-options {
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: space-between;
+
+    margin: 5px 0 25px;
+
+    font-size: 13px;
+}
+
+
+.remember-me {
+
+    display: flex;
+
+    align-items: center;
+
+    gap: 7px;
+
+    color: #666;
+
+    cursor: pointer;
+}
+
+
+.remember-me input {
+
+    accent-color: #C98A2E;
+}
+
+
+.login-options a {
+
+    color: #8B5E3C;
+
+    text-decoration: none;
+
+    font-weight: 600;
+
+    transition: 0.3s ease;
+}
+
+
+.login-options a:hover {
+
+    color: #C98A2E;
+}
+
+
+/* =================================
+   SIGN IN BUTTON
+================================= */
+
+.login-btn {
+
+    width: 100%;
+
+    height: 50px;
+
+    border: none;
+
+    border-radius: 8px;
+
+    background: #123B29;
+
+    color: #F4E8D3;
+
+    font-size: 15px;
+
+    font-weight: 600;
+
+    cursor: pointer;
+
+    transition: all 0.3s ease;
+}
+
+
+.login-btn:hover {
+
+    background: #0D4328;
+
+    transform: translateY(-2px);
+
+    box-shadow:
+        0 8px 20px
+        rgba(13, 67, 40, 0.20);
+}
+
+
+/* =================================
+   REGISTER LINK
+================================= */
+
+.register-link {
+
+    text-align: center;
+
+    margin-top: 25px;
+}
+
+
+.register-link p {
+
+    color: #777;
+
+    font-size: 14px;
+
+    margin: 0;
+}
+
+
+.register-link a {
+
+    color: #8B5E3C;
+
+    font-weight: 700;
+
+    text-decoration: none;
+}
+
+
+.register-link a:hover {
+
+    color: #C98A2E;
+}
+
+
+/* =================================
+   RESPONSIVE
+================================= */
+
+@media (max-width: 850px) {
+
+    .login-container {
+
+        grid-template-columns: 1fr;
+
+        max-width: 550px;
+    }
+
+
+    .login-brand {
+
+        min-height: 350px;
+
+        padding: 40px;
+    }
+
+
+    .login-features {
+
+        display: none;
+    }
+
+
+    .login-logo {
+
+        width: 190px;
+
+        margin-bottom: 20px;
+    }
+
+
+    .login-brand h1 {
+
+        font-size: 30px;
+    }
+
+}
+
+
+@media (max-width: 500px) {
+
+    .login-page {
+
+        padding: 15px;
+    }
+
+
+    .login-brand {
+
+        padding: 30px 20px;
+    }
+
+
+    .login-form-section {
+
+        padding: 35px 25px;
+    }
+
+
+    .login-heading h2 {
+
+        font-size: 27px;
+    }
+
+
+    .login-options {
+
+        flex-direction: column;
+
+        align-items: flex-start;
+
+        gap: 12px;
+    }
+
+}
+
+/* =========================================================
+   REGISTER PAGE
+========================================================= */
+
+.register-page {
+    margin: 0;
+    padding: 0;
+    min-height: 100vh;
+    background: #F4E8D3;
+    font-family: Arial, Helvetica, sans-serif;
+}
+
+
+/* MAIN CONTAINER */
+
+.register-container {
+    min-height: 100vh;
+    display: grid;
+    grid-template-columns: 42% 58%;
+}
+
+
+/* =========================================================
+   LEFT BRAND SECTION
+========================================================= */
+
+.register-brand {
+    background: #123B29;
+    color: #F4E8D3;
+
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+
+    padding: 60px 70px;
+    box-sizing: border-box;
+}
+
+
+/* LOGO */
+
+.register-brand img {
+    width: 280px;
+    max-width: 100%;
+    height: auto;
+
+    margin: 0 auto 35px;
+
+    display: block;
+}
+
+
+/* BRAND TITLE */
+
+.register-brand h1 {
+    font-family: Georgia, "Times New Roman", serif;
+
+    font-size: 42px;
+    font-weight: 600;
+
+    color: #F4E8D3;
+
+    margin: 0 0 15px;
+
+    text-align: center;
+}
+
+
+/* BRAND DESCRIPTION */
+
+.register-brand > p {
+    font-size: 17px;
+    line-height: 1.7;
+
+    color: #E7D8BE;
+
+    max-width: 480px;
+
+    margin: 0 auto 45px;
+
+    text-align: center;
+}
+
+
+/* =========================================================
+   REGISTER BENEFITS
+========================================================= */
+
+.register-benefits {
+    max-width: 500px;
+    margin: 0 auto;
+
+    width: 100%;
+}
+
+
+.register-benefit {
+    display: flex;
+    align-items: flex-start;
+
+    gap: 18px;
+
+    margin-bottom: 25px;
+}
+
+
+.register-benefit > span {
+    width: 50px;
+    height: 50px;
+
+    min-width: 50px;
+
+    background: #C98A2E;
+
+    border-radius: 50%;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    font-size: 23px;
+}
+
+
+.register-benefit h3 {
+    margin: 0 0 5px;
+
+    color: #F4E8D3;
+
+    font-size: 18px;
+}
+
+
+.register-benefit p {
+    margin: 0;
+
+    color: #E7D8BE;
+
+    font-size: 14px;
+
+    line-height: 1.5;
+}
+
+
+/* =========================================================
+   RIGHT SIDE
+========================================================= */
+
+.register-form-section {
+    background: #F4E8D3;
+
+    padding: 45px 55px;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    box-sizing: border-box;
+}
+
+
+/* FORM BOX */
+
+.register-form-box {
+    width: 100%;
+    max-width: 720px;
+
+    background: #ffffff;
+
+    border-radius: 18px;
+
+    padding: 35px 45px;
+
+    box-sizing: border-box;
+
+    box-shadow: 0 10px 35px rgba(0, 0, 0, 0.10);
+}
+
+
+/* =========================================================
+   HEADING
+========================================================= */
+
+.register-heading {
+    text-align: center;
+
+    margin-bottom: 25px;
+}
+
+
+.register-heading span {
+    display: block;
+
+    color: #C98A2E;
+
+    font-size: 12px;
+
+    font-weight: 700;
+
+    letter-spacing: 2px;
+
+    margin-bottom: 8px;
+}
+
+
+.register-heading h2 {
+    font-family: Georgia, "Times New Roman", serif;
+
+    color: #123B29;
+
+    font-size: 32px;
+
+    margin: 0 0 8px;
+}
+
+
+.register-heading p {
+    color: #687126;
+
+    font-size: 14px;
+
+    margin: 0;
+
+    line-height: 1.5;
+}
+
+
+/* =========================================================
+   ACCOUNT TYPE
+========================================================= */
+
+.account-type {
+    display: grid;
+
+    grid-template-columns: 1fr 1fr;
+
+    gap: 15px;
+
+    margin-bottom: 25px;
+}
+
+
+.account-option {
+    position: relative;
+
+    cursor: pointer;
+}
+
+
+.account-option input {
+    position: absolute;
+
+    opacity: 0;
+}
+
+
+.account-option-content {
+    border: 2px solid #E7D8BE;
+
+    border-radius: 12px;
+
+    padding: 15px;
+
+    display: flex;
+
+    align-items: center;
+
+    gap: 12px;
+
+    transition: all 0.3s ease;
+
+    background: #fff;
+}
+
+
+.account-option:hover .account-option-content {
+    border-color: #C98A2E;
+
+    transform: translateY(-2px);
+}
+
+
+.account-option input:checked + .account-option-content {
+    border-color: #C98A2E;
+
+    background: #FFF8ED;
+
+    box-shadow: 0 4px 12px rgba(201, 138, 46, 0.15);
+}
+
+
+.account-icon {
+    width: 42px;
+    height: 42px;
+
+    min-width: 42px;
+
+    border-radius: 50%;
+
+    background: #123B29;
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+    font-size: 19px;
+}
+
+
+.account-option strong {
+    display: block;
+
+    color: #123B29;
+
+    font-size: 15px;
+
+    margin-bottom: 3px;
+}
+
+
+.account-option small {
+    display: block;
+
+    color: #687126;
+
+    font-size: 11px;
+
+    line-height: 1.4;
+}
+
+
+/* =========================================================
+   FORM
+========================================================= */
+
+.registration-form h3 {
+    color: #123B29;
+
+    font-family: Georgia, "Times New Roman", serif;
+
+    font-size: 22px;
+
+    margin: 0 0 20px;
+
+    padding-bottom: 10px;
+
+    border-bottom: 1px solid #E7D8BE;
+}
+
+
+.form-row {
+    display: grid;
+
+    grid-template-columns: 1fr 1fr;
+
+    gap: 18px;
+}
+
+
+.form-group {
+    margin-bottom: 17px;
+}
+
+
+.form-group label {
+    display: block;
+
+    color: #123B29;
+
+    font-size: 14px;
+
+    font-weight: 600;
+
+    margin-bottom: 7px;
+}
+
+
+.form-group input,
+.form-group select,
+.form-group textarea {
+    width: 100%;
+
+    box-sizing: border-box;
+
+    padding: 12px 13px;
+
+    border: 1px solid #D8C7AA;
+
+    border-radius: 8px;
+
+    background: #ffffff;
+
+    color: #333;
+
+    font-size: 14px;
+
+    font-family: Arial, Helvetica, sans-serif;
+
+    outline: none;
+
+    transition: all 0.3s ease;
+}
+
+
+.form-group input:focus,
+.form-group select:focus,
+.form-group textarea:focus {
+    border-color: #C98A2E;
+
+    box-shadow: 0 0 0 3px rgba(201, 138, 46, 0.12);
+}
+
+
+.form-group textarea {
+    resize: vertical;
+
+    min-height: 90px;
+}
+
+
+.form-group input::placeholder,
+.form-group textarea::placeholder {
+    color: #999;
+}
+
+
+/* FILE INPUT */
+
+.form-group input[type="file"] {
+    padding: 9px;
+
+    background: #FFF8ED;
+
+    cursor: pointer;
+}
+
+
+.file-help {
+    display: block;
+
+    margin-top: 6px;
+
+    color: #777;
+
+    font-size: 11px;
+}
+
+
+/* =========================================================
+   ARTISAN NOTE
+========================================================= */
+
+.artisan-note {
+    display: flex;
+
+    align-items: flex-start;
+
+    gap: 10px;
+
+    background: #FFF8ED;
+
+    border-left: 4px solid #C98A2E;
+
+    padding: 12px 15px;
+
+    margin-bottom: 20px;
+
+    border-radius: 0 8px 8px 0;
+}
+
+
+.artisan-note > span {
+    color: #C98A2E;
+
+    font-size: 18px;
+
+    font-weight: bold;
+}
+
+
+.artisan-note p {
+    margin: 0;
+
+    color: #687126;
+
+    font-size: 12px;
+
+    line-height: 1.5;
+}
+
+
+/* =========================================================
+   TERMS
+========================================================= */
+
+.terms-box {
+    display: flex;
+
+    align-items: flex-start;
+
+    gap: 9px;
+
+    margin: 5px 0 20px;
+}
+
+
+.terms-box input {
+    margin-top: 3px;
+
+    accent-color: #C98A2E;
+
+    cursor: pointer;
+}
+
+
+.terms-box label {
+    color: #666;
+
+    font-size: 12px;
+
+    line-height: 1.5;
+
+    cursor: pointer;
+}
+
+
+.terms-box a {
+    color: #9A4F16;
+
+    font-weight: 600;
+
+    text-decoration: none;
+}
+
+
+.terms-box a:hover {
+    color: #C98A2E;
+
+    text-decoration: underline;
+}
+
+
+/* =========================================================
+   REGISTER BUTTON
+========================================================= */
+
+.register-submit-btn {
+    width: 100%;
+
+    border: none;
+
+    border-radius: 8px;
+
+    padding: 13px 20px;
+
+    background: #123B29;
+
+    color: #F4E8D3;
+
+    font-size: 15px;
+
+    font-weight: 600;
+
+    cursor: pointer;
+
+    transition: all 0.3s ease;
+}
+
+
+.register-submit-btn:hover {
+    background: #0D4328;
+
+    transform: translateY(-2px);
+
+    box-shadow: 0 6px 15px rgba(18, 59, 41, 0.20);
+}
+
+
+/* =========================================================
+   ALREADY ACCOUNT
+========================================================= */
+
+.already-account {
+    text-align: center;
+
+    margin-top: 20px;
+
+    padding-top: 18px;
+
+    border-top: 1px solid #E7D8BE;
+}
+
+
+.already-account p {
+    margin: 0;
+
+    color: #777;
+
+    font-size: 13px;
+}
+
+
+.already-account a {
+    color: #9A4F16;
+
+    font-weight: 700;
+
+    text-decoration: none;
+
+    margin-left: 4px;
+}
+
+
+.already-account a:hover {
+    color: #C98A2E;
+
+    text-decoration: underline;
+}
+
+
+/* =========================================================
+   RESPONSIVE DESIGN
+========================================================= */
+
+@media (max-width: 1100px) {
+
+    .register-container {
+        grid-template-columns: 1fr;
+    }
+
+    .register-brand {
+        padding: 45px 30px;
+    }
+
+    .register-brand img {
+        width: 230px;
+    }
+
+    .register-brand h1 {
+        font-size: 34px;
+    }
+
+    .register-form-section {
+        padding: 35px 25px;
+    }
+
+}
+
+
+@media (max-width: 650px) {
+
+    .register-form-section {
+        padding: 20px 15px;
+    }
+
+    .register-form-box {
+        padding: 25px 20px;
+    }
+
+    .form-row {
+        grid-template-columns: 1fr;
+        gap: 0;
+    }
+
+    .account-type {
+        grid-template-columns: 1fr;
+    }
+
+    .register-brand {
+        padding: 35px 20px;
+    }
+
+    .register-brand img {
+        width: 200px;
+    }
+
+    .register-brand h1 {
+        font-size: 30px;
+    }
+
+}

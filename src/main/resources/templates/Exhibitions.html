@@ -1,0 +1,1446 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Craftora - Exhibitions</title>
+
+    <link rel="stylesheet" href="/css/style.css">
+
+    <style>
+
+        /* ==========================================
+           EXHIBITIONS PAGE
+        ========================================== */
+
+        .exhibitions-page {
+            background: #f8f7f2;
+            min-height: 100vh;
+        }
+
+        /* ==========================================
+           HERO
+        ========================================== */
+
+        .exhibitions-hero {
+            position: relative;
+            height: 360px;
+
+            background-image:
+                linear-gradient(
+                    rgba(0, 70, 45, 0.72),
+                    rgba(0, 70, 45, 0.72)
+                ),
+                url('/images/hero2.jpg');
+
+            background-size: cover;
+            background-position: center;
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            text-align: center;
+            color: white;
+        }
+
+        .exhibitions-hero-content {
+            max-width: 850px;
+            padding: 30px;
+        }
+
+        .exhibitions-hero-content span {
+            display: block;
+            font-size: 14px;
+            letter-spacing: 3px;
+            font-weight: 600;
+            margin-bottom: 15px;
+            color: #e5c76b;
+        }
+
+        .exhibitions-hero-content h1 {
+            font-size: 48px;
+            margin: 0 0 15px;
+            font-weight: 700;
+        }
+
+        .exhibitions-hero-content p {
+            font-size: 18px;
+            line-height: 1.7;
+            margin: 0 auto;
+            max-width: 700px;
+        }
+
+        /* ==========================================
+           MAIN SECTION
+        ========================================== */
+
+        .exhibitions-section {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 70px 25px;
+        }
+
+        .exhibitions-heading {
+            text-align: center;
+            margin-bottom: 45px;
+        }
+
+        .exhibitions-heading span {
+            color: #b18a2c;
+            font-size: 14px;
+            letter-spacing: 2px;
+            font-weight: 700;
+        }
+
+        .exhibitions-heading h2 {
+            margin: 10px 0 12px;
+            color: #07583d;
+            font-size: 34px;
+        }
+
+        .exhibitions-heading p {
+            max-width: 700px;
+            margin: auto;
+            color: #666;
+            line-height: 1.7;
+        }
+
+        /* ==========================================
+           EXHIBITION GRID
+        ========================================== */
+
+        .exhibitions-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 28px;
+        }
+
+        /* ==========================================
+           EXHIBITION CARD
+        ========================================== */
+
+        .exhibition-card {
+            background: white;
+            border-radius: 16px;
+            overflow: hidden;
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.08);
+            transition: 0.3s ease;
+        }
+
+        .exhibition-card:hover {
+            transform: translateY(-6px);
+            box-shadow: 0 12px 28px rgba(0, 0, 0, 0.13);
+        }
+
+        .exhibition-image {
+            width: 100%;
+            height: 220px;
+            overflow: hidden;
+            background: #eee;
+            position: relative;
+        }
+
+        .exhibition-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            display: block;
+        }
+
+        .exhibition-content {
+            padding: 24px;
+        }
+
+        .exhibition-category {
+            display: inline-block;
+            background: #edf6f1;
+            color: #08724d;
+            padding: 6px 12px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 700;
+            margin-bottom: 12px;
+        }
+
+        .exhibition-content h3 {
+            color: #174d3a;
+            font-size: 21px;
+            margin: 0 0 12px;
+        }
+
+        .exhibition-description {
+            color: #666;
+            line-height: 1.6;
+            font-size: 14px;
+            margin-bottom: 18px;
+        }
+
+        /* ==========================================
+           EXHIBITION INFORMATION
+        ========================================== */
+
+        .exhibition-info {
+            border-top: 1px solid #eeeeee;
+            padding-top: 16px;
+            margin-bottom: 20px;
+        }
+
+        .exhibition-info div {
+            display: flex;
+            align-items: center;
+            gap: 9px;
+            margin-bottom: 9px;
+            color: #555;
+            font-size: 14px;
+        }
+
+        .exhibition-info span:first-child {
+            width: 20px;
+        }
+
+        /* ==========================================
+           OLD BUTTON
+        ========================================== */
+
+        .exhibition-btn {
+            display: block;
+            text-align: center;
+            background: #08724d;
+            color: white;
+            text-decoration: none;
+            padding: 12px 18px;
+            border-radius: 8px;
+            font-weight: 600;
+            transition: 0.3s ease;
+        }
+
+        .exhibition-btn:hover {
+            background: #05583c;
+        }
+
+        /* ==========================================
+           FREE BADGE
+        ========================================== */
+
+        .event-free-badge {
+            position: absolute;
+            top: 12px;
+            right: 12px;
+            z-index: 20;
+
+            background: #e91d25;
+            color: #ffffff;
+
+            padding: 6px 13px;
+            border-radius: 20px;
+
+            font-size: 12px;
+            font-weight: 800;
+            letter-spacing: 1px;
+
+            line-height: 1;
+
+            box-shadow: 0 4px 10px rgba(0,0,0,0.18);
+        }
+
+        /* ==========================================
+           ACTION BUTTONS
+        ========================================== */
+
+        .exhibition-buttons {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 10px;
+        }
+
+        .exhibition-view-btn,
+        .exhibition-register-btn {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            text-align: center;
+
+            padding: 11px 10px;
+            border-radius: 8px;
+
+            font-size: 13px;
+            font-weight: 700;
+
+            text-decoration: none;
+            transition: 0.3s ease;
+        }
+
+        .exhibition-view-btn {
+            background: #08724d;
+            color: #ffffff !important;
+        }
+
+        .exhibition-view-btn:hover {
+            background: #05583c;
+            color: #ffffff !important;
+        }
+
+        .exhibition-register-btn {
+            background: #c58a25;
+            color: #ffffff !important;
+        }
+
+        .exhibition-register-btn:hover {
+            background: #a87318;
+            color: #ffffff !important;
+        }
+
+        /* ==========================================
+           EMPTY STATE
+        ========================================== */
+
+        .no-exhibitions {
+            grid-column: 1 / -1;
+
+            text-align: center;
+
+            background: white;
+
+            padding: 60px 30px;
+
+            border-radius: 16px;
+
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.06);
+        }
+
+        .no-exhibitions-icon {
+            font-size: 50px;
+            margin-bottom: 15px;
+        }
+
+        .no-exhibitions h3 {
+            color: #174d3a;
+            margin-bottom: 10px;
+        }
+
+        .no-exhibitions p {
+            color: #777;
+        }
+
+        /* ==========================================
+           SEARCH
+        ========================================== */
+
+        .exhibition-search {
+            max-width: 625px;
+            margin: 22px auto 0;
+
+            padding: 7px 8px 7px 20px;
+
+            background: #ffffff;
+
+            border-radius: 45px;
+
+            display: flex;
+            align-items: center;
+
+            box-shadow: 0 4px 16px rgba(0, 0, 0, 0.08);
+
+            border: none;
+        }
+
+        .exhibition-search input {
+            flex: 1;
+
+            border: none;
+            outline: none;
+
+            background: transparent;
+
+            padding: 14px 14px;
+
+            font-size: 16px;
+            color: #444;
+        }
+
+        .exhibition-search input::placeholder {
+            color: #777;
+        }
+
+        .exhibition-search button {
+            border: none;
+
+            background: #08724d;
+            color: white;
+
+            min-width: 118px;
+
+            padding: 13px 22px;
+
+            border-radius: 35px;
+
+            font-size: 15px;
+            font-weight: 700;
+
+            cursor: pointer;
+
+            transition: 0.3s ease;
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            gap: 7px;
+        }
+
+        .exhibition-search button:hover {
+            background: #05583c;
+        }
+
+        .search-icon {
+            font-size: 24px;
+            line-height: 1;
+            font-weight: 700;
+
+            transform: rotate(-20deg);
+
+            display: inline-block;
+        }
+
+        .search-message {
+            display: none;
+
+            text-align: center;
+
+            color: #777;
+
+            margin: 25px 0 0;
+
+            font-size: 15px;
+        }
+
+        /* ==========================================
+           UPCOMING
+        ========================================== */
+
+        .upcoming-exhibitions-section {
+            margin-bottom: 80px;
+        }
+
+        .upcoming-exhibitions-empty {
+            background: white;
+
+            border-radius: 16px;
+
+            padding: 32px 25px;
+
+            text-align: center;
+
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.06);
+        }
+
+        .upcoming-exhibitions-empty-icon {
+            font-size: 36px;
+            margin-bottom: 10px;
+        }
+
+        .upcoming-exhibitions-empty h3 {
+            color: #174d3a;
+
+            margin: 0 0 10px;
+
+            font-size: 22px;
+        }
+
+        .upcoming-exhibitions-empty p {
+            color: #777;
+
+            margin: 0 auto;
+
+            max-width: 650px;
+
+            line-height: 1.7;
+        }
+
+        /* ==========================================
+           RESPONSIVE
+        ========================================== */
+
+        @media (max-width: 950px) {
+
+            .exhibitions-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+        }
+
+        @media (max-width: 650px) {
+
+            .exhibitions-hero {
+                height: 300px;
+            }
+
+            .exhibitions-hero-content h1 {
+                font-size: 35px;
+            }
+
+            .exhibitions-hero-content p {
+                font-size: 15px;
+            }
+
+            .exhibitions-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .exhibitions-section {
+                padding: 50px 18px;
+            }
+
+            .exhibition-search {
+                border-radius: 18px;
+                flex-direction: column;
+                padding: 8px;
+            }
+
+            .exhibition-search input {
+                width: 100%;
+                box-sizing: border-box;
+            }
+
+            .exhibition-search button {
+                width: 100%;
+            }
+
+        }
+
+        @media (max-width: 450px) {
+
+            .exhibition-buttons {
+                grid-template-columns: 1fr;
+            }
+
+        }
+
+
+        
+.previous-section {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 40px 25px 80px;
+}
+
+.previous-heading {
+    text-align: center;
+    margin-bottom: 45px;
+}
+
+.previous-heading span {
+    color: #b18a2c;
+    font-size: 14px;
+    letter-spacing: 2px;
+    font-weight: 700;
+}
+
+.previous-heading h2 {
+    margin: 10px 0 12px;
+    color: #07583d;
+    font-size: 34px;
+}
+
+.previous-heading p {
+    color: #666;
+    line-height: 1.7;
+}
+
+.previous-grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 28px;
+}
+
+.previous-card {
+    background: white;
+    border-radius: 18px;
+    overflow: hidden;
+    box-shadow: 0 10px 28px rgba(20, 61, 43, 0.09);
+}
+
+.previous-image {
+    width: 100%;
+    height: 230px;
+    overflow: hidden;
+    background: #eee;
+}
+
+.previous-image img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center;
+    display: block;
+}
+
+.previous-content {
+    padding: 25px;
+}
+
+.previous-tag {
+    display: inline-block;
+    background: #f7edda;
+    color: #b27b1e;
+    border-radius: 20px;
+    padding: 7px 13px;
+    font-size: 13px;
+    font-weight: 700;
+    margin-bottom: 13px;
+}
+
+.previous-content h3 {
+    color: #075c42;
+    font-size: 24px;
+    margin-bottom: 13px;
+}
+
+.previous-content p {
+    color: #65736e;
+    line-height: 1.65;
+    margin-bottom: 17px;
+}
+
+.previous-meta {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 14px;
+    color: #53635d;
+    font-size: 14px;
+    margin-bottom: 10px;
+}
+
+@media (max-width: 650px) {
+    .previous-grid {
+        grid-template-columns: 1fr;
+    }
+}
+
+    </style>
+
+</head>
+
+
+<body>
+
+<div class="exhibitions-page">
+
+
+    <!-- ==========================================
+         NAVIGATION
+    ========================================== -->
+
+    <nav class="navbar">
+
+        <div class="logo">
+
+            <a href="/">
+
+                <img src="/images/craftora-logo.png"
+                     alt="Craftora Logo">
+
+            </a>
+
+        </div>
+
+
+        <div class="nav-links">
+
+            <a href="/">
+                Home
+            </a>
+
+            <a href="/about-us">
+                About Us
+            </a>
+
+
+            <!-- Events Dropdown -->
+
+            <div class="dropdown">
+
+                <a href="#" class="active">
+                    Events ▾
+                </a>
+
+                <div class="dropdown-menu">
+
+                    <a href="/workshops">
+                        Workshops
+                    </a>
+
+                    <a href="/exhibitions">
+                        Exhibitions
+                    </a>
+
+                    <a href="/competitions">
+                        Competitions
+                    </a>
+
+                </div>
+
+            </div>
+
+
+            <a href="/marketplace">
+                Marketplace
+            </a>
+
+            <a href="/ratings">
+                Ratings
+            </a>
+
+            <a href="/contact">
+                Contact Us
+            </a>
+
+        </div>
+
+
+        <div class="sign-in">
+
+            <a href="/login">
+                Sign In
+            </a>
+
+        </div>
+
+    </nav>
+
+
+    <!-- ==========================================
+         HERO
+    ========================================== -->
+
+    <section class="exhibitions-hero">
+
+        <div class="exhibitions-hero-content">
+
+            <span>
+                DISCOVER • CONNECT • CELEBRATE
+            </span>
+
+            <h1>
+                Handicraft Exhibitions
+            </h1>
+
+            <p>
+                Discover beautiful handmade creations and
+                celebrate the creativity and traditions of
+                talented Sri Lankan artisans.
+            </p>
+
+
+            <div class="exhibition-search">
+
+                <input
+                    type="text"
+                    id="exhibitionSearch"
+                    placeholder="Search exhibitions by craft type or location..."
+                    autocomplete="off">
+
+                <button type="button"
+                        onclick="searchExhibitions()">
+
+                    <span class="search-icon">⌕</span>
+
+                    <span>
+                        Search
+                    </span>
+
+                </button>
+
+            </div>
+
+        </div>
+
+    </section>
+
+
+    <!-- ==========================================
+         MAIN EXHIBITIONS SECTION
+    ========================================== -->
+
+    <section class="exhibitions-section">
+
+
+        <!-- ==========================================
+             UPCOMING EXHIBITIONS
+        ========================================== -->
+
+        <div class="upcoming-exhibitions-section">
+
+
+            <div class="exhibitions-heading"
+                 style="margin-bottom:30px;">
+
+                <span>
+                    COMING SOON
+                </span>
+
+                <h2>
+                    Upcoming Exhibitions
+                </h2>
+
+                <p>
+                    Discover upcoming exhibitions and experience
+                    the creativity of talented craft artisans.
+                </p>
+
+            </div>
+
+
+            <!-- ==========================================
+                 DYNAMIC UPCOMING EXHIBITIONS
+            ========================================== -->
+
+            <div class="exhibitions-grid"
+                 th:if="${!#lists.isEmpty(events)}">
+
+
+                <div class="exhibition-card"
+
+                     th:each="event : ${events}"
+
+                     th:attr="data-exhibition=${event.eventTitle + ' ' + event.description + ' ' + event.location + ' ' + event.eventType}">
+
+
+                    <!-- Exhibition Image -->
+
+                    <div class="exhibition-image">
+
+
+                       <!-- ==========================================
+     FREE BADGE - CUSTOMER / GUEST
+========================================== -->
+
+<span class="event-free-badge"
+      th:if="${(session.loggedInUserId == null
+               and (event.customerRegistrationFee == null
+                    or event.customerRegistrationFee.doubleValue() <= 0))
+              or
+              (session.loggedInUserId != null
+               and session.selectedRole != null
+               and session.selectedRole.equalsIgnoreCase('CUSTOMER')
+               and (event.customerRegistrationFee == null
+                    or event.customerRegistrationFee.doubleValue() <= 0))}">
+
+    FREE
+
+</span>
+
+
+<!-- ==========================================
+     FREE BADGE - ARTISAN
+========================================== -->
+
+<span class="event-free-badge"
+      th:if="${session.loggedInUserId != null
+              and session.selectedRole != null
+              and session.selectedRole.equalsIgnoreCase('ARTISAN')
+              and (event.artisanRegistrationFee == null
+                   or event.artisanRegistrationFee.doubleValue() <= 0)}">
+
+    FREE
+
+</span>
+
+                       
+
+
+                        <!-- EVENT IMAGE -->
+
+                        <img
+
+                            th:if="${event.eventImage != null
+                                     and !event.eventImage.isEmpty()}"
+
+                            th:src="${event.eventImage}"
+
+                            th:alt="${event.eventTitle}">
+
+
+                        <!-- DEFAULT IMAGE -->
+
+                        <img
+
+                            th:unless="${event.eventImage != null
+                                         and !event.eventImage.isEmpty()}"
+
+                            src="/images/exhibition1.jpg"
+
+                            th:alt="${event.eventTitle}">
+
+                    </div>
+
+
+                    <!-- Exhibition Content -->
+
+                    <div class="exhibition-content">
+
+
+                        <span class="exhibition-category"
+
+                              th:text="${event.eventType}">
+
+                            EXHIBITION
+
+                        </span>
+
+
+                        <h3 th:text="${event.eventTitle}">
+
+                            Exhibition Title
+
+                        </h3>
+
+
+                        <p class="exhibition-description"
+
+                           th:text="${event.description != null
+                           and event.description.length() > 120
+
+                           ? event.description.substring(0, 120) + '...'
+
+                           : event.description}">
+
+                            Exhibition description
+
+                        </p>
+
+
+                        <!-- Exhibition Information -->
+
+                        <div class="exhibition-info">
+
+
+                            <div>
+
+                                <span>📅</span>
+
+                                <span th:text="${#temporals.format(event.eventDate, 'dd MMMM yyyy')}">
+
+                                    08 October 2026
+
+                                </span>
+
+                            </div>
+
+
+                            <div>
+
+                                <span>🕐</span>
+
+                                <span th:text="${#temporals.format(event.startTime, 'hh:mm a')
+                                    + ' - ' +
+                                    #temporals.format(event.endTime, 'hh:mm a')}">
+
+                                    10:00 AM - 1:00 PM
+
+                                </span>
+
+                            </div>
+
+
+                            <div>
+
+                                <span>📍</span>
+
+                                <span th:text="${event.location}">
+
+                                    Location
+
+                                </span>
+
+                            </div>
+
+
+                        </div>
+
+
+                        <!-- ==========================================
+                             EXHIBITION ACTION BUTTONS
+                        ========================================== -->
+
+                        <div class="exhibition-buttons">
+
+
+                            <!-- VIEW - LOGGED IN -->
+
+                            <a
+
+                                th:if="${session.loggedInUserId != null}"
+
+                                th:href="@{/events/{id}(id=${event.eventId})}"
+
+                                class="exhibition-view-btn">
+
+                                View Exhibition →
+
+                            </a>
+
+
+                            <!-- VIEW - GUEST -->
+
+                            <a
+
+                                th:if="${session.loggedInUserId == null}"
+
+                                href="/login"
+
+                                class="exhibition-view-btn">
+
+                                View Exhibition →
+
+                            </a>
+
+
+                            <!-- REGISTER - LOGGED IN -->
+
+                            <a
+
+                                th:if="${session.loggedInUserId != null}"
+
+                                th:href="@{/events/{id}/register(id=${event.eventId})}"
+
+                                class="exhibition-register-btn">
+
+                                Register Now
+
+                            </a>
+
+
+                            <!-- REGISTER - GUEST -->
+
+                            <a
+
+                                th:if="${session.loggedInUserId == null}"
+
+                                href="/login"
+
+                                class="exhibition-register-btn">
+
+                                Register Now
+
+                            </a>
+
+
+                        </div>
+
+
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            <!-- ==========================================
+                 NO UPCOMING EXHIBITIONS
+            ========================================== -->
+
+            <div class="upcoming-exhibitions-empty"
+
+                 th:if="${#lists.isEmpty(events)}">
+
+
+                <div class="upcoming-exhibitions-empty-icon">
+                    🎨
+                </div>
+
+
+                <h3>
+                    No Upcoming Exhibitions Yet
+                </h3>
+
+
+                <p>
+                    There are no upcoming exhibitions available
+                    at the moment. New exhibitions will appear
+                    here when they are added to Craftora.
+                </p>
+
+
+            </div>
+
+        </div>
+
+
+        <p id="searchMessage"
+           class="search-message">
+
+            No exhibitions found for your search.
+
+        </p>
+
+
+    </section>
+
+    
+<!-- PREVIOUS EXHIBITIONS -->
+<section class="previous-section"
+         th:if="${previousEvents != null and !#lists.isEmpty(previousEvents)}">
+
+    <div class="previous-heading">
+        <span>OUR MEMORIES</span>
+        <h2>Previous Exhibitions</h2>
+        <p>Discover exhibitions previously organized by Craftora.</p>
+    </div>
+
+    <div class="previous-grid">
+        <div class="previous-card"
+             th:each="previousEvent : ${previousEvents}">
+
+            <div class="previous-image">
+                <img th:if="${previousEvent.eventImage != null
+                             and !#strings.isEmpty(previousEvent.eventImage)}"
+                     th:src="${previousEvent.eventImage}"
+                     alt="Previous Exhibition Image">
+
+                <img th:unless="${previousEvent.eventImage != null
+                                 and !#strings.isEmpty(previousEvent.eventImage)}"
+                     src="/images/hero1.jpg"
+                     alt="Exhibition Image">
+            </div>
+
+            <div class="previous-content">
+                <span class="previous-tag">Completed Exhibition</span>
+
+                <h3 th:text="${previousEvent.eventTitle}">
+                    Exhibition Title
+                </h3>
+
+                <p th:text="${previousEvent.description}">
+                    Exhibition description
+                </p>
+
+                <div class="previous-meta">
+                    <span th:if="${previousEvent.eventDate != null}">
+                        📅 <span th:text="${previousEvent.eventDate}"></span>
+                    </span>
+
+                    <span th:if="${previousEvent.location != null
+                                  and !#strings.isEmpty(previousEvent.location)}">
+                        📍 <span th:text="${previousEvent.location}"></span>
+                    </span>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+
+
+    <!-- ==========================================
+         FOOTER
+    ========================================== -->
+
+    <footer class="site-footer">
+
+
+        <div class="footer-container">
+
+
+            <div class="footer-column footer-about">
+
+                <h3>
+                    CRAFTORA
+                </h3>
+
+                <p>
+                    Craftora is an integrated web application aimed at
+                    preserving traditional handicrafts, promoting artisan
+                    growth, and providing learning & commercial opportunities
+                    through technology.
+                </p>
+
+            </div>
+
+
+            <div class="footer-column">
+
+                <h3>
+                    QUICK LINKS
+                </h3>
+
+                <ul>
+
+                    <li>
+                        <a href="/">
+                            Home
+                        </a>
+                    </li>
+
+                    <li>
+                        <a href="/about-us">
+                            About Us
+                        </a>
+                    </li>
+
+                    <li>
+                        <a href="#">
+                            Registered Artisans
+                        </a>
+                    </li>
+
+                    <li>
+                        <a href="#">
+                            Ratings & Reviews
+                        </a>
+                    </li>
+
+                </ul>
+
+            </div>
+
+
+            <div class="footer-column">
+
+                <h3>
+                    EVENT CATEGORIES
+                </h3>
+
+                <ul>
+
+                    <li>
+                        <a href="/workshops">
+                            Workshops
+                        </a>
+                    </li>
+
+                    <li>
+                        <a href="/exhibitions">
+                            Exhibitions
+                        </a>
+                    </li>
+
+                    <li>
+                        <a href="/competitions">
+                            Competitions
+                        </a>
+                    </li>
+
+                    <li>
+                        <a href="#">
+                            Google Maps Integration
+                        </a>
+                    </li>
+
+                </ul>
+
+            </div>
+
+
+            <div class="footer-column footer-contact">
+
+                <h3>
+                    CONTACT US
+                </h3>
+
+
+                <div class="footer-contact-item">
+
+                    <span class="footer-contact-icon">
+                        📍
+                    </span>
+
+                    <span>
+                        Sri Lanka
+                    </span>
+
+                </div>
+
+
+                <div class="footer-contact-item">
+
+                    <span class="footer-contact-icon">
+                        📞
+                    </span>
+
+                    <span>
+                        +94 77 123 4567
+                    </span>
+
+                </div>
+
+
+                <div class="footer-contact-item">
+
+                    <span class="footer-contact-icon">
+                        ✉
+                    </span>
+
+                    <span>
+                        info@craftora.lk
+                    </span>
+
+                </div>
+
+
+                <div class="footer-contact-item">
+
+                    <span class="footer-contact-icon">
+                        🕐
+                    </span>
+
+                    <span>
+                        Mon - Fri: 9.00 AM - 5.00 PM
+                    </span>
+
+                </div>
+
+            </div>
+
+
+            <div class="footer-column community-column">
+
+                <h3>
+                    CRAFTORA<br>
+                    COMMUNITY
+                </h3>
+
+
+                <p class="community-text">
+
+                    Be part of the growing handicraft community
+                    and discover new opportunities.
+
+                </p>
+
+
+                <ul>
+
+                    <li>
+                        <a href="#">
+                            Become an Artisan
+                        </a>
+                    </li>
+
+                    <li>
+                        <a href="#">
+                            Join a Workshop
+                        </a>
+                    </li>
+
+                    <li>
+                        <a href="#">
+                            Explore Marketplace
+                        </a>
+                    </li>
+
+                    <li>
+                        <a href="#">
+                            Share Your Craft
+                        </a>
+                    </li>
+
+                </ul>
+
+            </div>
+
+
+        </div>
+
+
+        <div class="footer-bottom">
+
+            <p>
+                © 2026 Craftora Project. All Rights Reserved.
+            </p>
+
+        </div>
+
+
+    </footer>
+
+
+</div>
+
+
+<!-- ==========================================
+     SEARCH JAVASCRIPT
+========================================== -->
+
+<script>
+
+    function searchExhibitions() {
+
+        const input =
+            document.getElementById("exhibitionSearch");
+
+        const searchValue =
+            input.value.trim().toLowerCase();
+
+        const cards =
+            document.querySelectorAll(".exhibition-card");
+
+        const message =
+            document.getElementById("searchMessage");
+
+        let visibleCount = 0;
+
+
+        cards.forEach(function(card) {
+
+            const exhibitionData =
+                card.getAttribute("data-exhibition") || "";
+
+
+            if (
+                searchValue === "" ||
+                exhibitionData.toLowerCase().includes(searchValue)
+            ) {
+
+                card.style.display = "";
+
+                visibleCount++;
+
+            } else {
+
+                card.style.display = "none";
+
+            }
+
+        });
+
+
+        if (
+            visibleCount === 0 &&
+            searchValue !== ""
+        ) {
+
+            message.style.display = "block";
+
+        } else {
+
+            message.style.display = "none";
+
+        }
+
+    }
+
+
+    document
+        .getElementById("exhibitionSearch")
+        .addEventListener("keydown", function(event) {
+
+            if (event.key === "Enter") {
+
+                searchExhibitions();
+
+            }
+
+        });
+
+</script>
+
+
+</body>
+
+</html>

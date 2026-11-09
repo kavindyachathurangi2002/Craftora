@@ -1,0 +1,462 @@
+<!DOCTYPE html>
+<html lang="en"
+      xmlns:th="http://www.thymeleaf.org">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
+
+    <title>Registration Successful - Craftora</title>
+
+    <style>
+
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            min-height: 100vh;
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            background: #f5f7f6;
+
+            font-family: Arial, sans-serif;
+
+            color: #333;
+        }
+
+
+        .success-box {
+
+            width: 620px;
+            max-width: 90%;
+
+            background: #ffffff;
+
+            padding: 50px 45px;
+
+            text-align: center;
+
+            border-radius: 18px;
+
+            box-shadow:
+                    0 10px 35px
+                    rgba(0, 0, 0, 0.12);
+        }
+
+
+        /* =========================
+           SUCCESS ICON
+        ========================= */
+
+        .success-icon {
+
+            width: 78px;
+            height: 78px;
+
+            margin: 0 auto 22px;
+
+            border-radius: 50%;
+
+            background: #0b7a50;
+
+            color: white;
+
+            display: flex;
+
+            align-items: center;
+            justify-content: center;
+
+            font-size: 43px;
+
+            font-weight: bold;
+        }
+
+
+        /* =========================
+           TITLE
+        ========================= */
+
+        h1 {
+
+            margin: 0 0 18px;
+
+            color: #0b6b45;
+
+            font-size: 34px;
+
+            font-weight: 700;
+        }
+
+
+        /* =========================
+           EVENT TITLE
+        ========================= */
+
+        .event-title {
+
+            margin: 0 auto 22px;
+
+            max-width: 520px;
+
+            color: #222;
+
+            font-size: 18px;
+
+            font-weight: 700;
+
+            line-height: 1.5;
+        }
+
+
+        /* =========================
+           MAIN MESSAGE
+        ========================= */
+
+        .message {
+
+            margin: 0 auto 22px;
+
+            max-width: 500px;
+
+            color: #666;
+
+            font-size: 16px;
+
+            line-height: 1.7;
+        }
+
+
+        /* =========================
+           EMAIL MESSAGE
+        ========================= */
+
+        .email-text {
+
+            margin: 20px 0 8px;
+
+            color: #666;
+
+            font-size: 15px;
+
+            line-height: 1.6;
+        }
+
+
+        .email-address {
+
+            margin: 0 0 20px;
+
+            color: #222;
+
+            font-size: 16px;
+
+            font-weight: 700;
+
+            word-break: break-word;
+        }
+
+
+        .receipt-message {
+
+            margin: 0 auto 30px;
+
+            color: #666;
+
+            font-size: 14px;
+
+            line-height: 1.6;
+        }
+
+
+        /* =========================
+           COUNTDOWN
+        ========================= */
+
+        .redirect-box {
+
+            margin-top: 30px;
+
+            padding: 18px 20px;
+
+            background: #f1f7f3;
+
+            border: 1px solid #d9ebe1;
+
+            border-radius: 10px;
+        }
+
+
+        .redirect-text {
+
+            margin: 0;
+
+            color: #174d3a;
+
+            font-size: 15px;
+
+            line-height: 1.6;
+        }
+
+
+        #countdown {
+
+            display: inline-flex;
+
+            align-items: center;
+            justify-content: center;
+
+            width: 30px;
+            height: 30px;
+
+            margin: 0 4px;
+
+            border-radius: 50%;
+
+            background: #0b6b45;
+
+            color: #ffffff;
+
+            font-weight: 700;
+        }
+
+
+        /* =========================
+           MOBILE
+        ========================= */
+
+        @media (max-width: 600px) {
+
+            .success-box {
+
+                padding: 40px 25px;
+
+            }
+
+
+            .success-icon {
+
+                width: 68px;
+                height: 68px;
+
+                font-size: 37px;
+
+            }
+
+
+            h1 {
+
+                font-size: 28px;
+
+            }
+
+
+            .event-title {
+
+                font-size: 16px;
+
+            }
+
+
+            .message {
+
+                font-size: 15px;
+
+            }
+
+        }
+
+    </style>
+
+</head>
+
+
+<body>
+
+
+<div class="success-box">
+
+
+    <!-- =========================
+         SUCCESS ICON
+    ========================= -->
+
+    <div class="success-icon">
+
+        ✓
+
+    </div>
+
+
+    <!-- =========================
+         SUCCESS TITLE
+    ========================= -->
+
+    <h1>
+
+        Registration Successful!
+
+    </h1>
+
+
+    <!-- =========================
+         EVENT TITLE
+    ========================= -->
+
+    <p class="event-title"
+       th:text="${event.eventTitle}">
+
+        Event Title
+
+    </p>
+
+
+    <!-- =========================
+         PAYMENT MESSAGE
+    ========================= -->
+
+    <p class="message">
+
+        Your payment has been completed successfully
+        and your registration for this event has
+        been confirmed.
+
+    </p>
+
+
+    <!-- =========================
+         EMAIL MESSAGE
+    ========================= -->
+
+    <p class="email-text">
+
+        Your payment receipt has been sent to:
+
+    </p>
+
+
+    <p class="email-address"
+       th:text="${email}">
+
+        your-email@example.com
+
+    </p>
+
+
+    <p class="receipt-message">
+
+        Please check your email for the PDF payment receipt.
+
+    </p>
+
+
+    <!-- =========================
+         REDIRECT COUNTDOWN
+    ========================= -->
+
+    <div class="redirect-box">
+
+        <p class="redirect-text">
+
+            Redirecting to your dashboard in
+
+            <span id="countdown">
+                3
+            </span>
+
+            seconds...
+
+        </p>
+
+    </div>
+
+
+</div>
+
+
+<!-- =========================
+     DASHBOARD REDIRECT
+========================= -->
+
+<script th:inline="javascript">
+
+    let seconds = 3;
+
+
+    const countdownElement =
+            document.getElementById("countdown");
+
+
+    /*
+     * Registration role comes from:
+     *
+     * EventPaymentController
+     *
+     * CUSTOMER
+     * or
+     * ARTISAN
+     */
+
+    const selectedRole =
+            /*[[${selectedRole}]]*/ "CUSTOMER";
+
+
+    /*
+     * Decide dashboard according to role
+     */
+
+    const dashboardUrl =
+
+            selectedRole &&
+            selectedRole.toUpperCase() === "ARTISAN"
+
+                    ? "/artisan-dashboard"
+
+                    : "/customer-dashboard";
+
+
+    /*
+     * Countdown
+     */
+
+    const countdownTimer =
+
+            setInterval(function () {
+
+
+                seconds--;
+
+
+                countdownElement.textContent =
+                        seconds;
+
+
+                if (seconds <= 0) {
+
+
+                    clearInterval(
+                            countdownTimer
+                    );
+
+
+                    window.location.href =
+                            dashboardUrl;
+
+                }
+
+
+            }, 1000);
+
+</script>
+
+
+</body>
+
+</html>

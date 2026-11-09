@@ -1,0 +1,2588 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
+
+    <title>Artisan Dashboard | Craftora</title>
+
+    <!-- Bootstrap Icons -->
+    <link rel="stylesheet"
+          href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+
+    <style>
+
+        /* =====================================================
+           GLOBAL
+        ===================================================== */
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+
+            --green-dark: #103d2b;
+            --green-main: #174d37;
+            --green-soft: #edf5ef;
+
+            --cream: #f8f4ec;
+            --cream-dark: #eee5d7;
+
+            --gold: #d6b36a;
+            --gold-dark: #a98239;
+            --gold-soft: #f8efd9;
+
+            --white: #ffffff;
+
+            --text-dark: #183c2d;
+            --text-medium: #65736b;
+            --text-light: #929b96;
+
+            --border: #e7dfd2;
+
+            --success: #2d713c;
+            --success-bg: #e5f3e8;
+
+            --warning: #997217;
+            --warning-bg: #fff3d4;
+
+            --danger: #a33a3a;
+            --danger-bg: #fdeaea;
+        }
+
+        body {
+
+            font-family:
+                "Segoe UI",
+                Arial,
+                sans-serif;
+
+            background: #f8f6f1;
+
+            color: var(--text-dark);
+
+            min-height: 100vh;
+        }
+
+        a {
+            text-decoration: none;
+        }
+
+        /* =====================================================
+           SIDEBAR
+        ===================================================== */
+
+        .sidebar {
+
+            position: fixed;
+
+            top: 0;
+            left: 0;
+
+            width: 250px;
+            height: 100vh;
+
+            background: var(--green-dark);
+
+            color: white;
+
+            display: flex;
+            flex-direction: column;
+
+            z-index: 1000;
+
+            box-shadow:
+                7px 0 25px rgba(0, 0, 0, 0.08);
+        }
+
+        /* =====================================================
+           LOGO
+        ===================================================== */
+
+        .logo-area {
+
+            height: 82px;
+
+            display: flex;
+
+            align-items: center;
+
+            justify-content: center;
+
+            padding: 9px 20px;
+
+            border-bottom:
+                1px solid rgba(255,255,255,0.08);
+
+            position: relative;
+        }
+
+        .logo-area a {
+
+            width: 188px;
+
+            height: 57px;
+
+            display: flex;
+
+            align-items: center;
+
+            justify-content: center;
+
+            background: #ffffff;
+
+            border-radius: 15px;
+
+            position: relative;
+
+            overflow: visible;
+        }
+
+        .logo-area img {
+
+            width: 176px;
+
+            height: 54px;
+
+            object-fit: contain;
+
+            background: transparent;
+
+            border: none;
+
+            outline: none;
+
+            box-shadow: none;
+
+            border-radius: 0;
+        }
+
+      /*  .logo-area a::after {
+
+            content: "";
+
+            position: absolute;
+
+            bottom: -8px;
+
+            left: 50%;
+
+            width: 7px;
+
+            height: 7px;
+
+            background: var(--gold);
+
+            transform:
+                translateX(-50%)
+                rotate(45deg);
+        }
+
+        /* =====================================================
+           MENU
+        ===================================================== */
+
+        .menu {
+
+            flex: 1;
+
+            padding:
+                22px 14px;
+
+            overflow-y: auto;
+        }
+
+        .menu::-webkit-scrollbar {
+            width: 4px;
+        }
+
+        .menu::-webkit-scrollbar-thumb {
+
+            background:
+                rgba(255,255,255,0.15);
+
+            border-radius: 10px;
+        }
+
+        .menu-label {
+
+            font-size: 10px;
+
+            text-transform: uppercase;
+
+            letter-spacing: 1.6px;
+
+            color:
+                rgba(255,255,255,0.38);
+
+            margin:
+                8px 13px 11px;
+        }
+
+        .menu-link {
+
+            display: flex;
+
+            align-items: center;
+
+            gap: 13px;
+
+            color:
+                rgba(255,255,255,0.72);
+
+            padding:
+                12px 14px;
+
+            margin-bottom: 4px;
+
+            border-radius: 10px;
+
+            font-size: 13.5px;
+
+            font-weight: 500;
+
+            transition:
+                all 0.25s ease;
+        }
+
+        .menu-link i {
+
+            width: 22px;
+
+            font-size: 17px;
+
+            text-align: center;
+        }
+
+        .menu-link:hover {
+
+            background:
+                rgba(255,255,255,0.08);
+
+            color: white;
+
+            transform:
+                translateX(3px);
+        }
+
+        .menu-link.active {
+
+            background: var(--gold);
+
+            color: var(--green-dark);
+
+            font-weight: 700;
+
+            box-shadow:
+                0 7px 18px
+                rgba(0,0,0,0.12);
+        }
+
+        /* =====================================================
+           SWITCH ACCOUNT
+        ===================================================== */
+
+        .switch-link {
+
+            color: var(--gold) !important;
+
+            border:
+                1px solid
+                rgba(214,179,106,0.25);
+        }
+
+        .switch-link:hover {
+
+            background:
+                rgba(214,179,106,0.12)
+                !important;
+
+            color: #f0d58d !important;
+
+            border-color:
+                rgba(214,179,106,0.40);
+        }
+
+        /* =====================================================
+           LOGOUT
+        ===================================================== */
+
+        .logout-area {
+
+            padding:
+                12px 14px 20px;
+
+            border-top:
+                1px solid
+                rgba(255,255,255,0.08);
+        }
+
+        .logout {
+
+            color: #ffdede !important;
+        }
+
+        .logout:hover {
+
+            background:
+                rgba(255,80,80,0.10)
+                !important;
+
+            color: #ffdede !important;
+        }
+
+        /* =====================================================
+           MAIN
+        ===================================================== */
+
+        .main {
+
+            margin-left: 250px;
+
+            min-height: 100vh;
+        }
+
+        /* =====================================================
+           TOP HEADER
+        ===================================================== */
+
+        .top-header {
+
+            height: 68px;
+
+            background:
+                rgba(255,255,255,0.97);
+
+            border-bottom:
+                1px solid var(--border);
+
+            display: flex;
+
+            align-items: center;
+
+            justify-content: flex-end;
+
+            gap: 18px;
+
+            padding:
+                0 32px;
+
+            position: sticky;
+
+            top: 0;
+
+            z-index: 100;
+        }
+
+        /* =====================================================
+           NOTIFICATION
+        ===================================================== */
+
+        .notification {
+
+            width: 40px;
+
+            height: 40px;
+
+            border-radius: 11px;
+
+            background:
+                var(--cream);
+
+            display: flex;
+
+            align-items: center;
+
+            justify-content: center;
+
+            color:
+                var(--green-dark);
+
+            font-size: 17px;
+
+            cursor: pointer;
+
+            position: relative;
+
+            transition:
+                all 0.2s ease;
+        }
+
+        .notification:hover {
+
+            background:
+                var(--cream-dark);
+
+            transform:
+                translateY(-1px);
+        }
+
+        .notification-dot {
+
+            position: absolute;
+
+            top: 7px;
+
+            right: 7px;
+
+            width: 7px;
+
+            height: 7px;
+
+            border-radius: 50%;
+
+            background: var(--gold);
+
+            border:
+                2px solid white;
+        }
+
+        /* =====================================================
+           ARTISAN USER
+        ===================================================== */
+
+        .artisan-user {
+
+            display: flex;
+
+            align-items: center;
+
+            gap: 10px;
+        }
+
+        .artisan-profile-link {
+
+            text-decoration: none;
+
+            color: inherit;
+
+            cursor: pointer;
+
+            display: flex;
+
+            align-items: center;
+
+            gap: 10px;
+        }
+
+        .artisan-profile-link:hover {
+
+            text-decoration: none;
+
+            color: inherit;
+        }
+
+        .artisan-avatar {
+
+            width: 40px;
+
+            height: 40px;
+
+            border-radius: 50%;
+
+            background:
+                var(--gold);
+
+            color:
+                var(--green-dark);
+
+            display: flex;
+
+            align-items: center;
+
+            justify-content: center;
+
+            font-size: 14px;
+
+            font-weight: 800;
+        }
+
+        .artisan-avatar img {
+
+            width: 100%;
+
+            height: 100%;
+
+            border-radius: 50%;
+
+            object-fit: cover;
+
+            display: block;
+        }
+
+        .artisan-details {
+
+            display: flex;
+
+            flex-direction: column;
+        }
+
+        .artisan-name {
+
+            font-size: 13px;
+
+            font-weight: 700;
+
+            color:
+                var(--text-dark);
+        }
+
+        .artisan-role {
+
+            font-size: 10px;
+
+            color:
+                var(--text-light);
+
+            margin-top: 2px;
+        }
+
+        /* =====================================================
+           SWITCH ACCOUNT BUTTON
+        ===================================================== */
+
+        .switch-account-btn {
+
+            display: inline-flex;
+
+            align-items: center;
+
+            justify-content: center;
+
+            gap: 7px;
+
+            padding:
+                8px 13px;
+
+            background:
+                var(--cream);
+
+            color:
+                var(--green-dark);
+
+            border:
+                1px solid #e4d9c7;
+
+            border-radius: 9px;
+
+            font-size: 11.5px;
+
+            font-weight: 700;
+
+            transition:
+                all 0.25s ease;
+        }
+
+        .switch-account-btn i {
+
+            font-size: 14px;
+        }
+
+        .switch-account-btn:hover {
+
+            background:
+                var(--gold);
+
+            color:
+                var(--green-dark);
+
+            border-color:
+                var(--gold);
+
+            transform:
+                translateY(-1px);
+
+            box-shadow:
+                0 5px 15px
+                rgba(214,179,106,0.20);
+        }
+
+        /* =====================================================
+           CONTENT
+        ===================================================== */
+
+        .content {
+
+            padding:
+                27px 34px 40px;
+        }
+
+        /* =====================================================
+           WELCOME
+        ===================================================== */
+
+        .welcome {
+
+            display: flex;
+
+            justify-content:
+                space-between;
+
+            align-items:
+                flex-end;
+
+            margin-bottom:
+                23px;
+        }
+
+        .welcome h1 {
+
+            font-size: 28px;
+
+            font-weight: 750;
+
+            color:
+                var(--green-dark);
+
+            margin-bottom: 5px;
+
+            letter-spacing:
+                -0.5px;
+        }
+
+        .welcome p {
+
+            color:
+                var(--text-medium);
+
+            font-size: 13px;
+        }
+
+        .welcome-date {
+
+            display: flex;
+
+            align-items: center;
+
+            gap: 8px;
+
+            color:
+                var(--text-light);
+
+            font-size: 11px;
+
+            background:
+                white;
+
+            border:
+                1px solid var(--border);
+
+            padding:
+                8px 12px;
+
+            border-radius: 9px;
+        }
+
+        .welcome-date i {
+
+            color:
+                var(--gold-dark);
+        }
+
+        /* =====================================================
+           STATISTICS
+        ===================================================== */
+
+        .stats {
+
+            display: grid;
+
+            grid-template-columns:
+                repeat(4, 1fr);
+
+            gap: 18px;
+
+            margin-bottom:
+                22px;
+        }
+
+        .stat-card {
+
+            background:
+                #ffffff;
+
+            border:
+                1px solid var(--border);
+
+            border-radius:
+                15px;
+
+            padding:
+                21px;
+
+            position: relative;
+
+            overflow: hidden;
+
+            box-shadow:
+                0 5px 18px
+                rgba(34,48,39,0.045);
+
+            transition:
+                all 0.25s ease;
+        }
+
+        .stat-card:hover {
+
+            transform:
+                translateY(-4px);
+
+            box-shadow:
+                0 12px 28px
+                rgba(34,48,39,0.09);
+
+            border-color:
+                #ddd0bd;
+        }
+
+        .stat-top {
+
+            display: flex;
+
+            align-items: center;
+
+            justify-content:
+                space-between;
+
+            margin-bottom:
+                17px;
+        }
+
+        .stat-title {
+
+            font-size: 12px;
+
+            color:
+                var(--text-medium);
+
+            font-weight: 650;
+
+            text-transform:
+                uppercase;
+
+            letter-spacing:
+                0.5px;
+        }
+
+        .stat-icon {
+
+            width: 43px;
+
+            height: 43px;
+
+            border-radius:
+                12px;
+
+            background:
+                var(--green-soft);
+
+            color:
+                var(--green-main);
+
+            display: flex;
+
+            align-items: center;
+
+            justify-content: center;
+
+            font-size: 18px;
+        }
+
+        .stat-card:nth-child(2)
+        .stat-icon {
+
+            background:
+                var(--gold-soft);
+
+            color:
+                var(--gold-dark);
+        }
+
+        .stat-card:nth-child(3)
+        .stat-icon {
+
+            background:
+                #f1eee6;
+
+            color:
+                var(--green-dark);
+        }
+
+        .stat-card:nth-child(4)
+        .stat-icon {
+
+            background:
+                var(--success-bg);
+
+            color:
+                var(--success);
+        }
+
+        .stat-value {
+
+            font-size: 28px;
+
+            font-weight: 800;
+
+            color:
+                var(--green-dark);
+        }
+
+        .stat-description {
+
+            font-size: 11px;
+
+            color:
+                var(--text-light);
+
+            margin-top: 5px;
+        }
+
+        /* =====================================================
+           LOWER GRID
+        ===================================================== */
+
+        .dashboard-grid {
+
+            display: grid;
+
+            grid-template-columns:
+                minmax(0, 1fr)
+                285px;
+
+            gap: 20px;
+
+            align-items:
+                start;
+        }
+
+        /* =====================================================
+           GENERAL CARD
+        ===================================================== */
+
+        .card {
+
+            background:
+                #ffffff;
+
+            border:
+                1px solid var(--border);
+
+            border-radius:
+                15px;
+
+            box-shadow:
+                0 5px 18px
+                rgba(34,48,39,0.045);
+
+            overflow:
+                hidden;
+        }
+
+        .card-header {
+
+            padding:
+                19px 22px;
+
+            display: flex;
+
+            justify-content:
+                space-between;
+
+            align-items:
+                center;
+
+            border-bottom:
+                1px solid #eee8df;
+        }
+
+        .card-title-area {
+
+            display: flex;
+
+            align-items: center;
+
+            gap: 10px;
+        }
+
+        .card-title-icon {
+
+            width: 34px;
+
+            height: 34px;
+
+            border-radius:
+                9px;
+
+            background:
+                var(--green-soft);
+
+            color:
+                var(--green-main);
+
+            display: flex;
+
+            align-items: center;
+
+            justify-content: center;
+
+            font-size: 15px;
+        }
+
+        .card-header h2 {
+
+            font-size: 15px;
+
+            color:
+                var(--green-dark);
+
+            font-weight:
+                750;
+        }
+
+        .card-header p {
+
+            font-size: 10px;
+
+            color:
+                var(--text-light);
+
+            margin-top: 2px;
+        }
+
+        .view-all {
+
+            display: inline-flex;
+
+            align-items: center;
+
+            gap: 5px;
+
+            color:
+                var(--gold-dark);
+
+            font-size: 11px;
+
+            font-weight: 700;
+
+            transition:
+                0.2s;
+        }
+
+        .view-all:hover {
+
+            color:
+                var(--green-dark);
+
+            gap: 8px;
+        }
+
+        /* =====================================================
+           QUICK ACTIONS
+        ===================================================== */
+
+        .quick-actions {
+
+            display: grid;
+
+            gap: 8px;
+
+            padding: 15px;
+        }
+
+        .quick-action {
+
+            display: flex;
+
+            align-items: center;
+
+            gap: 11px;
+
+            padding: 11px;
+
+            border:
+                1px solid #eee8df;
+
+            border-radius:
+                10px;
+
+            color:
+                var(--text-dark);
+
+            background:
+                #fff;
+
+            transition:
+                all 0.2s ease;
+        }
+
+        .quick-action:hover {
+
+            border-color:
+                #dfd0ba;
+
+            background:
+                #fcfaf6;
+
+            transform:
+                translateX(3px);
+        }
+
+        .quick-action-icon {
+
+            width: 34px;
+
+            height: 34px;
+
+            border-radius:
+                9px;
+
+            background:
+                var(--green-soft);
+
+            color:
+                var(--green-main);
+
+            display: flex;
+
+            align-items: center;
+
+            justify-content: center;
+
+            font-size:
+                14px;
+
+            flex-shrink: 0;
+        }
+
+        .quick-action:nth-child(2)
+        .quick-action-icon {
+
+            background:
+                var(--gold-soft);
+
+            color:
+                var(--gold-dark);
+        }
+
+        .quick-action:nth-child(3)
+        .quick-action-icon {
+
+            background:
+                #f1eee6;
+
+            color:
+                var(--green-dark);
+        }
+
+        .quick-action:nth-child(4)
+        .quick-action-icon {
+
+            background:
+                var(--success-bg);
+
+            color:
+                var(--success);
+        }
+
+        .quick-action-text {
+
+            display: flex;
+
+            flex-direction: column;
+
+            min-width: 0;
+        }
+
+        .quick-action-title {
+
+            font-size:
+                11px;
+
+            font-weight:
+                750;
+
+            color:
+                var(--green-dark);
+        }
+
+        .quick-action-description {
+
+            font-size:
+                9px;
+
+            color:
+                var(--text-light);
+
+            margin-top:
+                2px;
+        }
+
+        .quick-action-arrow {
+
+            margin-left:
+                auto;
+
+            color:
+                #b4b9b5;
+
+            font-size:
+                13px;
+        }
+
+        /* =====================================================
+           PROFILE CARD
+        ===================================================== */
+
+        .profile-preview {
+
+            padding: 22px;
+
+            text-align: center;
+        }
+
+        .profile-avatar {
+
+            width: 80px;
+
+            height: 80px;
+
+            border-radius: 50%;
+
+            background:
+                var(--green-soft);
+
+            color:
+                var(--green-main);
+
+            display: flex;
+
+            align-items: center;
+
+            justify-content: center;
+
+            margin:
+                0 auto 12px;
+
+            font-size: 28px;
+
+            font-weight: 800;
+
+            border:
+                3px solid var(--gold);
+
+            overflow: hidden;
+        }
+
+        .profile-avatar img {
+
+            width: 100%;
+
+            height: 100%;
+
+            border-radius: 50%;
+
+            object-fit: cover;
+
+            display: block;
+        }
+
+        .profile-preview h3 {
+
+            font-size: 15px;
+
+            color:
+                var(--green-dark);
+
+            margin-bottom: 4px;
+        }
+
+        .profile-preview p {
+
+            font-size: 10px;
+
+            color:
+                var(--text-light);
+
+            line-height: 1.5;
+
+            margin-bottom: 15px;
+        }
+
+        .profile-button {
+
+            display: inline-flex;
+
+            align-items: center;
+
+            justify-content: center;
+
+            gap: 6px;
+
+            padding:
+                8px 15px;
+
+            border-radius: 9px;
+
+            background:
+                var(--green-main);
+
+            color: white;
+
+            font-size: 10px;
+
+            font-weight: 700;
+
+            transition: 0.2s;
+        }
+
+        .profile-button:hover {
+
+            background:
+                var(--green-dark);
+
+            color: white;
+
+            transform:
+                translateY(-1px);
+        }
+
+        /* =====================================================
+           FOOTER
+        ===================================================== */
+
+        .footer {
+
+            text-align:
+                center;
+
+            padding:
+                20px 0 5px;
+
+            font-size:
+                9px;
+
+            color:
+                #a1a7a3;
+        }
+
+        /* =====================================================
+           RESPONSIVE - 1100px
+        ===================================================== */
+
+        @media (max-width: 1100px) {
+
+            .sidebar {
+
+                width:
+                    225px;
+            }
+
+            .main {
+
+                margin-left:
+                    225px;
+            }
+
+            .stats {
+
+                grid-template-columns:
+                    repeat(2, 1fr);
+            }
+
+            .dashboard-grid {
+
+                grid-template-columns:
+                    1fr;
+            }
+        }
+
+        /* =====================================================
+           RESPONSIVE - 900px
+        ===================================================== */
+
+        @media (max-width: 900px) {
+
+            .welcome {
+
+                align-items:
+                    flex-start;
+
+                flex-direction:
+                    column;
+
+                gap:
+                    12px;
+            }
+
+            .switch-account-btn span {
+
+                display:
+                    none;
+            }
+
+            .switch-account-btn {
+
+                width:
+                    38px;
+
+                height:
+                    38px;
+
+                padding:
+                    0;
+
+                justify-content:
+                    center;
+            }
+
+            .artisan-details {
+
+                display:
+                    none;
+            }
+        }
+
+        /* =====================================================
+           RESPONSIVE - 700px
+        ===================================================== */
+
+        @media (max-width: 700px) {
+
+            .sidebar {
+
+                position:
+                    relative;
+
+                width:
+                    100%;
+
+                height:
+                    auto;
+
+                min-height:
+                    auto;
+            }
+
+            .logo-area {
+
+                height:
+                    78px;
+            }
+
+            .menu {
+
+                display:
+                    flex;
+
+                flex-wrap:
+                    wrap;
+
+                padding:
+                    10px;
+            }
+
+            .menu-label {
+
+                display:
+                    none;
+            }
+
+            .menu-link {
+
+                width:
+                    auto;
+
+                margin:
+                    2px;
+
+                padding:
+                    9px 11px;
+            }
+
+            .logout-area {
+
+                display:
+                    flex;
+
+                gap:
+                    5px;
+
+                padding:
+                    8px 10px 12px;
+            }
+
+            .logout-area .menu-link {
+
+                flex:
+                    1;
+            }
+
+            .main {
+
+                margin-left:
+                    0;
+            }
+
+            .top-header {
+
+                height:
+                    64px;
+
+                padding:
+                    0 16px;
+            }
+
+            .content {
+
+                padding:
+                    22px 16px 30px;
+            }
+
+            .welcome h1 {
+
+                font-size:
+                    23px;
+            }
+
+            .welcome-date {
+
+                display:
+                    none;
+            }
+
+            .stats {
+
+                grid-template-columns:
+                    1fr;
+            }
+        }
+
+        /* =====================================================
+           RESPONSIVE - 480px
+        ===================================================== */
+
+        @media (max-width: 480px) {
+
+            .logo-area img {
+
+                width:
+                    155px;
+
+                height:
+                    53px;
+            }
+
+            .logo-area a {
+
+                width:
+                    170px;
+
+                height:
+                    55px;
+            }
+
+            .notification {
+
+                width:
+                    37px;
+
+                height:
+                    37px;
+            }
+
+            .artisan-avatar {
+
+                width:
+                    37px;
+
+                height:
+                    37px;
+            }
+
+            .switch-account-btn {
+
+                width:
+                    37px;
+
+                height:
+                    37px;
+            }
+
+            .stat-card {
+
+                padding:
+                    18px;
+            }
+
+            .stat-value {
+
+                font-size:
+                    25px;
+            }
+        }
+
+        /* =====================================================
+   EVENTS MENU
+===================================================== */
+
+.events-menu {
+    width: 100%;
+}
+
+
+/* Events main arrow */
+
+.events-arrow {
+    margin-left: auto;
+    font-size: 12px;
+    transition: transform 0.25s ease;
+}
+
+
+/* Events submenu */
+
+.events-submenu {
+    display: none;
+
+    margin-top: 2px;
+    margin-bottom: 6px;
+
+    padding-left: 18px;
+}
+
+
+/* Submenu links */
+
+.events-submenu-link {
+
+    display: flex;
+
+    align-items: center;
+
+    gap: 10px;
+
+    color: rgba(255,255,255,0.60);
+
+    padding: 9px 12px;
+
+    margin-bottom: 2px;
+
+    border-radius: 8px;
+
+    font-size: 13px;
+
+    transition:
+        background 0.2s ease,
+        color 0.2s ease;
+}
+
+
+.events-submenu-link i {
+
+    font-size: 13px;
+
+    width: 17px;
+}
+
+
+/* Hover */
+
+.events-submenu-link:hover {
+
+    background:
+        rgba(255,255,255,0.08);
+
+    color: #ffffff;
+}
+
+
+/* Active submenu */
+
+.events-submenu-link.active {
+
+    background:
+        rgba(214,179,106,0.16);
+
+    color: var(--gold);
+}
+
+
+/* Rotate arrow when open */
+
+.events-menu.open .events-arrow {
+
+    transform: rotate(180deg);
+}
+
+    </style>
+
+</head>
+
+<body>
+
+<!-- =====================================================
+     SIDEBAR
+===================================================== -->
+
+<aside class="sidebar">
+
+    <!-- LOGO -->
+
+    <div class="logo-area">
+
+        <a href="/">
+
+            <img src="/images/craftora-logo.png"
+                 alt="Craftora Logo">
+
+        </a>
+
+    </div>
+
+    <!-- MENU -->
+
+    <div class="menu">
+
+        <div class="menu-label">
+            Main Menu
+        </div>
+
+        <!-- Dashboard -->
+
+        <a href="/artisan-dashboard"
+           class="menu-link active">
+
+            <i class="bi bi-grid-1x2-fill"></i>
+
+            <span>
+                Dashboard
+            </span>
+
+        </a>
+
+        <!-- Profile -->
+
+        <a href="/artisan/profile"
+           class="menu-link">
+
+            <i class="bi bi-person-circle"></i>
+
+            <span>
+                Profile
+            </span>
+
+        </a>
+
+        <!-- Marketplace -->
+
+        <a href="/marketplace"
+           class="menu-link">
+
+            <i class="bi bi-shop"></i>
+
+            <span>
+                Marketplace
+            </span>
+
+        </a>
+
+        <!-- My Cart -->
+
+        <a href="/cart"
+           class="menu-link">
+
+            <i class="bi bi-cart3"></i>
+
+            <span>
+                My Cart
+            </span>
+
+        </a>
+
+        <!-- Orders -->
+
+        <a href="/artisan/orders"
+           class="menu-link">
+
+            <i class="bi bi-bag-check-fill"></i>
+
+            <span>
+                Orders
+            </span>
+
+        </a>
+
+        <!-- My Orders -->
+
+        <a href="/artisan/my-orders"
+           class="menu-link">
+
+            <i class="bi bi-bag-heart-fill"></i>
+
+            <span>
+                My Orders
+            </span>
+
+        </a>
+
+        <!-- Payments -->
+
+        <a href="/artisan/payments"
+           class="menu-link">
+
+            <i class="bi bi-credit-card-fill"></i>
+
+            <span>
+                Payments
+            </span>
+
+        </a>
+
+   <!-- =====================================================
+     EVENTS
+===================================================== -->
+
+<div class="events-menu">
+
+    <!-- EVENTS MAIN BUTTON -->
+
+    <a href="javascript:void(0);"
+       class="menu-link"
+       onclick="toggleEventsMenu()">
+
+        <i class="bi bi-calendar-event-fill"></i>
+
+        <span>
+            Events
+        </span>
+
+        <i class="bi bi-chevron-down events-arrow"></i>
+
+    </a>
+
+
+    <!-- EVENTS SUB MENU -->
+
+    <div id="eventsSubMenu"
+         class="events-submenu">
+
+
+        <!-- Request an Event -->
+
+        <a href="/artisan/events/request"
+           class="events-submenu-link">
+
+            <i class="bi bi-plus-circle"></i>
+
+            <span>
+                Request an Event
+            </span>
+
+        </a>
+
+
+        <!-- Event Discussions -->
+
+        <a href="/artisan/events/discussions"
+           class="events-submenu-link">
+
+            <i class="bi bi-chat-dots"></i>
+
+            <span>
+                Event Discussions
+            </span>
+
+        </a>
+
+
+        <!-- Upcoming Events -->
+
+        <a href="/artisan/events/upcoming"
+           class="events-submenu-link">
+
+            <i class="bi bi-calendar-event"></i>
+
+            <span>
+                Upcoming Events
+            </span>
+
+        </a>
+
+
+        <!-- My Event Registrations -->
+
+        <a href="/artisan/events/registrations"
+           class="events-submenu-link">
+
+            <i class="bi bi-ticket-perforated"></i>
+
+            <span>
+                My Event Registrations
+            </span>
+
+        </a>
+
+    </div>
+
+</div>
+
+        <!-- Reviews -->
+<a href="/artisan/reviews"
+   class="menu-link">
+    <i class="bi bi-star-fill"></i>
+    <span>Reviews</span>
+</a>
+
+    </div>
+
+    <!-- BOTTOM ACTIONS -->
+
+    <div class="logout-area">
+
+        <!-- SWITCH ACCOUNT -->
+
+        <div th:if="${session.userRoles != null and #lists.size(session.userRoles) > 1}">
+
+            <a href="/switch-account"
+               class="menu-link switch-link">
+
+                <i class="bi bi-arrow-left-right"></i>
+
+                <span>
+                    Switch Account
+                </span>
+
+            </a>
+
+        </div>
+
+        <!-- LOGOUT -->
+
+        <a href="/logout"
+           class="menu-link logout">
+
+            <i class="bi bi-box-arrow-left"></i>
+
+            <span>
+                Logout
+            </span>
+
+        </a>
+
+    </div>
+
+</aside>
+
+
+<!-- =====================================================
+     MAIN CONTENT
+===================================================== -->
+
+<main class="main">
+
+    <!-- TOP HEADER -->
+
+    <header class="top-header">
+
+        <!-- NOTIFICATION -->
+
+        <div class="notification"
+             title="Notifications">
+
+            <i class="bi bi-bell"></i>
+
+            <span class="notification-dot"></span>
+
+        </div>
+
+        <!-- ARTISAN PROFILE -->
+
+        <div class="artisan-user">
+
+            <a href="/artisan/profile"
+               class="artisan-profile-link"
+               title="View Artisan Profile">
+
+                <div class="artisan-avatar"
+                     th:if="${artisan != null and artisan.profileImage != null and artisan.profileImage != ''}">
+
+                    <img
+                        th:src="${artisan.profileImage.startsWith('/') ? artisan.profileImage : '/' + artisan.profileImage}"
+                        alt="Artisan Profile">
+
+                </div>
+
+                <div class="artisan-avatar"
+                     th:unless="${artisan != null and artisan.profileImage != null and artisan.profileImage != ''}">
+                    A
+                </div>
+
+                <div class="artisan-details">
+
+                    <span class="artisan-name">
+                        Artisan
+                    </span>
+
+                    <span class="artisan-role">
+                        Artisan Account
+                    </span>
+
+                </div>
+
+            </a>
+
+            <!-- SWITCH ACCOUNT -->
+
+            <div th:if="${session.userRoles != null and #lists.size(session.userRoles) > 1}">
+
+                <a href="/switch-account"
+                   class="switch-account-btn"
+                   title="Switch Account">
+
+                    <i class="bi bi-arrow-left-right"></i>
+
+                    <span>
+                        Switch Account
+                    </span>
+
+                </a>
+
+            </div>
+
+        </div>
+
+    </header>
+
+
+    <!-- =====================================================
+         PAGE CONTENT
+    ===================================================== -->
+
+    <div class="content">
+
+        <!-- WELCOME -->
+
+        <div class="welcome">
+
+            <div>
+
+                <h1>
+                    Welcome back, Artisan!
+                </h1>
+
+                <p>
+                    Manage your profile, products, orders and events
+                    from your Craftora dashboard.
+                </p>
+
+            </div>
+
+            <div class="welcome-date">
+
+                <i class="bi bi-palette-fill"></i>
+
+                <span>
+                    Artisan Overview
+                </span>
+
+            </div>
+
+        </div>
+
+
+        <!-- =================================================
+             STATISTICS
+        ================================================= -->
+
+        <div class="stats">
+
+            <!-- PRODUCTS -->
+
+            <a href="/artisan/products"
+               class="stat-card"
+               style="text-decoration: none; color: inherit; display: block;">
+
+                <div class="stat-top">
+
+                    <span class="stat-title">
+                        Products
+                    </span>
+
+                    <div class="stat-icon">
+
+                        <i class="bi bi-box-seam-fill"></i>
+
+                    </div>
+
+                </div>
+
+                <div class="stat-value">
+                    <span th:text="${productCount}">0</span>
+                </div>
+
+                <div class="stat-description">
+                    Products listed
+                </div>
+
+            </a>
+
+
+            <!-- ORDERS -->
+
+            <a href="/artisan/orders"
+               class="stat-card">
+
+                <div class="stat-top">
+
+                    <span class="stat-title">
+                        Orders
+                    </span>
+
+                    <div class="stat-icon">
+
+                        <i class="bi bi-bag-check-fill"></i>
+
+                    </div>
+
+                </div>
+
+                <div class="stat-value">
+                    <span th:text="${orderCount}">0</span>
+                </div>
+
+                <div class="stat-description">
+                    Customer orders ·
+                    <strong>
+                        <span th:text="${newOrderCount}">0</span> New Orders
+                    </strong>
+                </div>
+
+            </a>
+
+
+            <!-- PAYMENTS -->
+
+            <a href="/artisan/payments"
+               class="stat-card"
+               style="text-decoration: none; color: inherit; display: block;">
+
+                <div class="stat-top">
+
+                    <span class="stat-title">
+                        Payments
+                    </span>
+
+                    <div class="stat-icon">
+
+                        <i class="bi bi-credit-card-fill"></i>
+
+                    </div>
+
+                </div>
+
+                <div class="stat-value"
+                     style="font-size: 22px;">
+
+                    LKR
+                    <span th:text="${#numbers.formatDecimal(totalPayments, 1, 2)}">
+                        0.00
+                    </span>
+
+                </div>
+
+                <div class="stat-description">
+                    Your product sales revenue
+                </div>
+
+            </a>
+
+
+            <!-- EVENTS -->
+
+            <div class="stat-card">
+
+                <div class="stat-top">
+
+                    <span class="stat-title">
+                        Events
+                    </span>
+
+                    <div class="stat-icon">
+
+                        <i class="bi bi-calendar-event-fill"></i>
+
+                    </div>
+
+                </div>
+
+                <div class="stat-value">
+                    0
+                </div>
+
+                <div class="stat-description">
+                    Event requests
+                </div>
+
+            </div>
+
+        </div>
+
+        <!-- =====================================================
+     LIVE EVENT DISCUSSIONS
+===================================================== -->
+
+<div
+    th:if="${workshopOpenDiscussion != null
+        or exhibitionOpenDiscussion != null
+        or competitionOpenDiscussion != null}"
+    class="card"
+    style="margin-bottom: 22px;">
+
+    <div class="card-header">
+
+        <div class="card-title-area">
+
+            <div class="card-title-icon">
+                <i class="bi bi-chat-dots-fill"></i>
+            </div>
+
+            <div>
+                <h2>Live Event Discussions</h2>
+
+                <p>
+                    Join an active community discussion
+                </p>
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <div class="quick-actions">
+
+        <!-- WORKSHOP -->
+
+        <div
+            th:if="${workshopOpenDiscussion != null}"
+            class="quick-action">
+
+            <div class="quick-action-icon">
+                <i class="bi bi-easel-fill"></i>
+            </div>
+
+            <div class="quick-action-text">
+
+                <span class="quick-action-title">
+                    Workshop Discussion
+                </span>
+
+                <span class="quick-action-description">
+                    A live discussion is currently open.
+                </span>
+
+            </div>
+
+            <a
+                th:href="@{/artisan/events/discussion/{discussionId}
+                    (discussionId=${workshopOpenDiscussion.discussionId})}"
+                class="profile-button"
+                style="margin-left:auto; padding:8px 14px;">
+
+                Join Discussion
+                <i class="bi bi-chat-dots"></i>
+
+            </a>
+
+        </div>
+
+
+        <!-- EXHIBITION -->
+
+        <div
+            th:if="${exhibitionOpenDiscussion != null}"
+            class="quick-action">
+
+            <div class="quick-action-icon">
+                <i class="bi bi-images"></i>
+            </div>
+
+            <div class="quick-action-text">
+
+                <span class="quick-action-title">
+                    Exhibition Discussion
+                </span>
+
+                <span class="quick-action-description">
+                    A live discussion is currently open.
+                </span>
+
+            </div>
+
+            <a
+                th:href="@{/artisan/events/discussion/{discussionId}
+                    (discussionId=${exhibitionOpenDiscussion.discussionId})}"
+                class="profile-button"
+                style="margin-left:auto; padding:8px 14px;">
+
+                Join Discussion
+                <i class="bi bi-chat-dots"></i>
+
+            </a>
+
+        </div>
+
+
+        <!-- COMPETITION -->
+
+        <div
+            th:if="${competitionOpenDiscussion != null}"
+            class="quick-action">
+
+            <div class="quick-action-icon">
+                <i class="bi bi-trophy-fill"></i>
+            </div>
+
+            <div class="quick-action-text">
+
+                <span class="quick-action-title">
+                    Competition Discussion
+                </span>
+
+                <span class="quick-action-description">
+                    A live discussion is currently open.
+                </span>
+
+            </div>
+
+            <a
+                th:href="@{/artisan/events/discussion/{discussionId}
+                    (discussionId=${competitionOpenDiscussion.discussionId})}"
+                class="profile-button"
+                style="margin-left:auto; padding:8px 14px;">
+
+                Join Discussion
+                <i class="bi bi-chat-dots"></i>
+
+            </a>
+
+        </div>
+
+    </div>
+
+</div>
+
+
+        <!-- =================================================
+             LOWER DASHBOARD
+        ================================================= -->
+
+        <div class="dashboard-grid">
+
+            <!-- PROFILE CARD -->
+
+            <div class="card">
+
+                <div class="card-header">
+
+                    <div class="card-title-area">
+
+                        <div class="card-title-icon">
+
+                            <i class="bi bi-person-vcard-fill"></i>
+
+                        </div>
+
+                        <div>
+
+                            <h2>
+                                Artisan Profile
+                            </h2>
+
+                            <p>
+                                Manage your public artisan profile
+                            </p>
+
+                        </div>
+
+                    </div>
+
+                    <a href="/artisan/profile"
+                       class="view-all">
+
+                        View Profile
+
+                        <i class="bi bi-arrow-right"></i>
+
+                    </a>
+
+                </div>
+
+
+                <div class="profile-preview">
+
+                    <div class="profile-avatar"
+                         th:if="${artisan != null and artisan.profileImage != null and artisan.profileImage != ''}">
+
+                        <img
+                            th:src="${artisan.profileImage.startsWith('/') ? artisan.profileImage : '/' + artisan.profileImage}"
+                            alt="Artisan Profile">
+
+                    </div>
+
+                    <div class="profile-avatar"
+                         th:unless="${artisan != null and artisan.profileImage != null and artisan.profileImage != ''}">
+                        A
+                    </div>
+
+                    <h3>
+                        Your Artisan Profile
+                    </h3>
+
+                    <p>
+                        Create and manage your artisan profile.
+                        Add your profile picture, description,
+                        contact details and location.
+                    </p>
+
+                    <a href="/artisan/profile"
+                       class="profile-button">
+
+                        <i class="bi bi-pencil-square"></i>
+
+                        Create / Edit Profile
+
+                    </a>
+
+                </div>
+
+            </div>
+
+
+            <!-- QUICK ACTIONS -->
+
+            <div class="card">
+
+                <div class="card-header">
+
+                    <div class="card-title-area">
+
+                        <div class="card-title-icon">
+
+                            <i class="bi bi-lightning-charge-fill"></i>
+
+                        </div>
+
+                        <div>
+
+                            <h2>
+                                Quick Actions
+                            </h2>
+
+                            <p>
+                                Manage your work quickly
+                            </p>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+
+                <div class="quick-actions">
+
+                    <!-- PROFILE -->
+
+                    <a href="/artisan/profile"
+                       class="quick-action">
+
+                        <div class="quick-action-icon">
+
+                            <i class="bi bi-person-fill"></i>
+
+                        </div>
+
+                        <div class="quick-action-text">
+
+                            <span class="quick-action-title">
+                                My Profile
+                            </span>
+
+                            <span class="quick-action-description">
+                                Create or edit profile
+                            </span>
+
+                        </div>
+
+                        <i class="bi bi-chevron-right quick-action-arrow"></i>
+
+                    </a>
+
+
+                    <!-- MARKETPLACE -->
+
+                    <a href="/marketplace"
+                       class="quick-action">
+
+                        <div class="quick-action-icon">
+
+                            <i class="bi bi-shop"></i>
+
+                        </div>
+
+                        <div class="quick-action-text">
+
+                            <span class="quick-action-title">
+                                Marketplace
+                            </span>
+
+                            <span class="quick-action-description">
+                                Manage products
+                            </span>
+
+                        </div>
+
+                        <i class="bi bi-chevron-right quick-action-arrow"></i>
+
+                    </a>
+
+
+                    <!-- ORDERS -->
+
+                    <a href="/artisan/orders"
+                       class="quick-action">
+
+                        <div class="quick-action-icon">
+
+                            <i class="bi bi-bag-check-fill"></i>
+
+                        </div>
+
+                        <div class="quick-action-text">
+
+                            <span class="quick-action-title">
+                                Orders
+                            </span>
+
+                            <span class="quick-action-description">
+                                View customer orders
+                            </span>
+
+                        </div>
+
+                        <i class="bi bi-chevron-right quick-action-arrow"></i>
+
+                    </a>
+
+                    <!-- MY ORDERS -->
+
+                    <a href="/artisan/my-orders"
+                       class="quick-action">
+
+                        <div class="quick-action-icon">
+                            <i class="bi bi-bag-heart-fill"></i>
+                        </div>
+
+                        <div class="quick-action-text">
+
+                            <span class="quick-action-title">
+                                My Orders
+                            </span>
+
+                            <span class="quick-action-description">
+                                View orders you placed
+                            </span>
+
+                        </div>
+
+                        <i class="bi bi-chevron-right quick-action-arrow"></i>
+
+                    </a>
+
+
+                    <!-- EVENTS -->
+
+                    <a href="/artisan/events"
+                       class="quick-action">
+
+                        <div class="quick-action-icon">
+
+                            <i class="bi bi-calendar-event-fill"></i>
+
+                        </div>
+
+                        <div class="quick-action-text">
+
+                            <span class="quick-action-title">
+                                Events
+                            </span>
+
+                            <span class="quick-action-description">
+                                Request an event
+                            </span>
+
+                        </div>
+
+                        <i class="bi bi-chevron-right quick-action-arrow"></i>
+
+                    </a>
+
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <!-- FOOTER -->
+
+        <div class="footer">
+
+            © 2026 Craftora.
+            Handicraft Development & Community Management System.
+
+        </div>
+
+    </div>
+
+    <script>
+
+    function toggleEventsMenu() {
+
+        const eventsMenu =
+            document.querySelector(".events-menu");
+
+        const submenu =
+            document.getElementById("eventsSubMenu");
+
+
+        if (eventsMenu.classList.contains("open")) {
+
+            eventsMenu.classList.remove("open");
+
+            submenu.style.display = "none";
+
+        } else {
+
+            eventsMenu.classList.add("open");
+
+            submenu.style.display = "block";
+        }
+    }
+
+</script>
+
+</main>
+
+</body>
+
+</html>

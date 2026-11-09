@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="en"
+      xmlns:th="http://www.thymeleaf.org">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
+
+    <title>Registration Successful - Craftora</title>
+
+    <style>
+
+        body {
+            margin: 0;
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: #f5f7f6;
+            font-family: Arial, sans-serif;
+        }
+
+        .success-box {
+            width: 500px;
+            max-width: 90%;
+            background: #ffffff;
+            padding: 45px;
+            text-align: center;
+            border-radius: 16px;
+            box-shadow: 0 8px 30px rgba(0,0,0,0.12);
+        }
+
+        .success-icon {
+            width: 72px;
+            height: 72px;
+            margin: 0 auto 20px;
+            border-radius: 50%;
+            background: #0b6b45;
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 40px;
+            font-weight: bold;
+        }
+
+        h1 {
+            color: #0b6b45;
+            margin-bottom: 15px;
+        }
+
+        .event-title {
+            font-size: 20px;
+            font-weight: bold;
+            color: #333;
+            margin: 18px 0;
+        }
+
+        p {
+            color: #666;
+            line-height: 1.6;
+        }
+
+        .redirect-message {
+            margin-top: 25px;
+            color: #0b6b45;
+            font-weight: bold;
+        }
+
+        .countdown {
+            font-size: 20px;
+            color: #0b6b45;
+        }
+
+    </style>
+
+</head>
+
+<body>
+
+<div class="success-box">
+
+    <div class="success-icon">
+        ✓
+    </div>
+
+    <h1>
+        Registration Successful!
+    </h1>
+
+    <div class="event-title"
+         th:if="${event != null}"
+         th:text="${event.eventTitle}">
+        Event Title
+    </div>
+
+    <p>
+        Your registration for this event has been
+        successfully completed.
+    </p>
+
+    <p>
+        Your registration has been confirmed.
+    </p>
+
+    <p class="redirect-message">
+        Redirecting to your dashboard in
+        <span id="countdown" class="countdown">3</span>
+        seconds...
+    </p>
+
+</div>
+
+
+<script th:inline="javascript">
+
+    let seconds = 3;
+
+    const countdownElement =
+        document.getElementById("countdown");
+
+    const selectedRole =
+        /*[[${selectedRole}]]*/ "CUSTOMER";
+
+
+    const dashboardUrl =
+        selectedRole === "ARTISAN"
+            ? "/artisan-dashboard"
+            : "/customer-dashboard";
+
+
+    const countdownTimer =
+        setInterval(function () {
+
+            seconds--;
+
+            countdownElement.textContent = seconds;
+
+            if (seconds <= 0) {
+
+                clearInterval(countdownTimer);
+
+                window.location.href = dashboardUrl;
+            }
+
+        }, 1000);
+
+</script>
+
+</body>
+
+</html>

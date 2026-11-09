@@ -1,0 +1,805 @@
+<!DOCTYPE html>
+<html lang="en"
+      xmlns:th="http://www.thymeleaf.org">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
+
+    <title>Settings - Craftora</title>
+
+    <style>
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+            background: #f5f7f6;
+            color: #333;
+            min-height: 100vh;
+        }
+
+        /* =====================================================
+           NAVBAR
+        ===================================================== */
+
+        .navbar {
+            background: #123B29;
+            color: white;
+            padding: 12px 35px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            min-height: 80px;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+        }
+
+        .craftora-logo {
+            height: 62px;
+            width: auto;
+            display: block;
+            object-fit: contain;
+            border-radius: 12px;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 22px;
+            align-items: center;
+        }
+
+        .nav-links a {
+            color: white;
+            text-decoration: none;
+            font-size: 14px;
+            font-weight: 500;
+        }
+
+        .nav-links a:hover {
+            color: #D6B36A;
+        }
+
+        .nav-links a.active {
+            color: #D6B36A;
+        }
+
+        /* =====================================================
+           PAGE CONTAINER
+        ===================================================== */
+
+        .page-container {
+            max-width: 1000px;
+            margin: 45px auto;
+            padding: 0 20px;
+        }
+
+        .page-title {
+            color: #123B29;
+            font-size: 30px;
+            margin-bottom: 8px;
+        }
+
+        .page-subtitle {
+            color: #777;
+            font-size: 14px;
+            margin-bottom: 30px;
+        }
+
+        /* =====================================================
+           ALERT MESSAGES
+        ===================================================== */
+
+        .success-message {
+            background: #e9f7ef;
+            color: #176b3a;
+            border: 1px solid #b9e4c8;
+            padding: 14px 18px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            font-size: 14px;
+        }
+
+        .error-message {
+            background: #fdeaea;
+            color: #b42318;
+            border: 1px solid #f5c2c0;
+            padding: 14px 18px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            font-size: 14px;
+        }
+
+        /* =====================================================
+           SETTINGS CARD
+        ===================================================== */
+
+        .settings-card {
+            background: white;
+            border-radius: 14px;
+            margin-bottom: 25px;
+            box-shadow: 0 4px 18px rgba(0, 0, 0, 0.07);
+            overflow: hidden;
+        }
+
+        .section-header {
+            background: #123B29;
+            color: white;
+            padding: 18px 25px;
+        }
+
+        .section-header h2 {
+            font-size: 19px;
+            margin-bottom: 4px;
+        }
+
+        .section-header p {
+            font-size: 13px;
+            opacity: 0.85;
+        }
+
+        .section-body {
+            padding: 25px;
+        }
+
+        /* =====================================================
+           FORM
+        ===================================================== */
+
+        .form-group {
+            margin-bottom: 22px;
+        }
+
+        .form-group:last-child {
+            margin-bottom: 0;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            color: #333;
+            font-size: 14px;
+            font-weight: 600;
+        }
+
+        .form-group input,
+        .form-group textarea,
+        .form-group select {
+            width: 100%;
+            padding: 12px 14px;
+            border: 1px solid #d7d7d7;
+            border-radius: 7px;
+            font-size: 14px;
+            outline: none;
+            background: white;
+        }
+
+        .form-group input:focus,
+        .form-group textarea:focus,
+        .form-group select:focus {
+            border-color: #123B29;
+        }
+
+        .form-group textarea {
+            min-height: 90px;
+            resize: vertical;
+        }
+
+        .input-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 22px;
+        }
+
+        .input-with-prefix {
+            display: flex;
+            align-items: stretch;
+        }
+
+        .input-prefix {
+            background: #f1f3f2;
+            border: 1px solid #d7d7d7;
+            border-right: none;
+            padding: 12px 14px;
+            display: flex;
+            align-items: center;
+            color: #555;
+            font-size: 14px;
+            border-radius: 7px 0 0 7px;
+        }
+
+        .input-with-prefix input {
+            border-radius: 0 7px 7px 0;
+        }
+
+        .input-suffix {
+            background: #f1f3f2;
+            border: 1px solid #d7d7d7;
+            border-left: none;
+            padding: 12px 14px;
+            display: flex;
+            align-items: center;
+            color: #555;
+            font-size: 14px;
+            border-radius: 0 7px 7px 0;
+        }
+
+        .input-with-suffix {
+            display: flex;
+        }
+
+        .input-with-suffix input {
+            border-radius: 7px 0 0 7px;
+        }
+
+        .help-text {
+            margin-top: 6px;
+            color: #888;
+            font-size: 12px;
+            line-height: 1.5;
+        }
+
+        /* =====================================================
+           TOGGLE
+        ===================================================== */
+
+        .toggle-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 5px 0;
+        }
+
+        .toggle-text h3 {
+            color: #333;
+            font-size: 15px;
+            margin-bottom: 5px;
+        }
+
+        .toggle-text p {
+            color: #888;
+            font-size: 12px;
+        }
+
+        .switch {
+            position: relative;
+            display: inline-block;
+            width: 52px;
+            height: 28px;
+        }
+
+        .switch input {
+            opacity: 0;
+            width: 0;
+            height: 0;
+        }
+
+        .slider {
+            position: absolute;
+            cursor: pointer;
+            inset: 0;
+            background: #ccc;
+            transition: 0.3s;
+            border-radius: 28px;
+        }
+
+        .slider:before {
+            position: absolute;
+            content: "";
+            height: 22px;
+            width: 22px;
+            left: 3px;
+            top: 3px;
+            background: white;
+            transition: 0.3s;
+            border-radius: 50%;
+        }
+
+        .switch input:checked + .slider {
+            background: #123B29;
+        }
+
+        .switch input:checked + .slider:before {
+            transform: translateX(24px);
+        }
+
+        /* =====================================================
+           SAVE BUTTON
+        ===================================================== */
+
+        .button-container {
+            text-align: center;
+            margin: 30px 0 50px;
+        }
+
+        .save-button {
+            background: #123B29;
+            color: white;
+            border: none;
+            padding: 14px 45px;
+            border-radius: 8px;
+            font-size: 15px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+
+        .save-button:hover {
+            background: #1d5a40;
+        }
+
+        /* =====================================================
+           FOOTER
+        ===================================================== */
+
+        .footer {
+            text-align: center;
+            padding: 25px;
+            color: #888;
+            font-size: 13px;
+        }
+
+        /* =====================================================
+           RESPONSIVE
+        ===================================================== */
+
+        @media (max-width: 700px) {
+
+            .navbar {
+                padding: 12px 20px;
+            }
+
+            .nav-links {
+                gap: 12px;
+            }
+
+            .nav-links a {
+                font-size: 12px;
+            }
+
+            .page-container {
+                margin: 30px auto;
+            }
+
+            .page-title {
+                font-size: 25px;
+            }
+
+            .section-body {
+                padding: 20px;
+            }
+
+            .input-row {
+                grid-template-columns: 1fr;
+                gap: 0;
+            }
+
+            .toggle-row {
+                gap: 20px;
+            }
+        }
+
+    </style>
+
+</head>
+
+<body>
+
+<!-- =====================================================
+     NAVBAR
+===================================================== -->
+
+<nav class="navbar">
+
+    <div class="logo">
+
+        <img src="/images/craftora-logo.png"
+             alt="Craftora Logo"
+             class="craftora-logo">
+
+    </div>
+
+    <div class="nav-links">
+
+        <a href="/admin-dashboard">
+            Dashboard
+        </a>
+
+        <a href="/admin/manage-artisans">
+            Artisans
+        </a>
+
+        <a href="/admin/profile">
+            Profile
+        </a>
+
+        <a href="/admin/settings"
+           class="active">
+            Settings
+        </a>
+
+    </div>
+
+</nav>
+
+
+<!-- =====================================================
+     MAIN CONTENT
+===================================================== -->
+
+<div class="page-container">
+
+    <h1 class="page-title">
+        Settings
+    </h1>
+
+    <p class="page-subtitle">
+        Manage Craftora system settings from one place.
+    </p>
+
+
+    <!-- =================================================
+         SUCCESS MESSAGE
+    ================================================= -->
+
+    <div class="success-message"
+         th:if="${successMessage}"
+         th:text="${successMessage}">
+    </div>
+
+
+    <!-- =================================================
+         ERROR MESSAGE
+    ================================================= -->
+
+    <div class="error-message"
+         th:if="${errorMessage}"
+         th:text="${errorMessage}">
+    </div>
+
+
+    <!-- =================================================
+         SETTINGS FORM
+    ================================================= -->
+
+    <form action="/admin/settings/save"
+          method="post">
+
+
+        <!-- =============================================
+             GENERAL SETTINGS
+        ============================================== -->
+
+        <div class="settings-card">
+
+            <div class="section-header">
+
+                <h2>
+                    General Settings
+                </h2>
+
+                <p>
+                    Manage basic Craftora system information.
+                </p>
+
+            </div>
+
+
+            <div class="section-body">
+
+
+                <!-- SYSTEM NAME -->
+
+                <div class="form-group">
+
+                    <label for="systemName">
+                        System Name
+                    </label>
+
+                    <input type="text"
+                           id="systemName"
+                           name="systemName"
+                           th:value="${systemName}"
+                           placeholder="Enter system name"
+                           required>
+
+                </div>
+
+
+                <!-- EMAIL + PHONE -->
+
+                <div class="input-row">
+
+
+                    <div class="form-group">
+
+                        <label for="contactEmail">
+                            Contact Email
+                        </label>
+
+                        <input type="email"
+                               id="contactEmail"
+                               name="contactEmail"
+                               th:value="${contactEmail}"
+                               placeholder="Enter contact email"
+                               required>
+
+                    </div>
+
+
+                    <div class="form-group">
+
+                        <label for="contactPhone">
+                            Contact Phone
+                        </label>
+
+                        <input type="text"
+                               id="contactPhone"
+                               name="contactPhone"
+                               th:value="${contactPhone}"
+                               placeholder="Enter contact phone">
+
+                    </div>
+
+                </div>
+
+
+                <!-- BUSINESS ADDRESS -->
+
+                <div class="form-group">
+
+                    <label for="businessAddress">
+                        Business Address
+                    </label>
+
+                    <textarea id="businessAddress"
+                              name="businessAddress"
+                              placeholder="Enter Craftora business address"
+                              th:text="${businessAddress}">
+                    </textarea>
+
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <!-- =============================================
+             PAYMENT SETTINGS
+        ============================================== -->
+
+        <div class="settings-card">
+
+            <div class="section-header">
+
+                <h2>
+                    Payment Settings
+                </h2>
+
+                <p>
+                    Manage registration fees and platform commission.
+                </p>
+
+            </div>
+
+
+            <div class="section-body">
+
+
+                <!-- ARTISAN REGISTRATION FEE -->
+
+                <div class="form-group">
+
+                    <label for="artisanRegistrationFee">
+                        Artisan Registration Fee
+                    </label>
+
+                    <div class="input-with-prefix">
+
+                        <span class="input-prefix">
+                            LKR
+                        </span>
+
+                        <input type="number"
+                               id="artisanRegistrationFee"
+                               name="artisanRegistrationFee"
+                               th:value="${artisanRegistrationFee}"
+                               min="0"
+                               step="0.01"
+                               required>
+
+                    </div>
+
+                    <div class="help-text">
+                        This amount will be used for new Artisan applications.
+                        Existing applications keep the fee recorded when they were submitted.
+                    </div>
+
+                </div>
+
+
+                <!-- PLATFORM COMMISSION -->
+
+                <div class="form-group">
+
+                    <label for="platformCommission">
+                        Platform Commission
+                    </label>
+
+                    <div class="input-with-suffix">
+
+                        <input type="number"
+                               id="platformCommission"
+                               name="platformCommission"
+                               th:value="${platformCommission}"
+                               min="0"
+                               max="100"
+                               step="0.01"
+                               required>
+
+                        <span class="input-suffix">
+                            %
+                        </span>
+
+                    </div>
+
+                    <div class="help-text">
+                        Percentage of product sales retained by Craftora.
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <!-- =============================================
+             NOTIFICATION SETTINGS
+        ============================================== -->
+
+        <div class="settings-card">
+
+            <div class="section-header">
+
+                <h2>
+                    Notification Settings
+                </h2>
+
+                <p>
+                    Control system email notifications.
+                </p>
+
+            </div>
+
+
+            <div class="section-body">
+
+                <div class="toggle-row">
+
+                    <div class="toggle-text">
+
+                        <h3>
+                            Email Notifications
+                        </h3>
+
+                        <p>
+                            Enable or disable Craftora system email notifications.
+                        </p>
+
+                    </div>
+
+
+                    <label class="switch">
+
+                        <input type="hidden"
+                               name="emailNotifications"
+                               value="OFF">
+
+                        <input type="checkbox"
+                               name="emailNotifications"
+                               value="ON"
+                               th:checked="${emailNotifications}">
+
+                        <span class="slider"></span>
+
+                    </label>
+
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <!-- =============================================
+             SECURITY SETTINGS
+        ============================================== -->
+
+        <div class="settings-card">
+
+            <div class="section-header">
+
+                <h2>
+                    Security Settings
+                </h2>
+
+                <p>
+                    Manage basic password security requirements.
+                </p>
+
+            </div>
+
+
+            <div class="section-body">
+
+                <div class="form-group">
+
+                    <label for="minimumPasswordLength">
+                        Minimum Password Length
+                    </label>
+
+                    <input type="number"
+                           id="minimumPasswordLength"
+                           name="minimumPasswordLength"
+                           th:value="${minimumPasswordLength}"
+                           min="4"
+                           max="50"
+                           required>
+
+                    <div class="help-text">
+                        Minimum number of characters required for user passwords.
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <!-- =============================================
+             SAVE BUTTON
+        ============================================== -->
+
+        <div class="button-container">
+
+            <button type="submit"
+                    class="save-button">
+
+                Save Settings
+
+            </button>
+
+        </div>
+
+    </form>
+
+</div>
+
+
+<!-- =====================================================
+     FOOTER
+===================================================== -->
+
+<footer class="footer">
+
+    © 2026 Craftora. All Rights Reserved.
+
+</footer>
+
+
+</body>
+
+</html>

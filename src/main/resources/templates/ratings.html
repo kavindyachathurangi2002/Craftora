@@ -1,0 +1,948 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Ratings - Craftora</title>
+
+    <!-- EXISTING CRAFTORA CSS -->
+    <link rel="stylesheet" href="/css/style.css">
+
+    <style>
+
+        /* ==========================================
+           RATINGS HERO
+        ========================================== */
+
+        .ratings-hero {
+            min-height: 360px;
+
+            background:
+                linear-gradient(
+                    rgba(20, 61, 43, 0.82),
+                    rgba(20, 61, 43, 0.82)
+                ),
+                url('/images/hero2.jpg') center/cover no-repeat;
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            text-align: center;
+            padding: 70px 20px;
+
+            color: #fff;
+        }
+
+        .ratings-hero-content {
+            max-width: 850px;
+        }
+
+        .ratings-hero h1 {
+            font-size: 52px;
+            margin: 0 0 15px;
+            letter-spacing: 1px;
+        }
+
+        .ratings-hero p {
+            font-size: 19px;
+            line-height: 1.7;
+            margin: 0 auto;
+            max-width: 750px;
+        }
+
+
+        /* ==========================================
+           RATINGS SECTION
+        ========================================== */
+
+        .ratings-section {
+            padding: 75px 8%;
+            background: #fff;
+        }
+
+        .ratings-container {
+            max-width: 1150px;
+            margin: 0 auto;
+        }
+
+        .ratings-heading {
+            text-align: center;
+            margin-bottom: 45px;
+        }
+
+        .ratings-heading span {
+            color: #d6a84f;
+            font-size: 14px;
+            font-weight: 700;
+            letter-spacing: 2px;
+        }
+
+        .ratings-heading h2 {
+            color: #143d2b;
+            font-size: 34px;
+            margin: 10px 0 15px;
+        }
+
+        .ratings-heading p {
+            color: #666;
+            max-width: 750px;
+            margin: 0 auto;
+            line-height: 1.7;
+        }
+
+
+        /* ==========================================
+           RATING SUMMARY
+        ========================================== */
+
+        .rating-summary {
+            display: grid;
+            grid-template-columns: 300px 1fr;
+
+            gap: 45px;
+
+            background: #f7f5ed;
+
+            border-radius: 20px;
+
+            padding: 40px;
+
+            margin-bottom: 45px;
+        }
+
+
+        .overall-rating {
+            text-align: center;
+
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+
+            border-right: 1px solid #ddd;
+        }
+
+        .rating-number {
+            font-size: 58px;
+            font-weight: 700;
+
+            color: #143d2b;
+
+            line-height: 1;
+        }
+
+        .rating-stars {
+            color: #d6a84f;
+
+            font-size: 30px;
+
+            letter-spacing: 4px;
+
+            margin: 12px 0;
+        }
+
+        .rating-count {
+            color: #666;
+            font-size: 14px;
+        }
+
+
+        /* ==========================================
+           RATING BREAKDOWN
+        ========================================== */
+
+        .rating-breakdown {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+
+            gap: 12px;
+        }
+
+        .rating-row {
+            display: grid;
+
+            grid-template-columns: 60px 1fr 45px;
+
+            align-items: center;
+
+            gap: 12px;
+        }
+
+        .rating-label {
+            color: #555;
+
+            font-size: 14px;
+
+            font-weight: 600;
+        }
+
+        .rating-bar {
+            height: 10px;
+
+            background: #e5e5e5;
+
+            border-radius: 20px;
+
+            overflow: hidden;
+        }
+
+        .rating-fill {
+            height: 100%;
+
+            background: #d6a84f;
+
+            border-radius: 20px;
+        }
+
+        .rating-percentage {
+            color: #777;
+
+            font-size: 13px;
+
+            text-align: right;
+        }
+
+
+        /* ==========================================
+           REVIEW CARDS
+        ========================================== */
+
+        .reviews-title {
+            text-align: center;
+
+            color: #143d2b;
+
+            font-size: 30px;
+
+            margin-bottom: 30px;
+        }
+
+        .reviews-grid {
+            display: grid;
+
+            grid-template-columns: repeat(3, 1fr);
+
+            gap: 22px;
+        }
+
+        .review-card {
+            background: #fff;
+
+            border: 1px solid #eee;
+
+            border-radius: 15px;
+
+            padding: 28px;
+
+            box-shadow: 0 5px 18px rgba(0,0,0,0.06);
+
+            transition: transform 0.2s ease,
+                        box-shadow 0.2s ease;
+        }
+
+        .review-card:hover {
+            transform: translateY(-5px);
+
+            box-shadow: 0 10px 25px rgba(0,0,0,0.09);
+        }
+
+        .review-top {
+            display: flex;
+
+            justify-content: space-between;
+
+            align-items: center;
+
+            margin-bottom: 12px;
+        }
+
+        .review-name {
+            color: #143d2b;
+
+            font-weight: 700;
+
+            font-size: 17px;
+        }
+
+        .review-stars {
+            color: #d6a84f;
+
+            font-size: 18px;
+
+            letter-spacing: 2px;
+        }
+
+        .review-product {
+            color: #d6a84f;
+
+            font-size: 13px;
+
+            font-weight: 700;
+
+            margin-bottom: 12px;
+        }
+
+        .review-text {
+            color: #555;
+
+            line-height: 1.7;
+
+            font-size: 14px;
+
+            margin: 0;
+        }
+
+
+        /* ==========================================
+           WRITE REVIEW MESSAGE
+        ========================================== */
+
+        .review-message {
+            margin-top: 45px;
+
+            background:
+                linear-gradient(
+                    135deg,
+                    #143d2b,
+                    #19543d
+                );
+
+            color: white;
+
+            border-radius: 20px;
+
+            padding: 45px 30px;
+
+            text-align: center;
+        }
+
+        .review-message h2 {
+            color: #f0c96d;
+
+            margin: 0 0 12px;
+
+            font-size: 30px;
+        }
+
+        .review-message p {
+            max-width: 700px;
+
+            margin: 0 auto 25px;
+
+            line-height: 1.7;
+
+            color: rgba(255,255,255,0.92);
+        }
+
+        .review-btn {
+            display: inline-block;
+
+            padding: 13px 25px;
+
+            border-radius: 7px;
+
+            background: #d6a84f;
+
+            color: #143d2b;
+
+            text-decoration: none;
+
+            font-weight: 700;
+        }
+
+
+        /* ==========================================
+           RESPONSIVE
+        ========================================== */
+
+        @media (max-width: 900px) {
+
+            .rating-summary {
+                grid-template-columns: 1fr;
+            }
+
+            .overall-rating {
+                border-right: none;
+
+                border-bottom: 1px solid #ddd;
+
+                padding-bottom: 30px;
+            }
+
+            .reviews-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+        }
+
+
+        @media (max-width: 600px) {
+
+            .ratings-hero h1 {
+                font-size: 38px;
+            }
+
+            .ratings-hero p {
+                font-size: 16px;
+            }
+
+            .ratings-section {
+                padding: 55px 6%;
+            }
+
+            .reviews-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .rating-summary {
+                padding: 25px;
+            }
+
+        }
+
+    </style>
+
+</head>
+
+
+<body>
+
+
+<!-- ==========================================
+     NAVIGATION BAR
+========================================== -->
+
+<nav class="navbar">
+
+    <div class="logo">
+
+        <a href="/">
+            <img src="/images/craftora-logo.png"
+                 alt="Craftora Logo">
+        </a>
+
+    </div>
+
+
+    <div class="nav-links">
+
+        <a href="/">Home</a>
+
+        <a href="/about-us">
+            About Us
+        </a>
+
+
+        <div class="dropdown">
+
+            <a href="#">
+                Events ▾
+            </a>
+
+            <div class="dropdown-menu">
+
+                <a href="/workshops">
+                    Workshops
+                </a>
+
+                <a href="/exhibitions">
+                    Exhibitions
+                </a>
+
+                <a href="/competitions">
+                    Competitions
+                </a>
+
+            </div>
+
+        </div>
+
+
+        <a href="/marketplace">
+            Marketplace
+        </a>
+
+
+        <a href="/ratings" class="active">
+            Ratings
+        </a>
+
+
+        <a href="/contact">
+            Contact Us
+        </a>
+
+    </div>
+
+
+    <div class="sign-in">
+
+        <a href="/login">
+            Sign In
+        </a>
+
+    </div>
+
+</nav>
+
+
+
+<!-- ==========================================
+     RATINGS HERO
+========================================== -->
+
+<section class="ratings-hero">
+
+    <div class="ratings-hero-content">
+
+        <h1>
+            Ratings & Reviews
+        </h1>
+
+        <p>
+            Discover what customers say about
+            handmade creations and their experiences
+            with Craftora artisans.
+        </p>
+
+    </div>
+
+</section>
+
+
+
+<!-- ==========================================
+     RATINGS CONTENT
+========================================== -->
+
+<section class="ratings-section">
+
+    <div class="ratings-container">
+
+
+        <!-- HEADING -->
+
+        <div class="ratings-heading">
+
+            <span>
+                CUSTOMER VOICES
+            </span>
+
+            <h2>
+                What Our Customers Say
+            </h2>
+
+            <p>
+                Customer reviews help the Craftora
+                community discover quality handmade
+                products and talented artisans.
+            </p>
+
+        </div>
+
+
+
+        <!-- ======================================
+             RATING SUMMARY
+        ======================================= -->
+
+        <div class="rating-summary">
+
+
+            <div class="overall-rating">
+
+                <div class="rating-number"
+                     th:text="${#numbers.formatDecimal(averageRating, 1, 1)}">
+                    0.0
+                </div>
+
+                <div class="rating-stars">
+                    ★★★★★
+                </div>
+
+                <div class="rating-count">
+                    Based on
+                    <span th:text="${reviewCount}">0</span>
+                    customer reviews
+                </div>
+
+            </div>
+
+
+
+            <div class="rating-breakdown">
+
+            <div class="rating-row">
+                <span class="rating-label">5 ★</span>
+                <div class="rating-bar">
+                    <div class="rating-fill"
+                         th:style="'width:' + ${rating5Percentage} + '%;'"></div>
+                </div>
+                <span class="rating-percentage"
+                      th:text="${rating5Percentage} + '%'">0%</span>
+            </div>
+
+            <div class="rating-row">
+                <span class="rating-label">4 ★</span>
+                <div class="rating-bar">
+                    <div class="rating-fill"
+                         th:style="'width:' + ${rating4Percentage} + '%;'"></div>
+                </div>
+                <span class="rating-percentage"
+                      th:text="${rating4Percentage} + '%'">0%</span>
+            </div>
+
+            <div class="rating-row">
+                <span class="rating-label">3 ★</span>
+                <div class="rating-bar">
+                    <div class="rating-fill"
+                         th:style="'width:' + ${rating3Percentage} + '%;'"></div>
+                </div>
+                <span class="rating-percentage"
+                      th:text="${rating3Percentage} + '%'">0%</span>
+            </div>
+
+            <div class="rating-row">
+                <span class="rating-label">2 ★</span>
+                <div class="rating-bar">
+                    <div class="rating-fill"
+                         th:style="'width:' + ${rating2Percentage} + '%;'"></div>
+                </div>
+                <span class="rating-percentage"
+                      th:text="${rating2Percentage} + '%'">0%</span>
+            </div>
+
+            <div class="rating-row">
+                <span class="rating-label">1 ★</span>
+                <div class="rating-bar">
+                    <div class="rating-fill"
+                         th:style="'width:' + ${rating1Percentage} + '%;'"></div>
+                </div>
+                <span class="rating-percentage"
+                      th:text="${rating1Percentage} + '%'">0%</span>
+            </div>
+
+        </div>
+
+        </div>
+
+
+
+        <!-- ======================================
+             CUSTOMER REVIEWS
+        ======================================= -->
+
+        <h2 class="reviews-title">
+            Recent Customer Reviews
+        </h2>
+
+
+        <div class="reviews-grid">
+
+            <div class="review-card"
+                 th:each="review : ${ratings}">
+
+                <div class="review-top">
+
+                    <span class="review-name"
+                          th:text="${review.customer != null and review.customer.user != null ? review.customer.user.fullName : 'Craftora Customer'}">
+                        Customer Name
+                    </span>
+
+                    <span class="review-stars">
+                        <span th:each="i : ${#numbers.sequence(1,5)}"
+                              th:text="${i <= review.rating ? '★' : '☆'}">★</span>
+                    </span>
+
+                </div>
+
+                <div class="review-product"
+                     th:text="${review.product != null ? review.product.productName : 'Handmade Craft Product'}">
+                    Handmade Craft Product
+                </div>
+
+                <p class="review-text"
+                   th:if="${review.review != null and !review.review.isEmpty()}"
+                   th:text="${review.review}">
+                    Customer review
+                </p>
+
+                <p class="review-text"
+                   th:if="${review.review == null or review.review.isEmpty()}">
+                    No written comment was provided.
+                </p>
+
+                <div style="margin-top:12px; color:#888; font-size:12px;"
+                     th:if="${review.createdAt != null}"
+                     th:text="${#temporals.format(review.createdAt, 'dd MMM yyyy')}">
+                    Date
+                </div>
+
+            </div>
+
+            <div class="review-card"
+                 th:if="${#lists.isEmpty(ratings)}"
+                 style="grid-column: 1 / -1; text-align:center;">
+
+                <div class="review-name">
+                    No reviews yet
+                </div>
+
+                <p class="review-text">
+                    There are no customer reviews yet.
+                </p>
+
+            </div>
+
+        </div>
+
+
+
+        <!-- ======================================
+             WRITE REVIEW
+        ======================================= -->
+
+        <div class="review-message">
+
+            <h2>
+                Share Your Craftora Experience
+            </h2>
+
+            <p>
+                Your feedback helps other customers
+                discover handmade products and helps
+                artisans improve and grow.
+            </p>
+
+            <a href="/login" class="review-btn">
+                Sign In to Write a Review
+            </a>
+
+        </div>
+
+
+    </div>
+
+</section>
+
+
+
+<!-- ==========================================
+     FOOTER
+========================================== -->
+
+<footer class="site-footer">
+
+    <div class="footer-container">
+
+
+        <div class="footer-column footer-about">
+
+            <h3>CRAFTORA</h3>
+
+            <p>
+                Craftora is an integrated web application
+                aimed at preserving traditional handicrafts,
+                promoting artisan growth, and providing
+                learning & commercial opportunities
+                through technology.
+            </p>
+
+        </div>
+
+
+
+        <div class="footer-column">
+
+            <h3>QUICK LINKS</h3>
+
+            <ul>
+
+                <li>
+                    <a href="/">Home</a>
+                </li>
+
+                <li>
+                    <a href="/about-us">
+                        About Us
+                    </a>
+                </li>
+
+                <li>
+                    <a href="#">
+                        Registered Artisans
+                    </a>
+                </li>
+
+                <li>
+                    <a href="/ratings">
+                        Ratings & Reviews
+                    </a>
+                </li>
+
+            </ul>
+
+        </div>
+
+
+
+        <div class="footer-column">
+
+            <h3>EVENT CATEGORIES</h3>
+
+            <ul>
+
+                <li>
+                    <a href="/workshops">
+                        Workshops
+                    </a>
+                </li>
+
+                <li>
+                    <a href="/exhibitions">
+                        Exhibitions
+                    </a>
+                </li>
+
+                <li>
+                    <a href="/competitions">
+                        Competitions
+                    </a>
+                </li>
+
+                <li>
+                    <a href="#">
+                        Google Maps Integration
+                    </a>
+                </li>
+
+            </ul>
+
+        </div>
+
+
+
+        <div class="footer-column footer-contact">
+
+            <h3>CONTACT US</h3>
+
+            <div class="footer-contact-item">
+
+                <span class="footer-contact-icon">
+                    📍
+                </span>
+
+                <span>
+                    Sri Lanka
+                </span>
+
+            </div>
+
+
+            <div class="footer-contact-item">
+
+                <span class="footer-contact-icon">
+                    📞
+                </span>
+
+                <span>
+                    +94 77 123 4567
+                </span>
+
+            </div>
+
+
+            <div class="footer-contact-item">
+
+                <span class="footer-contact-icon">
+                    ✉
+                </span>
+
+                <span>
+                    info@craftora.lk
+                </span>
+
+            </div>
+
+
+            <div class="footer-contact-item">
+
+                <span class="footer-contact-icon">
+                    🕐
+                </span>
+
+                <span>
+                    Mon - Fri: 9.00 AM - 5.00 PM
+                </span>
+
+            </div>
+
+        </div>
+
+
+
+        <div class="footer-column community-column">
+
+            <h3>
+                CRAFTORA<br>
+                COMMUNITY
+            </h3>
+
+            <p class="community-text">
+                Be part of the growing handicraft
+                community and discover new
+                opportunities.
+            </p>
+
+            <ul>
+
+                <li>
+                    <a href="#">
+                        Become an Artisan
+                    </a>
+                </li>
+
+                <li>
+                    <a href="#">
+                        Join a Workshop
+                    </a>
+                </li>
+
+                <li>
+                    <a href="/marketplace">
+                        Explore Marketplace
+                    </a>
+                </li>
+
+                <li>
+                    <a href="#">
+                        Share Your Craft
+                    </a>
+                </li>
+
+            </ul>
+
+        </div>
+
+
+    </div>
+
+
+    <div class="footer-bottom">
+
+        <p>
+            © 2026 Craftora Project. All Rights Reserved.
+        </p>
+
+    </div>
+
+</footer>
+
+
+</body>
+</html>

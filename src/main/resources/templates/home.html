@@ -1,0 +1,668 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Craftora - Handicraft Development & Community</title>
+
+    <link rel="stylesheet" href="/css/style.css">
+</head>
+
+<body>
+
+<!-- ================================
+     NAVIGATION BAR
+================================ -->
+
+<nav class="navbar">
+
+    <!-- Logo -->
+    <div class="logo">
+        <a href="/">
+            <img src="/images/craftora-logo.png" alt="Craftora Logo">
+        </a>
+    </div>
+
+    <!-- Navigation Links -->
+    <div class="nav-links">
+
+        <a href="/" class="active">Home</a>
+
+        <a href="/about-us">About Us</a>
+
+        <!-- Events Dropdown -->
+        <div class="dropdown">
+
+            <a href="#">Events ▾</a>
+
+            <div class="dropdown-menu">
+                <a href="/workshops">Workshops</a>
+                <a href="/exhibitions">Exhibitions</a>
+                <a href="/competitions">Competitions</a>
+            </div>
+
+        </div>
+
+        <a href="/marketplace">Marketplace</a>
+
+        <a href="/ratings">Ratings</a>
+
+        <a href="/contact">Contact Us</a>
+
+    </div>
+
+    <!-- Sign In -->
+    <div class="sign-in">
+        <a href="/login">Sign In</a>
+    </div>
+
+</nav>
+
+
+<!-- ================================
+     HERO IMAGE SLIDER
+================================ -->
+
+<section class="hero">
+
+    <div class="slider">
+
+        <!-- IMAGE 1 -->
+        <div class="slide active">
+
+            <img src="/images/hero1.jpg"
+                 alt="Artisan creating pottery">
+
+            <div class="hero-overlay"></div>
+
+            <div class="hero-text">
+
+                <h1>Preserving Tradition</h1>
+
+                <p>
+                    Discover the beauty of handmade crafts
+                    and traditional artistry.
+                </p>
+
+                <a href="#" class="hero-button">
+                    Explore Crafts
+                </a>
+
+            </div>
+
+        </div>
+
+
+        <!-- IMAGE 2 -->
+        <div class="slide">
+
+            <img src="/images/hero2.jpg"
+                 alt="Artisan creating bamboo crafts">
+
+            <div class="hero-overlay"></div>
+
+            <div class="hero-text">
+
+                <h1>Crafted With Passion</h1>
+
+                <p>
+                    Meet talented artisans who transform
+                    traditional skills into beautiful creations.
+                </p>
+
+                <a href="#" class="hero-button">
+                    Meet Our Artisans
+                </a>
+
+            </div>
+
+        </div>
+
+
+        <!-- IMAGE 3 -->
+        <div class="slide">
+
+            <img src="/images/hero3.jpg"
+                 alt="Artisan creating crochet crafts">
+
+            <div class="hero-overlay"></div>
+
+            <div class="hero-text">
+
+                <h1>Handmade With Love</h1>
+
+                <p>
+                    Every handmade creation carries
+                    creativity, passion and a unique story.
+                </p>
+
+                <a href="#" class="hero-button">
+                    View Marketplace
+                </a>
+
+            </div>
+
+        </div>
+
+
+        <!-- IMAGE 4 -->
+        <div class="slide">
+
+            <img src="/images/hero4.jpg"
+                 alt="Traditional handicraft artisan">
+
+            <div class="hero-overlay"></div>
+
+            <div class="hero-text">
+
+                <h1>Celebrating Creativity</h1>
+
+                <p>
+                    Support local artisans and celebrate
+                    the beauty of traditional handicrafts.
+                </p>
+
+                <a href="#" class="hero-button">
+                    Discover More
+                </a>
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <!-- Previous Button -->
+    <button class="slider-btn prev"
+            onclick="changeSlide(-1)">
+        ❮
+    </button>
+
+
+    <!-- Next Button -->
+    <button class="slider-btn next"
+            onclick="changeSlide(1)">
+        ❯
+    </button>
+
+
+    <!-- Slider Dots -->
+    <div class="slider-dots">
+
+        <span class="dot active"
+              onclick="currentSlide(0)">
+        </span>
+
+        <span class="dot"
+              onclick="currentSlide(1)">
+        </span>
+
+        <span class="dot"
+              onclick="currentSlide(2)">
+        </span>
+
+        <span class="dot"
+              onclick="currentSlide(3)">
+        </span>
+
+    </div>
+
+</section>
+
+
+
+<!-- ================================
+     WELCOME SECTION
+================================ -->
+
+<section class="welcome">
+
+    <h2>Welcome to Craftora</h2>
+
+    <p>
+        Connecting artisans, craft lovers and communities
+        to preserve and promote traditional handicrafts.
+    </p>
+
+</section>
+
+
+ <!-- ================================
+     CRAFTORA FEATURES
+================================ -->
+
+<section class="craft-features">
+
+    <!-- CREATE -->
+    <div class="feature-card">
+
+        <div class="feature-icon">🏺</div>
+
+        <h3>Create</h3>
+
+        <p>
+            Turn creativity and traditional skills into beautiful
+            handmade products while supporting local artisans.
+        </p>
+
+    </div>
+
+
+    <!-- DISCOVER -->
+    <div class="feature-card">
+
+        <div class="feature-icon">👁</div>
+
+        <h3>Discover</h3>
+
+        <p>
+            Discover talented artisans, unique handmade crafts,
+            and inspiring stories behind their creations.
+        </p>
+
+    </div>
+
+
+    <!-- SHOP -->
+    <div class="feature-card">
+
+        <div class="feature-icon">🛍️</div>
+
+        <h3>Shop</h3>
+
+        <p>
+            Explore and purchase authentic handmade products
+            directly from skilled artisans and creators.
+        </p>
+
+    </div>
+
+
+    <!-- LEARN -->
+    <div class="feature-card">
+
+        <div class="feature-icon">🎓</div>
+
+        <h3>Learn</h3>
+
+        <p>
+            Join workshops and learn traditional craft techniques
+            from skilled artisans while developing your creativity.
+        </p>
+
+    </div>
+
+</section>
+
+
+
+<!-- ================================
+     CURRENTLY REGISTERED ARTISANS
+================================ -->
+
+<section class="artisans-section">
+
+    <div class="artisan-heading">
+
+        <span>OUR MASTER CRAFTSMEN</span>
+
+        <h2>CURRENTLY REGISTERED ARTISANS</h2>
+
+        <p>
+            Meet talented artisans and discover the unique stories
+            behind their traditional handmade creations.
+        </p>
+
+    </div>
+
+
+    <div class="artisan-container">
+
+        <!-- ARTISAN CARD -->
+
+        <div class="artisan-card"
+             th:each="artisan : ${artisans}">
+
+            <!-- Profile Image -->
+
+            <div class="artisan-image">
+
+                <!-- Real image -->
+                <img th:if="${artisan.profileImage != null and !artisan.profileImage.isEmpty()}"
+                     th:src="${artisan.profileImage}"
+                     th:alt="${artisan.user.fullName}">
+
+                <!-- Default image -->
+                <div th:if="${artisan.profileImage == null}"
+                     class="artisan-placeholder">
+
+                    <span>👤</span>
+
+                </div>
+
+            </div>
+
+
+            <!-- Artisan Details -->
+
+            <div class="artisan-info">
+
+                <!-- Craft Type -->
+
+                <div class="craft-badge"
+                     th:text="${artisan.craftType}">
+
+                    Craft Type
+
+                </div>
+
+
+                <!-- Artisan Name -->
+
+                <h3 th:text="${artisan.user.fullName}">
+
+                    Artisan Name
+
+                </h3>
+
+
+                <!-- Location -->
+
+                <p class="artisan-location">
+
+                    <span class="location-icon">📍</span>
+
+                    <span th:text="${artisan.location}">
+                        Location
+                    </span>
+
+                </p>
+
+
+                <!-- Rating -->
+
+                <div class="artisan-rating">
+
+                    <span class="stars">
+                        ★★★★★
+                    </span>
+
+                    <span class="rating-number">
+                        (5.0)
+                    </span>
+
+                </div>
+
+
+                <!-- View Profile -->
+
+                <a href="#"
+                   class="view-profile-btn">
+
+                    View Profile
+
+                </a>
+
+            </div>
+
+        </div>
+
+
+        <!-- No Artisans Message -->
+
+        <div class="no-artisans"
+             th:if="${#lists.isEmpty(artisans)}">
+
+            <p>
+                No artisans are currently registered.
+            </p>
+
+        </div>
+
+    </div>
+
+
+    <!-- View All -->
+
+    <div class="view-all-artisans">
+
+      <a href="/all-artisans"
+   class="view-all-btn">
+    View All Artisans <span>→</span>
+</a> 
+
+    </div>
+
+</section>
+
+
+<!-- LATEST NEWS & CALENDAR -->
+
+<section class="news-section">
+
+    <div class="news-heading">
+        <span>STAY UPDATED</span>
+        <h2>LATEST NEWS</h2>
+        <p>
+            Stay updated with the latest news, events and activities
+            happening in the handicraft community.
+        </p>
+    </div>
+
+    <div class="news-layout">
+
+        <!-- NEWS SLIDER -->
+        <div class="news-slider">
+
+            <div class="news-track" id="news-track">
+
+                <!-- Dynamic Published Events -->
+                <div class="news-card"
+                     th:each="event : ${events}">
+
+                    <div class="news-image">
+
+                        <!-- Event Image -->
+                        <img th:if="${event.eventImage != null and !event.eventImage.isEmpty()}"
+                             th:src="${event.eventImage}"
+                             th:alt="${event.eventTitle}">
+
+                        <!-- Default Image if no event image -->
+                        <img th:unless="${event.eventImage != null and !event.eventImage.isEmpty()}"
+                             src="/images/news1.jpg"
+                             th:alt="${event.eventTitle}">
+
+                    </div>
+
+                    <div class="news-content">
+
+                        <span class="news-date"
+                              th:text="${event.eventType}">
+                            EVENT
+                        </span>
+
+                        <h3 th:text="${event.eventTitle}">
+                            Event Title
+                        </h3>
+
+                        <p th:text="${event.description != null and event.description.length() > 120 
+             ? event.description.substring(0, 120) + '...' 
+             : event.description}">
+    Event description
+</p>
+
+                        <a href="#"
+                           th:text="'View ' + ${event.eventType} + ' →'">
+                            Read More →
+                        </a>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <!-- CALENDAR -->
+
+        <div class="news-calendar">
+
+            <div class="calendar-header">
+
+                <button id="prev-month">‹</button>
+
+                <div>
+                    <h3 id="calendar-month"></h3>
+                    <span id="calendar-year"></span>
+                </div>
+
+                <button id="next-month">›</button>
+
+            </div>
+
+
+            <div class="calendar-weekdays">
+                <span>Sun</span>
+                <span>Mon</span>
+                <span>Tue</span>
+                <span>Wed</span>
+                <span>Thu</span>
+                <span>Fri</span>
+                <span>Sat</span>
+            </div>
+
+
+            <div class="calendar-days" id="calendar-days">
+            </div>
+
+        </div>
+
+    </div>
+
+</section>
+
+<!-- ================================
+     FOOTER
+================================= -->
+
+<footer class="site-footer">
+
+    <div class="footer-container">
+
+        <!-- CRAFTORA -->
+        <div class="footer-column footer-about">
+
+            <h3>CRAFTORA</h3>
+
+            <p>
+                Craftora is an integrated web application aimed at
+                preserving traditional handicrafts, promoting artisan
+                growth, and providing learning & commercial opportunities
+                through technology.
+            </p>
+
+        </div>
+
+
+        <!-- QUICK LINKS -->
+        <div class="footer-column">
+
+            <h3>QUICK LINKS</h3>
+
+            <ul>
+                <li><a href="/">Home</a></li>
+                <li><a href="#">About Us</a></li>
+                <li><a href="#">Registered Artisans</a></li>
+                <li><a href="#">Ratings & Reviews</a></li>
+            </ul>
+
+        </div>
+
+
+        <!-- EVENT CATEGORIES -->
+        <div class="footer-column">
+
+            <h3>EVENT CATEGORIES</h3>
+
+            <ul>
+                <li><a href="/workshops">Workshops</a></li>
+                <li><a href="/exhibitions">Exhibitions</a></li>
+                <li><a href="/competitions">Competitions</a></li>
+                <li><a href="#">Google Maps Integration</a></li>
+            </ul>
+
+        </div>
+
+
+        <!-- CONTACT US -->
+        <div class="footer-column footer-contact">
+
+            <h3>CONTACT US</h3>
+
+            <div class="footer-contact-item">
+                <span class="footer-contact-icon">📍</span>
+                <span>Sri Lanka</span>
+            </div>
+
+            <div class="footer-contact-item">
+                <span class="footer-contact-icon">📞</span>
+                <span>+94 77 0343002</span>
+            </div>
+
+            <div class="footer-contact-item">
+                <span class="footer-contact-icon">✉</span>
+                <span>craftorasystem@gmail.com</span>
+            </div>
+
+            <div class="footer-contact-item">
+                <span class="footer-contact-icon">🕐</span>
+                <span>Mon - Fri: 9.00 AM - 5.00 PM</span>
+            </div>
+
+        </div>
+
+
+      <!-- CRAFTORA COMMUNITY -->
+<div class="footer-column community-column">
+
+    <h3>CRAFTORA<br>COMMUNITY</h3>
+
+    <p class="community-text">
+        Be part of the growing handicraft community
+        and discover new opportunities.
+    </p>
+
+    <ul>
+        <li><a href="#">Become an Artisan</a></li>
+        <li><a href="#">Join a Workshop</a></li>
+        <li><a href="#">Explore Marketplace</a></li>
+        <li><a href="#">Share Your Craft</a></li>
+    </ul>
+
+</div>
+
+    </div>
+
+
+    <!-- FOOTER BOTTOM -->
+
+    <div class="footer-bottom">
+
+        <p>
+            © 2026 Craftora Project. All Rights Reserved.
+        
+        </p>
+
+    </div>
+
+</footer>
+
+<!-- JavaScript -->
+<script src="/js/script.js"></script>
+
+</body>
+</html>

@@ -1,0 +1,1768 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
+
+    <title>Craftora - Competitions</title>
+
+    <!-- MAIN CRAFTORA CSS -->
+    <link rel="stylesheet"
+          href="/css/style.css">
+
+
+    <style>
+
+        /* =====================================================
+           COMPETITIONS PAGE
+        ===================================================== */
+
+        .competitions-page {
+            background: #f8f7f2;
+            min-height: 100vh;
+        }
+
+
+        /* =====================================================
+           HERO
+           SAME AS WORKSHOPS / EXHIBITIONS
+        ===================================================== */
+
+        .competitions-hero {
+
+            position: relative;
+
+            height: 360px;
+
+            background-image:
+
+                linear-gradient(
+                    rgba(0, 70, 45, 0.72),
+                    rgba(0, 70, 45, 0.72)
+                ),
+
+                url('/images/hero2.jpg');
+
+            background-size: cover;
+
+            background-position: center;
+
+            display: flex;
+
+            align-items: center;
+
+            justify-content: center;
+
+            text-align: center;
+
+            color: white;
+        }
+
+
+        .competitions-hero-content {
+
+            max-width: 850px;
+
+            padding: 30px;
+        }
+
+
+        .competitions-hero-content > span {
+
+            display: block;
+
+            font-size: 14px;
+
+            letter-spacing: 3px;
+
+            font-weight: 600;
+
+            margin-bottom: 15px;
+
+            color: #e5c76b;
+        }
+
+
+        .competitions-hero-content h1 {
+
+            font-size: 48px;
+
+            margin: 0 0 15px;
+
+            font-weight: 700;
+
+            color: #ffffff;
+        }
+
+
+        .competitions-hero-content p {
+
+            font-size: 18px;
+
+            line-height: 1.7;
+
+            margin: 0 auto;
+
+            max-width: 700px;
+
+            color: #ffffff;
+        }
+
+
+        /* =====================================================
+           SEARCH
+        ===================================================== */
+
+        .competition-search {
+
+            max-width: 625px;
+
+            margin: 22px auto 0;
+
+            padding: 7px 8px 7px 20px;
+
+            background: #ffffff;
+
+            border-radius: 45px;
+
+            display: flex;
+
+            align-items: center;
+
+            box-shadow:
+                0 4px 16px rgba(0, 0, 0, 0.08);
+
+            border: none;
+        }
+
+
+        .competition-search input {
+
+            flex: 1;
+
+            border: none;
+
+            outline: none;
+
+            background: transparent;
+
+            padding: 14px;
+
+            font-size: 16px;
+
+            color: #444;
+        }
+
+
+        .competition-search input::placeholder {
+
+            color: #777;
+        }
+
+
+        .competition-search button {
+
+            border: none;
+
+            background: #08724d;
+
+            color: white;
+
+            min-width: 118px;
+
+            padding: 13px 22px;
+
+            border-radius: 35px;
+
+            font-size: 15px;
+
+            font-weight: 700;
+
+            cursor: pointer;
+
+            transition: 0.3s ease;
+
+            display: flex;
+
+            align-items: center;
+
+            justify-content: center;
+
+            gap: 7px;
+        }
+
+
+        .competition-search button:hover {
+
+            background: #05583c;
+        }
+
+
+        .search-icon {
+
+            font-size: 24px;
+
+            line-height: 1;
+
+            font-weight: 700;
+
+            transform: rotate(-20deg);
+
+            display: inline-block;
+        }
+
+
+        /* =====================================================
+           MAIN SECTION
+        ===================================================== */
+
+        .competitions-section {
+
+            max-width: 1200px;
+
+            margin: 0 auto;
+
+            padding: 70px 25px;
+        }
+
+
+        /* =====================================================
+           HEADING
+        ===================================================== */
+
+        .competitions-heading {
+
+            text-align: center;
+
+            margin-bottom: 45px;
+        }
+
+
+        .competitions-heading span {
+
+            color: #b18a2c;
+
+            font-size: 14px;
+
+            letter-spacing: 2px;
+
+            font-weight: 700;
+        }
+
+
+        .competitions-heading h2 {
+
+            margin: 10px 0 12px;
+
+            color: #07583d;
+
+            font-size: 34px;
+        }
+
+
+        .competitions-heading p {
+
+            max-width: 700px;
+
+            margin: auto;
+
+            color: #666;
+
+            line-height: 1.7;
+        }
+
+
+        /* =====================================================
+           UPCOMING GRID
+        ===================================================== */
+
+        .competitions-grid {
+
+            display: grid;
+
+            grid-template-columns:
+                repeat(3, 1fr);
+
+            gap: 28px;
+        }
+
+
+        /* =====================================================
+           CURRENT / UPCOMING CARD
+        ===================================================== */
+
+        .competition-card {
+
+            background: white;
+
+            border-radius: 16px;
+
+            overflow: hidden;
+
+            box-shadow:
+                0 5px 20px rgba(0, 0, 0, 0.08);
+
+            transition: 0.3s ease;
+        }
+
+
+        .competition-card:hover {
+
+            transform: translateY(-6px);
+
+            box-shadow:
+                0 12px 28px rgba(0, 0, 0, 0.13);
+        }
+
+
+        .competition-image {
+
+            width: 100%;
+
+            height: 220px;
+
+            overflow: hidden;
+
+            background: #eee;
+
+            position: relative;
+        }
+
+
+        .competition-image img {
+
+            width: 100%;
+
+            height: 100%;
+
+            object-fit: cover;
+
+            display: block;
+        }
+
+
+        /* =====================================================
+           FREE BADGE
+        ===================================================== */
+
+        .event-free-badge {
+
+            position: absolute;
+
+            top: 12px;
+
+            right: 12px;
+
+            z-index: 20;
+
+            background: #e91d25;
+
+            color: #ffffff !important;
+
+            padding: 6px 13px;
+
+            border-radius: 20px;
+
+            font-size: 12px;
+
+            font-weight: 800;
+
+            letter-spacing: 1px;
+
+            line-height: 1;
+
+            box-shadow:
+                0 4px 10px rgba(0,0,0,0.18);
+        }
+
+
+        /* =====================================================
+           CONTENT
+        ===================================================== */
+
+        .competition-content {
+
+            padding: 24px;
+        }
+
+
+        .competition-tag {
+
+            display: inline-block;
+
+            background: #edf6f1;
+
+            color: #08724d;
+
+            padding: 6px 12px;
+
+            border-radius: 20px;
+
+            font-size: 12px;
+
+            font-weight: 700;
+
+            margin-bottom: 12px;
+        }
+
+
+        .competition-content h3 {
+
+            color: #174d3a;
+
+            font-size: 21px;
+
+            margin: 0 0 12px;
+        }
+
+
+        .competition-content p {
+
+            color: #666;
+
+            line-height: 1.6;
+
+            font-size: 14px;
+
+            margin-bottom: 18px;
+        }
+
+
+        /* =====================================================
+           INFORMATION
+        ===================================================== */
+
+        .competition-info {
+
+            border-top:
+                1px solid #eeeeee;
+
+            padding-top: 16px;
+
+            margin-bottom: 20px;
+        }
+
+
+        .competition-info div {
+
+            display: flex;
+
+            align-items: center;
+
+            gap: 9px;
+
+            margin-bottom: 9px;
+
+            color: #555;
+
+            font-size: 14px;
+        }
+
+
+        .competition-info span:first-child {
+
+            width: 20px;
+        }
+
+
+        /* =====================================================
+           BUTTONS
+        ===================================================== */
+
+        .competition-buttons {
+
+            display: grid;
+
+            grid-template-columns:
+                1fr 1fr;
+
+            gap: 10px;
+        }
+
+
+        .competition-view-btn,
+        .competition-register-btn {
+
+            display: flex;
+
+            align-items: center;
+
+            justify-content: center;
+
+            text-align: center;
+
+            padding: 11px 10px;
+
+            border-radius: 8px;
+
+            font-size: 13px;
+
+            font-weight: 700;
+
+            text-decoration: none;
+
+            transition: 0.3s ease;
+        }
+
+
+        .competition-view-btn {
+
+            background: #08724d;
+
+            color: #ffffff !important;
+        }
+
+
+        .competition-view-btn:hover {
+
+            background: #05583c;
+
+            color: #ffffff !important;
+        }
+
+
+        .competition-register-btn {
+
+            background: #c58a25;
+
+            color: #ffffff !important;
+        }
+
+
+        .competition-register-btn:hover {
+
+            background: #a87318;
+
+            color: #ffffff !important;
+        }
+
+
+        /* =====================================================
+           EMPTY STATE
+        ===================================================== */
+
+        .empty-card {
+
+            background: white;
+
+            border-radius: 16px;
+
+            padding: 55px 30px;
+
+            text-align: center;
+
+            box-shadow:
+                0 5px 20px rgba(0, 0, 0, 0.06);
+
+            grid-column: 1 / -1;
+        }
+
+
+        .empty-icon {
+
+            font-size: 50px;
+
+            margin-bottom: 15px;
+        }
+
+
+        .empty-card h3 {
+
+            color: #174d3a;
+
+            margin-bottom: 10px;
+        }
+
+
+        .empty-card p {
+
+            color: #777;
+
+            max-width: 650px;
+
+            margin: auto;
+
+            line-height: 1.7;
+        }
+
+
+        /* =====================================================
+           SEARCH MESSAGE
+        ===================================================== */
+
+        .search-message {
+
+            display: none;
+
+            text-align: center;
+
+            color: #777;
+
+            margin: 25px 0 0;
+
+            font-size: 15px;
+        }
+
+
+        /* =====================================================
+           PREVIOUS COMPETITIONS
+        ===================================================== */
+
+        .previous-section {
+
+            max-width: 1200px;
+
+            margin: 0 auto;
+
+            padding: 20px 25px 80px;
+        }
+
+
+        .previous-heading {
+
+            text-align: center;
+
+            margin-bottom: 45px;
+        }
+
+
+        .previous-heading span {
+
+            color: #b18a2c;
+
+            font-size: 14px;
+
+            letter-spacing: 2px;
+
+            font-weight: 700;
+        }
+
+
+        .previous-heading h2 {
+
+            margin: 10px 0 12px;
+
+            color: #07583d;
+
+            font-size: 34px;
+        }
+
+
+        .previous-heading p {
+
+            max-width: 700px;
+
+            margin: auto;
+
+            color: #666;
+
+            line-height: 1.7;
+        }
+
+
+        .previous-grid {
+
+            display: grid;
+
+            grid-template-columns:
+                repeat(2, 1fr);
+
+            gap: 28px;
+        }
+
+
+        .previous-card {
+
+            background: white;
+
+            border-radius: 18px;
+
+            overflow: hidden;
+
+            box-shadow:
+                0 10px 28px rgba(20,61,43,0.09);
+
+            transition:
+                transform 0.25s ease,
+                box-shadow 0.25s ease;
+        }
+
+
+        .previous-card:hover {
+
+            transform: translateY(-5px);
+
+            box-shadow:
+                0 17px 35px rgba(20,61,43,0.15);
+        }
+
+
+        .previous-image {
+
+            width: 100%;
+
+            height: 230px;
+
+            background-size: cover;
+
+            background-position: center;
+        }
+
+
+        .previous-image.one {
+
+            background-image:
+                url('/images/hero1.jpg');
+        }
+
+
+        .previous-image.two {
+
+            background-image:
+                url('/images/hero2.jpg');
+        }
+
+
+        .previous-image.three {
+
+            background-image:
+                url('/images/hero1.jpg');
+        }
+
+
+        .previous-image.four {
+
+            background-image:
+                url('/images/hero2.jpg');
+        }
+.previous-image {
+    width: 100%;
+    height: 230px;
+    overflow: hidden;
+    background: #eee;
+}
+
+
+
+.previous-image {
+    width: 100%;
+    height: 230px;
+    overflow: hidden;
+    background: #eee;
+}
+
+.previous-image img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center;
+    display: block;
+}
+
+
+
+        .previous-content {
+
+            padding: 25px;
+        }
+
+
+        .previous-tag {
+
+            display: inline-block;
+
+            background: #f7edda;
+
+            color: #b27b1e;
+
+            border-radius: 20px;
+
+            padding: 7px 13px;
+
+            font-size: 13px;
+
+            font-weight: 700;
+
+            margin-bottom: 13px;
+        }
+
+
+        .previous-content h3 {
+
+            color: #075c42;
+
+            font-size: 24px;
+
+            margin-bottom: 13px;
+        }
+
+
+        .previous-content p {
+
+            color: #65736e;
+
+            line-height: 1.65;
+
+            margin-bottom: 17px;
+        }
+
+
+        .previous-meta {
+
+            display: flex;
+
+            flex-wrap: wrap;
+
+            gap: 14px;
+
+            color: #53635d;
+
+            font-size: 14px;
+
+            margin-bottom: 20px;
+        }
+
+
+        .details-btn {
+
+            display: inline-block;
+
+            background: #08724d;
+
+            color: white !important;
+
+            padding: 11px 20px;
+
+            border-radius: 8px;
+
+            font-weight: 700;
+
+            text-decoration: none;
+
+            transition: 0.3s ease;
+        }
+
+
+        .details-btn:hover {
+
+            background: #c58a25;
+
+            color: white !important;
+        }
+
+
+        /* =====================================================
+           FOOTER
+        ===================================================== */
+
+        footer {
+
+            background: #103f2c;
+
+            color: white;
+
+            padding: 50px 7% 25px;
+
+            margin-top: 20px;
+        }
+
+
+        .footer-grid {
+
+            display: grid;
+
+            grid-template-columns:
+                1.4fr 1fr 1fr;
+
+            gap: 45px;
+
+            max-width: 1250px;
+
+            margin: auto;
+        }
+
+
+        .footer-logo img {
+
+            width: 210px;
+
+            background: white;
+
+            padding: 8px 13px;
+
+            border-radius: 8px;
+
+            margin-bottom: 18px;
+        }
+
+
+        footer h3 {
+
+            color: #f0c96d;
+
+            margin-bottom: 15px;
+        }
+
+
+        footer p,
+        footer a {
+
+            color:
+                rgba(255,255,255,0.82);
+
+            line-height: 1.8;
+        }
+
+
+        footer a:hover {
+
+            color: #f0c96d;
+        }
+
+
+        .footer-bottom {
+
+            max-width: 1250px;
+
+            margin: 35px auto 0;
+
+            padding-top: 20px;
+
+            border-top:
+                1px solid
+                rgba(255,255,255,0.16);
+
+            text-align: center;
+
+            color:
+                rgba(255,255,255,0.65);
+        }
+
+
+        /* =====================================================
+           RESPONSIVE
+        ===================================================== */
+
+        @media (max-width: 950px) {
+
+            .competitions-grid {
+
+                grid-template-columns:
+                    repeat(2, 1fr);
+            }
+
+
+            .previous-grid {
+
+                grid-template-columns:
+                    repeat(2, 1fr);
+            }
+        }
+
+
+        @media (max-width: 650px) {
+
+            .competitions-hero {
+
+                height: 300px;
+            }
+
+
+            .competitions-hero-content h1 {
+
+                font-size: 35px;
+            }
+
+
+            .competitions-hero-content p {
+
+                font-size: 15px;
+            }
+
+
+            .competitions-grid {
+
+                grid-template-columns: 1fr;
+            }
+
+
+            .previous-grid {
+
+                grid-template-columns: 1fr;
+            }
+
+
+            .competitions-section {
+
+                padding: 50px 18px;
+            }
+
+
+            .previous-section {
+
+                padding:
+                    20px 18px 50px;
+            }
+
+
+            .competition-search {
+
+                border-radius: 18px;
+
+                flex-direction: column;
+
+                padding: 8px;
+            }
+
+
+            .competition-search input {
+
+                width: 100%;
+
+                box-sizing: border-box;
+            }
+
+
+            .competition-search button {
+
+                width: 100%;
+            }
+        }
+
+
+        @media (max-width: 450px) {
+
+            .competition-buttons {
+
+                grid-template-columns: 1fr;
+            }
+        }
+
+    </style>
+
+</head>
+
+
+<body>
+
+
+<div class="competitions-page">
+
+
+    <!-- =====================================================
+         NAVBAR
+    ====================================================== -->
+
+    <nav class="navbar">
+
+        <div class="logo">
+
+            <a href="/">
+
+                <img
+                    src="/images/craftora-logo.png"
+                    alt="Craftora Logo">
+
+            </a>
+
+        </div>
+
+
+        <div class="nav-links">
+
+            <a href="/">
+                Home
+            </a>
+
+
+            <a href="/about-us">
+                About Us
+            </a>
+
+
+            <div class="dropdown">
+
+                <a href="#">
+                    Events ▾
+                </a>
+
+
+                <div class="dropdown-menu">
+
+                    <a href="/workshops">
+                        Workshops
+                    </a>
+
+
+                    <a href="/exhibitions">
+                        Exhibitions
+                    </a>
+
+
+                    <a href="/competitions">
+                        Competitions
+                    </a>
+
+                </div>
+
+            </div>
+
+
+            <a href="/marketplace">
+                Marketplace
+            </a>
+
+
+            <a href="/ratings">
+                Ratings
+            </a>
+
+
+            <a href="/contact-us">
+                Contact Us
+            </a>
+
+        </div>
+
+
+        <div class="sign-in">
+
+            <a href="/login">
+                Sign In
+            </a>
+
+        </div>
+
+    </nav>
+
+
+
+    <!-- =====================================================
+         HERO
+    ====================================================== -->
+
+    <section class="competitions-hero">
+
+        <div class="competitions-hero-content">
+
+
+            <span>
+                CREATE • COMPETE • CELEBRATE
+            </span>
+
+
+            <h1>
+                Handicraft Competitions
+            </h1>
+
+
+            <p>
+                Celebrate creativity, traditional craftsmanship and artistic
+                talent through exciting handicraft competitions organized by Craftora.
+            </p>
+
+
+            <!-- SEARCH -->
+
+            <div class="competition-search">
+
+                <input
+                    type="text"
+                    id="competitionSearch"
+                    placeholder="Search competitions by craft type or location..."
+                    autocomplete="off">
+
+
+                <button
+                    type="button"
+                    onclick="searchCompetitions()">
+
+                    <span class="search-icon">
+                        ⌕
+                    </span>
+
+                    <span>
+                        Search
+                    </span>
+
+                </button>
+
+            </div>
+
+        </div>
+
+    </section>
+
+
+
+    <!-- =====================================================
+         UPCOMING COMPETITIONS
+    ====================================================== -->
+
+    <section class="competitions-section">
+
+
+        <div class="competitions-heading">
+
+            <span>
+                COMING SOON
+            </span>
+
+
+            <h2>
+                Upcoming Competitions
+            </h2>
+
+
+            <p>
+                Discover upcoming competitions and participate in exciting
+                opportunities to showcase your creativity and craftsmanship.
+            </p>
+
+        </div>
+
+
+
+        <!-- DYNAMIC UPCOMING EVENTS -->
+
+        <div
+            class="competitions-grid"
+            id="competitionGrid"
+            th:if="${!#lists.isEmpty(events)}">
+
+
+            <div
+                class="competition-card"
+                th:each="event : ${events}"
+                th:attr="
+                    data-competition=
+                    ${event.eventTitle
+                    + ' '
+                    + event.description
+                    + ' '
+                    + event.location
+                    + ' '
+                    + event.eventType}">
+
+
+                <!-- IMAGE -->
+
+                <div class="competition-image">
+
+
+                    <!-- CUSTOMER / GUEST FREE -->
+
+                    <span
+                        class="event-free-badge"
+
+                        th:if="${(session.loggedInUserId == null
+                                 and
+                                 (event.customerRegistrationFee == null
+                                  or
+                                  event.customerRegistrationFee.doubleValue() <= 0))
+                                 or
+                                 (session.loggedInUserId != null
+                                  and
+                                  session.selectedRole != null
+                                  and
+                                  session.selectedRole.equalsIgnoreCase('CUSTOMER')
+                                  and
+                                  (event.customerRegistrationFee == null
+                                   or
+                                   event.customerRegistrationFee.doubleValue() <= 0))}">
+
+                        FREE
+
+                    </span>
+
+
+                    <!-- ARTISAN FREE -->
+
+                    <span
+                        class="event-free-badge"
+
+                        th:if="${session.loggedInUserId != null
+                                 and
+                                 session.selectedRole != null
+                                 and
+                                 session.selectedRole.equalsIgnoreCase('ARTISAN')
+                                 and
+                                 (event.artisanRegistrationFee == null
+                                  or
+                                  event.artisanRegistrationFee.doubleValue() <= 0)}">
+
+                        FREE
+
+                    </span>
+
+
+                    <!-- EVENT IMAGE -->
+
+                    <img
+                        th:if="${event.eventImage != null
+                                and
+                                !#strings.isEmpty(event.eventImage)}"
+
+                        th:src="${event.eventImage}"
+
+                        alt="Competition Image">
+
+                </div>
+
+
+
+                <!-- CONTENT -->
+
+                <div class="competition-content">
+
+
+                    <span class="competition-tag">
+                        Competition
+                    </span>
+
+
+                    <h3
+                        th:text="${event.eventTitle}">
+
+                        Competition Title
+
+                    </h3>
+
+
+                    <p
+                        th:text="${event.description}">
+
+                        Competition description
+
+                    </p>
+
+
+                    <div class="competition-info">
+
+
+                        <div
+                            th:if="${event.eventDate != null}">
+
+                            <span>📅</span>
+
+                            <span
+                                th:text="${event.eventDate}">
+
+                                Date
+
+                            </span>
+
+                        </div>
+
+
+                        <div
+                            th:if="${event.startTime != null}">
+
+                            <span>⏰</span>
+
+                            <span
+                                th:text="${event.startTime + ' - ' + event.endTime}">
+
+                                Time
+
+                            </span>
+
+                        </div>
+
+
+                        <div
+                            th:if="${event.location != null}">
+
+                            <span>📍</span>
+
+                            <span
+                                th:text="${event.location}">
+
+                                Location
+
+                            </span>
+
+                        </div>
+
+
+                        <div
+                            th:if="${event.capacity != null}">
+
+                            <span>👥</span>
+
+                            <span
+                                th:text="'Capacity: ' + ${event.capacity}">
+
+                                Capacity
+
+                            </span>
+
+                        </div>
+
+
+                    </div>
+
+
+                    <!-- BUTTONS -->
+
+                    <div class="competition-buttons">
+
+
+                        <a
+                            class="competition-view-btn"
+
+                            th:href="@{/events/{id}(id=${event.eventId})}">
+
+                            View
+
+                        </a>
+
+
+                        <a
+                            class="competition-register-btn"
+
+                            th:href="${session.loggedInUserId == null
+                                      ?
+                                      '/login'
+                                      :
+                                      '/events/'
+                                      + event.eventId
+                                      + '/register'}">
+
+                            Register Now
+
+                        </a>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+
+
+        <!-- NO UPCOMING COMPETITIONS -->
+
+        <div
+            class="competitions-grid"
+            th:if="${#lists.isEmpty(events)}">
+
+
+            <div class="empty-card">
+
+                <div class="empty-icon">
+                    🏆
+                </div>
+
+
+                <h3>
+                    No Upcoming Competitions Yet
+                </h3>
+
+
+                <p>
+                    There are no upcoming competitions available at the moment.
+                    New competitions will appear here when they are added to Craftora.
+                </p>
+
+            </div>
+
+        </div>
+
+
+        <div
+            id="searchMessage"
+            class="search-message">
+
+            No competitions found matching your search.
+
+        </div>
+
+    </section>
+
+
+<!-- PREVIOUS COMPETITIONS -->
+<section class="previous-section"
+         th:if="${previousEvents != null and !#lists.isEmpty(previousEvents)}">
+
+    <div class="previous-heading">
+        <span>OUR MEMORIES</span>
+        <h2>Previous Competitions</h2>
+        <p>
+            Explore the competitions we have celebrated
+            and the creativity shared by our community.
+        </p>
+    </div>
+
+    <div class="previous-grid">
+
+        <div class="previous-card"
+             th:each="previousEvent : ${previousEvents}">
+
+           
+<div class="previous-image">
+    <img th:if="${previousEvent.eventImage != null
+                 and !#strings.isEmpty(previousEvent.eventImage)}"
+         th:src="${previousEvent.eventImage}"
+         alt="Previous Competition Image">
+
+    <img th:unless="${previousEvent.eventImage != null
+                     and !#strings.isEmpty(previousEvent.eventImage)}"
+         src="/images/hero1.jpg"
+         alt="Competition Image">
+</div>
+
+
+            <div class="previous-content">
+
+                <span class="previous-tag">Completed Competition</span>
+
+                <h3 th:text="${previousEvent.eventTitle}">
+                    Competition Title
+                </h3>
+
+                <p th:text="${previousEvent.description}">
+                    Competition description
+                </p>
+
+                <div class="previous-meta">
+
+                    <span th:if="${previousEvent.eventDate != null}">
+                        📅
+                        <span th:text="${previousEvent.eventDate}"></span>
+                    </span>
+
+                    <span th:if="${previousEvent.location != null
+                                  and !#strings.isEmpty(previousEvent.location)}">
+                        📍
+                        <span th:text="${previousEvent.location}"></span>
+                    </span>
+
+                </div>
+
+            </div>
+        </div>
+
+    </div>
+</section>
+
+
+
+    <!-- =====================================================
+         FOOTER
+    ====================================================== -->
+
+    <footer>
+
+        <div class="footer-grid">
+
+
+            <div>
+
+                <div class="footer-logo">
+
+                    <img
+                        src="/images/craftora-logo.png"
+                        alt="Craftora Logo">
+
+                </div>
+
+
+                <p>
+                    Craftora is a handicraft development and community
+                    platform connecting artisans, customers and craft lovers.
+                </p>
+
+            </div>
+
+
+            <div>
+
+                <h3>
+                    Quick Links
+                </h3>
+
+
+                <p>
+                    <a href="/">
+                        Home
+                    </a>
+                </p>
+
+
+                <p>
+                    <a href="/about-us">
+                        About Us
+                    </a>
+                </p>
+
+
+                <p>
+                    <a href="/workshops">
+                        Workshops
+                    </a>
+                </p>
+
+
+                <p>
+                    <a href="/exhibitions">
+                        Exhibitions
+                    </a>
+                </p>
+
+
+                <p>
+                    <a href="/competitions">
+                        Competitions
+                    </a>
+                </p>
+
+            </div>
+
+
+            <div>
+
+                <h3>
+                    Contact Us
+                </h3>
+
+
+                <p>
+                    Craftora Handicraft Community
+                </p>
+
+
+                <p>
+                    Sri Lanka
+                </p>
+
+
+                <p>
+                    Email: info@craftora.com
+                </p>
+
+            </div>
+
+
+        </div>
+
+
+        <div class="footer-bottom">
+
+            © 2026 Craftora. All Rights Reserved.
+
+        </div>
+
+    </footer>
+
+
+</div>
+
+
+
+<!-- =====================================================
+     SEARCH JAVASCRIPT
+===================================================== -->
+
+<script>
+
+    function searchCompetitions() {
+
+        const input =
+            document.getElementById(
+                "competitionSearch"
+            );
+
+        const message =
+            document.getElementById(
+                "searchMessage"
+            );
+
+        const cards =
+            document.querySelectorAll(
+                ".competition-card"
+            );
+
+
+        const searchText =
+            input.value
+                .toLowerCase()
+                .trim();
+
+
+        let visibleCount = 0;
+
+
+        cards.forEach(function(card) {
+
+            const text =
+                (
+                    card.getAttribute(
+                        "data-competition"
+                    ) || ""
+                ).toLowerCase();
+
+
+            if (
+                searchText === ""
+                ||
+                text.includes(searchText)
+            ) {
+
+                card.style.display = "";
+
+                visibleCount++;
+
+            } else {
+
+                card.style.display = "none";
+
+            }
+
+        });
+
+
+        if (
+            searchText !== ""
+            &&
+            visibleCount === 0
+        ) {
+
+            message.style.display = "block";
+
+        } else {
+
+            message.style.display = "none";
+
+        }
+
+    }
+
+
+    document
+        .getElementById("competitionSearch")
+        .addEventListener(
+            "keypress",
+            function(event) {
+
+                if (event.key === "Enter") {
+
+                    searchCompetitions();
+
+                }
+
+            }
+        );
+
+</script>
+
+
+</body>
+
+</html>

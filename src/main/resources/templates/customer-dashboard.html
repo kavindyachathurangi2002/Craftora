@@ -1,0 +1,1590 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
+
+    <title>Customer Dashboard - Craftora</title>
+
+
+    <!-- Bootstrap -->
+
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
+          rel="stylesheet">
+
+
+    <!-- Bootstrap Icons -->
+
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css"
+          rel="stylesheet">
+
+
+    <style>
+
+        /* =========================================================
+           GENERAL
+           ========================================================= */
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+            background: #F8F6F1;
+            color: #333;
+        }
+
+
+        /* =========================================================
+           SIDEBAR
+           ========================================================= */
+
+        .sidebar {
+            position: fixed;
+            left: 0;
+            top: 0;
+            width: 250px;
+            height: 100vh;
+
+            background: #103D2B;
+            color: white;
+
+            padding: 18px 16px;
+
+            z-index: 1000;
+        }
+
+
+        /* =========================================================
+           LOGO
+           ========================================================= */
+
+        .logo {
+            width: 100%;
+            height: 60px;
+
+            background: white;
+
+            border-radius: 15px;
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            margin-bottom: 35px;
+
+            overflow: hidden;
+        }
+
+        .logo img {
+            width: 215px;
+            max-width: 95%;
+            height: auto;
+
+            display: block;
+        }
+
+
+        /* =========================================================
+           MENU
+           ========================================================= */
+
+        .menu-title {
+            font-size: 11px;
+            text-transform: uppercase;
+
+            color: #B9C8C0;
+
+            margin: 20px 10px 10px;
+
+            letter-spacing: 1px;
+        }
+
+
+        .sidebar a {
+            display: flex;
+            align-items: center;
+
+            gap: 12px;
+
+            color: #E8EEEB;
+
+            text-decoration: none;
+
+            padding: 12px 14px;
+
+            border-radius: 9px;
+
+            margin-bottom: 5px;
+
+            transition: 0.3s;
+
+            font-size: 15px;
+        }
+
+
+        .sidebar a i {
+            font-size: 18px;
+        }
+
+
+        .sidebar a:hover {
+            background: rgba(217, 179, 95, 0.18);
+
+            color: white;
+        }
+
+
+        .sidebar a.active {
+            background: #D9B35F;
+
+            color: #103D2B;
+
+            font-weight: 600;
+        }
+
+
+        .sidebar a.active i {
+            color: #103D2B;
+        }
+
+
+        /* =========================================================
+           SWITCH ACCOUNT
+           ========================================================= */
+
+        .switch-account-link {
+            color: #D9B35F !important;
+            border: 1px solid rgba(217, 179, 95, 0.25);
+        }
+
+        .switch-account-link:hover {
+            background: rgba(217, 179, 95, 0.18) !important;
+            color: white !important;
+        }
+
+
+        /* =========================================================
+           LOGOUT
+           ========================================================= */
+
+        .logout-link {
+            position: absolute;
+
+            bottom: 25px;
+
+            left: 16px;
+            right: 16px;
+        }
+
+
+        .logout-link a {
+            color: #E8EEEB;
+        }
+
+
+        .logout-link a:hover {
+            background: rgba(217, 179, 95, 0.18);
+
+            color: white;
+        }
+
+
+        /* =========================================================
+           MAIN CONTENT
+           ========================================================= */
+
+        .main-content {
+            margin-left: 250px;
+
+            min-height: 100vh;
+        }
+
+
+        /* =========================================================
+           TOP BAR
+           ========================================================= */
+
+        .topbar {
+            height: 75px;
+
+            background: white;
+
+            border-bottom: 1px solid #E5E1D8;
+
+            display: flex;
+
+            align-items: center;
+
+            justify-content: space-between;
+
+            padding: 0 35px;
+        }
+
+
+        .topbar h4 {
+            margin: 0;
+
+            font-weight: 600;
+
+            color: #103D2B;
+        }
+
+
+        /* =========================================================
+           CUSTOMER MINI PROFILE
+           ========================================================= */
+
+        .customer-mini {
+            display: flex;
+
+            align-items: center;
+
+            gap: 10px;
+        }
+
+
+        .customer-mini img,
+        .customer-mini .default-avatar {
+            width: 42px;
+            height: 42px;
+
+            border-radius: 50%;
+
+            object-fit: cover;
+        }
+
+
+        .default-avatar {
+            background: #D9B35F;
+
+            color: #103D2B;
+
+            display: flex;
+
+            justify-content: center;
+
+            align-items: center;
+
+            font-size: 20px;
+        }
+
+
+        .customer-mini span {
+            font-weight: 600;
+
+            color: #103D2B;
+        }
+
+
+        /* =========================================================
+           MAIN CONTENT AREA
+           ========================================================= */
+
+        .content {
+            padding: 35px;
+        }
+
+
+        /* =========================================================
+           WELCOME CARD
+           ========================================================= */
+
+        .welcome-card {
+            background: #103D2B;
+
+            color: white;
+
+            border-radius: 15px;
+
+            padding: 30px;
+
+            margin-bottom: 30px;
+        }
+
+
+        .welcome-card h2 {
+            font-weight: 700;
+
+            margin-bottom: 8px;
+        }
+
+
+        .welcome-card p {
+            margin: 0;
+
+            color: #E4EBE7;
+        }
+
+
+        /* =========================================================
+           STAT CARDS
+           ========================================================= */
+
+        .stat-card {
+            background: white;
+
+            border-radius: 14px;
+
+            padding: 22px;
+
+            border: 1px solid #E6E1D8;
+
+            height: 100%;
+
+            transition: 0.3s;
+        }
+
+
+        .stat-card:hover {
+            transform: translateY(-3px);
+
+            box-shadow: 0 8px 20px rgba(16, 61, 43, 0.08);
+        }
+
+
+        .stat-icon {
+            width: 48px;
+            height: 48px;
+
+            border-radius: 10px;
+
+            background: #F1E8D5;
+
+            color: #103D2B;
+
+            display: flex;
+
+            align-items: center;
+
+            justify-content: center;
+
+            font-size: 22px;
+
+            margin-bottom: 15px;
+        }
+
+
+        .stat-card h3 {
+            font-size: 25px;
+
+            font-weight: 700;
+
+            margin-bottom: 5px;
+
+            color: #103D2B;
+        }
+
+
+        .stat-card p {
+            margin: 0;
+
+            color: #777;
+
+            font-size: 14px;
+        }
+
+
+        /* =========================================================
+           SECTION TITLE
+           ========================================================= */
+
+        .section-title {
+            margin-top: 35px;
+
+            margin-bottom: 18px;
+
+            color: #103D2B;
+
+            font-weight: 700;
+        }
+
+
+        /* =========================================================
+           QUICK ACTION CARDS
+           ========================================================= */
+
+        .action-card {
+            background: white;
+
+            border: 1px solid #E6E1D8;
+
+            border-radius: 14px;
+
+            padding: 25px;
+
+            text-align: center;
+
+            height: 100%;
+
+            transition: 0.3s;
+        }
+
+
+        .action-card:hover {
+            transform: translateY(-3px);
+
+            box-shadow: 0 8px 20px rgba(16, 61, 43, 0.08);
+        }
+
+
+        .action-icon {
+            width: 60px;
+            height: 60px;
+
+            border-radius: 50%;
+
+            background: #F1E8D5;
+
+            color: #103D2B;
+
+            display: flex;
+
+            align-items: center;
+
+            justify-content: center;
+
+            margin: 0 auto 15px;
+
+            font-size: 26px;
+        }
+
+
+        .action-card h5 {
+            color: #103D2B;
+
+            font-weight: 600;
+        }
+
+
+        .action-card p {
+            color: #777;
+
+            font-size: 14px;
+
+            min-height: 42px;
+        }
+
+
+        /* =========================================================
+           ACTION BUTTON
+           ========================================================= */
+
+        .action-btn {
+            display: inline-block;
+
+            background: #103D2B;
+
+            color: white;
+
+            text-decoration: none;
+
+            padding: 9px 20px;
+
+            border-radius: 7px;
+
+            font-size: 14px;
+
+            transition: 0.3s;
+        }
+
+
+        .action-btn:hover {
+            background: #D9B35F;
+
+            color: #103D2B;
+        }
+
+
+        /* =========================================================
+           RATE YOUR PURCHASE
+           ========================================================= */
+
+        .rating-purchase-card {
+            background: white;
+            border: 1px solid #E6E1D8;
+            border-radius: 14px;
+            padding: 25px;
+            margin-top: 30px;
+        }
+
+        .rating-purchase-card h4 {
+            color: #103D2B;
+            font-weight: 700;
+            margin-bottom: 8px;
+        }
+
+        .rating-purchase-card > p {
+            color: #777;
+            font-size: 14px;
+            margin-bottom: 20px;
+        }
+
+        .rating-product {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 15px;
+            padding: 15px 0;
+            border-bottom: 1px solid #EEEAE2;
+        }
+
+        .rating-product:last-child {
+            border-bottom: none;
+            padding-bottom: 0;
+        }
+
+        .rating-product-name {
+            color: #333;
+            font-weight: 600;
+            flex: 1;
+        }
+
+        .rating-product-actions {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            flex-wrap: wrap;
+        }
+
+        .rate-now-btn {
+            display: inline-block;
+            background: #103D2B;
+            color: white;
+            text-decoration: none;
+            padding: 8px 16px;
+            border-radius: 7px;
+            font-size: 13px;
+            transition: 0.3s;
+        }
+
+        .rate-now-btn:hover {
+            background: #D9B35F;
+            color: #103D2B;
+        }
+
+        .cancel-rate-btn {
+            border: 1px solid #D9D4CA;
+            background: white;
+            color: #777;
+            padding: 7px 13px;
+            border-radius: 7px;
+            font-size: 13px;
+            cursor: pointer;
+        }
+
+        .cancel-rate-btn:hover {
+            background: #F4F1EA;
+            color: #103D2B;
+        }
+
+        .already-reviewed {
+            color: #3A7D44;
+            font-size: 13px;
+            font-weight: 600;
+        }
+
+        .no-rating-products {
+            color: #777;
+            font-size: 14px;
+            margin: 0;
+        }
+
+        /* =========================================================
+           PROFILE CARD
+           ========================================================= */
+
+        .profile-card {
+            background: white;
+
+            border: 1px solid #E6E1D8;
+
+            border-radius: 14px;
+
+            padding: 25px;
+
+            margin-top: 30px;
+        }
+
+
+        .profile-header {
+            display: flex;
+
+            align-items: center;
+
+            gap: 20px;
+
+            margin-bottom: 20px;
+        }
+
+
+        .profile-image {
+            width: 80px;
+            height: 80px;
+
+            border-radius: 50%;
+
+            object-fit: cover;
+
+            border: 3px solid #D9B35F;
+        }
+
+
+        .profile-default {
+            width: 80px;
+            height: 80px;
+
+            border-radius: 50%;
+
+            background: #D9B35F;
+
+            color: #103D2B;
+
+            display: flex;
+
+            justify-content: center;
+
+            align-items: center;
+
+            font-size: 32px;
+        }
+
+
+        .profile-header h4 {
+            margin: 0 0 5px;
+
+            color: #103D2B;
+        }
+
+
+        .profile-header p {
+            margin: 0;
+
+            color: #777;
+        }
+
+
+        .profile-info {
+            border-top: 1px solid #EEEAE2;
+
+            padding-top: 20px;
+        }
+
+
+        .info-row {
+            display: flex;
+
+            margin-bottom: 12px;
+        }
+
+
+        .info-label {
+            width: 130px;
+
+            font-weight: 600;
+
+            color: #555;
+        }
+
+
+        .info-value {
+            color: #777;
+        }
+
+
+        /* =========================================================
+           RESPONSIVE
+           ========================================================= */
+
+        @media (max-width: 768px) {
+
+            .sidebar {
+                width: 220px;
+            }
+
+            .main-content {
+                margin-left: 220px;
+            }
+
+            .content {
+                padding: 20px;
+            }
+
+            .topbar {
+                padding: 0 20px;
+            }
+
+            .logo img {
+                width: 185px;
+            }
+        }
+
+        
+/* ===== CRAFTORA CUSTOMER SIDEBAR FIX ===== */
+
+.sidebar {
+    height: 100vh;
+    height: 100dvh;
+    overflow-y: auto;
+    overflow-x: hidden;
+    box-sizing: border-box;
+    scrollbar-width: thin;
+    scrollbar-color: #668779 #103D2B;
+}
+
+.sidebar::-webkit-scrollbar {
+    width: 5px;
+}
+
+.sidebar::-webkit-scrollbar-thumb {
+    background: #668779;
+    border-radius: 10px;
+}
+
+.sidebar .logo {
+    flex-shrink: 0;
+}
+
+.sidebar .menu-title,
+.sidebar > a,
+.sidebar .sidebar-menu-group {
+    flex-shrink: 0;
+}
+
+.sidebar .sidebar-menu-group {
+    width: 100%;
+}
+
+#customerEventsSubmenu {
+    display: none;
+    padding: 3px 0 6px 22px;
+    width: 100%;
+    box-sizing: border-box;
+}
+
+#customerEventsSubmenu.show {
+    display: block;
+}
+
+#customerEventsSubmenu .sidebar-sublink {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    width: 100%;
+    padding: 10px 12px;
+    margin-bottom: 4px;
+    box-sizing: border-box;
+    color: #E8EEEB;
+    font-size: 13px;
+    line-height: 1.4;
+    text-decoration: none;
+    border-radius: 8px;
+    white-space: normal;
+}
+
+#customerEventsSubmenu .sidebar-sublink:hover {
+    background: rgba(217, 179, 95, 0.18);
+    color: white;
+}
+
+#customerEventsArrow {
+    margin-left: auto;
+    transition: transform 0.2s ease;
+}
+
+#customerEventsArrow.rotated {
+    transform: rotate(180deg);
+}
+
+/* Keep Logout and Switch Account in normal flow */
+.sidebar .logout-link {
+    position: static;
+    left: auto;
+    right: auto;
+    bottom: auto;
+    width: 100%;
+    flex-shrink: 0;
+    margin-top: 5px;
+}
+
+.sidebar .logout-link a {
+    width: 100%;
+    box-sizing: border-box;
+}
+
+
+/* Keep My Event Registrations on one line */
+#customerEventsSubmenu .sidebar-sublink {
+    white-space: nowrap;
+    padding-left: 8px;
+    padding-right: 5px;
+    gap: 7px;
+    font-size: 12px;
+}
+
+#customerEventsSubmenu .sidebar-sublink i {
+    flex-shrink: 0;
+}
+
+
+    </style>
+
+</head>
+
+
+<body>
+
+
+<!-- =========================================================
+     SIDEBAR
+     ========================================================= -->
+
+<div class="sidebar">
+
+
+    <!-- CRAFTORA LOGO -->
+
+    <div class="logo">
+
+        <img src="/images/craftora-logo.png"
+             alt="Craftora Logo">
+
+    </div>
+
+
+    <!-- CUSTOMER MENU -->
+
+    <div class="menu-title">
+        Customer
+    </div>
+
+
+    <a href="/customer-dashboard"
+       class="active">
+
+        <i class="bi bi-grid-1x2-fill"></i>
+
+        <span>Dashboard</span>
+
+    </a>
+
+
+    <a href="/marketplace">
+
+        <i class="bi bi-shop"></i>
+
+        <span>Marketplace</span>
+
+    </a>
+
+
+<!-- EVENTS MENU -->
+<a href="/">
+    <i class="bi bi-calendar-event"></i>
+    <span>Events</span>
+</a>
+
+
+    <!-- =====================================================
+         MY ACTIVITIES
+         ===================================================== -->
+
+    <div class="menu-title">
+        My Activities
+    </div>
+
+
+    <!-- =====================================================
+         MY CART
+         ===================================================== -->
+
+    <a href="/cart">
+
+        <i class="bi bi-cart3"></i>
+
+        <span>My Cart</span>
+
+    </a>
+
+
+    <!-- =====================================================
+         MY ORDERS
+         ===================================================== -->
+
+    <a href="/customer/orders">
+
+        <i class="bi bi-bag-check"></i>
+
+        <span>My Orders</span>
+
+    </a>
+
+
+    <!-- MY EVENTS -->
+
+    
+<a href="/customer/events/registrations" class="sidebar-link">
+    <i class="bi bi-bookmark-check"></i>
+    <span>My Events</span>
+</a>
+
+
+
+    <!-- MY PAYMENTS -->
+
+    <a href="/customer/payments">
+
+        <i class="bi bi-credit-card"></i>
+
+        <span>My Payments</span>
+
+    </a>
+
+
+    <!-- MY PROFILE -->
+
+    <a href="/customer/profile">
+
+        <i class="bi bi-person-circle"></i>
+
+        <span>My Profile</span>
+
+    </a>
+
+
+    <!-- =====================================================
+         SWITCH ACCOUNT
+         ===================================================== -->
+
+    <div th:if="${session.userRoles != null and #lists.size(session.userRoles) > 1}"
+         class="logout-link"
+         style="bottom: 78px;">
+
+        <a href="/switch-account"
+           class="switch-account-link">
+
+            <i class="bi bi-arrow-left-right"></i>
+
+            <span>Switch Account</span>
+
+        </a>
+
+    </div>
+
+
+    <!-- =====================================================
+         LOGOUT
+         ===================================================== -->
+
+    <div class="logout-link">
+
+        <a href="/logout">
+
+            <i class="bi bi-box-arrow-right"></i>
+
+            <span>Logout</span>
+
+        </a>
+
+    </div>
+
+
+</div>
+
+
+<!-- =========================================================
+     MAIN CONTENT
+     ========================================================= -->
+
+<div class="main-content">
+
+
+    <!-- =====================================================
+         TOP BAR
+         ===================================================== -->
+
+    <div class="topbar">
+
+
+        <h4>
+            Customer Dashboard
+        </h4>
+
+
+        <div class="customer-mini">
+
+
+            <!-- CUSTOMER PROFILE IMAGE -->
+
+            <div th:if="${customer.profileImage != null and !customer.profileImage.isEmpty()}">
+
+                <img th:src="${customer.profileImage}"
+                     alt="Customer Profile">
+
+            </div>
+
+
+            <!-- DEFAULT PROFILE ICON -->
+
+            <div th:unless="${customer.profileImage != null and !customer.profileImage.isEmpty()}"
+                 class="default-avatar">
+
+                <i class="bi bi-person"></i>
+
+            </div>
+
+
+            <!-- CUSTOMER NAME -->
+
+            <span th:text="${customer.user.fullName}">
+
+                Customer Name
+
+            </span>
+
+
+        </div>
+
+
+    </div>
+
+
+    <!-- =====================================================
+         CONTENT
+         ===================================================== -->
+
+    <div class="content">
+
+
+        <!-- =================================================
+             WELCOME CARD
+             ================================================= -->
+
+        <div class="welcome-card">
+
+
+            <h2>
+
+                Welcome,
+
+                <span th:text="${customer.user.fullName}">
+
+                    Customer
+
+                </span>
+
+                !
+
+            </h2>
+
+
+            <p>
+
+                Discover unique handicrafts, explore events,
+                and connect with talented artisans through Craftora.
+
+            </p>
+
+
+        </div>
+
+        <!-- =================================================
+     WORKSHOP CERTIFICATE NOTIFICATIONS
+     ================================================= -->
+
+<div th:if="${availableCertificates != null and !availableCertificates.isEmpty()}"
+     class="certificate-notifications"
+     style="margin: 25px 0;">
+
+    <div th:each="registration : ${availableCertificates}"
+         style="background: #f0f8f2;
+                border: 1px solid #c7e5ce;
+                border-left: 5px solid #2e7d46;
+                border-radius: 12px;
+                padding: 22px;
+                margin-bottom: 15px;">
+
+        <h4 style="color: #24563c; margin-top: 0;">
+            <i class="fas fa-certificate"></i>
+            Your Workshop Certificate Is Ready!
+        </h4>
+
+        <p style="margin-bottom: 8px;">
+            You have successfully attended the workshop, and your
+            certificate is now available to download.
+        </p>
+
+        <p style="margin-bottom: 18px;">
+            <strong>Registration ID:</strong>
+            <span th:text="${registration.registrationId}"></span>
+        </p>
+
+        <a th:href="@{/customer/workshop-certificate/{id}(id=${registration.registrationId})}"
+           class="btn btn-success">
+            <i class="fas fa-award"></i>
+            Get My Certificate
+        </a>
+
+    </div>
+
+</div>
+
+<!-- =================================================
+     STAT CARDS
+     ================================================= -->
+
+
+        <!-- =================================================
+             STAT CARDS
+             ================================================= -->
+
+        <div class="row g-4">
+
+
+            <!-- ORDERS -->
+
+            <div class="col-md-4">
+
+                <div class="stat-card">
+
+
+                    <div class="stat-icon">
+
+                        <i class="bi bi-bag-check"></i>
+
+                    </div>
+
+
+                    <h3>
+                        0
+                    </h3>
+
+
+                    <p>
+                        My Orders
+                    </p>
+
+
+                </div>
+
+            </div>
+
+
+            <!-- EVENTS -->
+
+            <div class="col-md-4">
+
+                <div class="stat-card">
+
+
+                    <div class="stat-icon">
+
+                        <i class="bi bi-calendar-check"></i>
+
+                    </div>
+
+
+                    <h3>
+                        0
+                    </h3>
+
+
+                    <p>
+                        Joined Events
+                    </p>
+
+
+                </div>
+
+            </div>
+
+
+            <!-- SAVED ITEMS -->
+
+            <div class="col-md-4">
+
+                <div class="stat-card">
+
+
+                    <div class="stat-icon">
+
+                        <i class="bi bi-heart"></i>
+
+                    </div>
+
+
+                    <h3>
+                        0
+                    </h3>
+
+
+                    <p>
+                        Saved Items
+                    </p>
+
+
+                </div>
+
+            </div>
+
+
+        </div>
+
+
+        <!-- =================================================
+             QUICK ACTIONS
+             ================================================= -->
+
+        <h4 class="section-title">
+
+            Quick Actions
+
+        </h4>
+
+
+        <div class="row g-4">
+
+
+            <!-- MARKETPLACE -->
+
+            <div class="col-md-4">
+
+                <div class="action-card">
+
+
+                    <div class="action-icon">
+
+                        <i class="bi bi-shop"></i>
+
+                    </div>
+
+
+                    <h5>
+                        Marketplace
+                    </h5>
+
+
+                    <p>
+
+                        Browse and discover unique handicraft products.
+
+                    </p>
+
+
+                    <a href="/marketplace"
+                       class="action-btn">
+
+                        Explore Marketplace
+
+                    </a>
+
+
+                </div>
+
+            </div>
+
+
+            <!-- EVENTS -->
+
+            <div class="col-md-4">
+
+                <div class="action-card">
+
+
+                    <div class="action-icon">
+
+                        <i class="bi bi-calendar-event"></i>
+
+                    </div>
+
+
+                    <h5>
+                        Events
+                    </h5>
+
+
+                    <p>
+
+                        Explore workshops, exhibitions and competitions.
+
+                    </p>
+
+
+                    <a href="/"
+                       class="action-btn">
+
+                        Explore Events
+
+                    </a>
+
+
+                </div>
+
+            </div>
+
+
+            <!-- MY PROFILE -->
+
+            <div class="col-md-4">
+
+                <div class="action-card">
+
+
+                    <div class="action-icon">
+
+                        <i class="bi bi-person"></i>
+
+                    </div>
+
+
+                    <h5>
+                        My Profile
+                    </h5>
+
+
+                    <p>
+
+                        View and manage your Craftora customer profile.
+
+                    </p>
+
+
+                    <a href="/customer/profile"
+                       class="action-btn">
+
+                        View Profile
+
+                    </a>
+
+
+                </div>
+
+            </div>
+
+
+        </div>
+
+<!-- =================================================
+     RATE YOUR PURCHASE
+     ================================================= -->
+
+<div class="rating-purchase-card"
+     th:if="${purchasedProducts != null and !#lists.isEmpty(purchasedProducts)}">
+
+    <h4>
+        ⭐ Rate Your Purchase
+    </h4>
+
+    <p>
+        Thank you for your purchase! Share your experience
+        with the products you bought.
+    </p>
+
+    <div th:each="item : ${purchasedProducts}"
+         class="rating-product">
+
+        <div class="rating-product-name"
+             th:text="${item.productName}">
+            Product Name
+        </div>
+
+        <div class="rating-product-actions">
+
+            <a class="rate-now-btn"
+               th:href="@{'/marketplace/product/' + ${item.product.productId} + '#reviews'}">
+                ⭐ Rate Now
+            </a>
+
+            <form th:action="@{/customer/cancel-rating}"
+                  method="post"
+                  style="display:inline;">
+
+                <input type="hidden"
+                       name="orderItemId"
+                       th:value="${item.orderItemId}">
+
+                <button type="submit"
+                        class="cancel-rate-btn">
+                    ✕ Cancel
+                </button>
+
+            </form>
+
+        </div>
+
+    </div>
+
+</div>
+        <!-- =================================================
+             CUSTOMER PROFILE
+             ================================================= -->
+
+        <div class="profile-card">
+
+
+            <div class="profile-header">
+
+
+                <!-- PROFILE IMAGE -->
+
+                <div th:if="${customer.profileImage != null and !customer.profileImage.isEmpty()}">
+
+                    <img th:src="${customer.profileImage}"
+                         class="profile-image"
+                         alt="Customer Profile">
+
+                </div>
+
+
+                <!-- DEFAULT IMAGE -->
+
+                <div th:unless="${customer.profileImage != null and !customer.profileImage.isEmpty()}"
+                     class="profile-default">
+
+                    <i class="bi bi-person"></i>
+
+                </div>
+
+
+                <!-- CUSTOMER NAME -->
+
+                <div>
+
+                    <h4 th:text="${customer.user.fullName}">
+
+                        Customer Name
+
+                    </h4>
+
+
+                    <p>
+
+                        Craftora Customer
+
+                    </p>
+
+                </div>
+
+
+            </div>
+
+
+            <!-- PROFILE INFORMATION -->
+
+            <div class="profile-info">
+
+
+                <!-- EMAIL -->
+
+                <div class="info-row">
+
+                    <div class="info-label">
+
+                        Email
+
+                    </div>
+
+
+                    <div class="info-value"
+                         th:text="${customer.user.email}">
+
+                        customer@email.com
+
+                    </div>
+
+                </div>
+
+
+                <!-- PHONE -->
+
+                <div class="info-row">
+
+                    <div class="info-label">
+
+                        Phone
+
+                    </div>
+
+
+                    <div class="info-value"
+                         th:text="${customer.user.phone != null ? customer.user.phone : 'Not added'}">
+
+                        Not added
+
+                    </div>
+
+                </div>
+
+
+                <!-- ADDRESS -->
+
+                <div class="info-row">
+
+                    <div class="info-label">
+
+                        Address
+
+                    </div>
+
+
+                    <div class="info-value"
+                         th:text="${customer.address != null ? customer.address : 'Not added'}">
+
+                        Not added
+
+                    </div>
+
+                </div>
+
+
+                <!-- CITY -->
+
+                <div class="info-row">
+
+                    <div class="info-label">
+
+                        City
+
+                    </div>
+
+
+                    <div class="info-value"
+                         th:text="${customer.city != null ? customer.city : 'Not added'}">
+
+                        Not added
+
+                    </div>
+
+                </div>
+
+
+            </div>
+
+
+        </div>
+
+
+    </div>
+
+
+</div>
+
+
+<!-- =========================================================
+     BOOTSTRAP JS
+     ========================================================= -->
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js">
+</script>
+
+
+</body>
+
+</html>

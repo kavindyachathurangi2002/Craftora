@@ -1,0 +1,2828 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
+
+    <title>Admin Dashboard | Craftora</title>
+
+    <!-- Bootstrap Icons -->
+    <link rel="stylesheet"
+          href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+
+
+    <style>
+
+        /* =====================================================
+           GLOBAL
+        ===================================================== */
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+
+            --green-dark: #103d2b;
+            --green-main: #174d37;
+            --green-soft: #edf5ef;
+
+            --cream: #f8f4ec;
+            --cream-dark: #eee5d7;
+
+            --gold: #d6b36a;
+            --gold-dark: #a98239;
+            --gold-soft: #f8efd9;
+
+            --white: #ffffff;
+
+            --text-dark: #183c2d;
+            --text-medium: #65736b;
+            --text-light: #929b96;
+
+            --border: #e7dfd2;
+
+            --success: #2d713c;
+            --success-bg: #e5f3e8;
+
+            --warning: #997217;
+            --warning-bg: #fff3d4;
+
+            --danger: #a33a3a;
+            --danger-bg: #fdeaea;
+        }
+
+
+        body {
+
+            font-family:
+                "Segoe UI",
+                Arial,
+                sans-serif;
+
+            background: #f8f6f1;
+
+            color: var(--text-dark);
+
+            min-height: 100vh;
+        }
+
+
+        a {
+            text-decoration: none;
+        }
+
+
+        /* =====================================================
+           SIDEBAR
+        ===================================================== */
+
+        .sidebar {
+
+            position: fixed;
+
+            top: 0;
+            left: 0;
+
+            width: 250px;
+            height: 100vh;
+
+            background: var(--green-dark);
+
+            color: white;
+
+            display: flex;
+            flex-direction: column;
+
+            z-index: 1000;
+
+            box-shadow:
+                7px 0 25px rgba(0, 0, 0, 0.08);
+        }
+
+
+        /* =====================================================
+           LOGO AREA
+        ===================================================== */
+
+        .logo-area {
+
+            height: 82px;
+
+            display: flex;
+
+            align-items: center;
+
+            justify-content: center;
+
+            padding: 9px 20px;
+
+            border-bottom:
+                1px solid rgba(255,255,255,0.08);
+
+            position: relative;
+        }
+
+
+        .logo-area a {
+
+            width: 188px;
+
+            height: 57px;
+
+            display: flex;
+
+            align-items: center;
+
+            justify-content: center;
+
+            background: #ffffff;
+
+            /*
+             * Rounded four corners
+             */
+            border-radius: 15px;
+
+            position: relative;
+
+            overflow: visible;
+        }
+
+
+        .logo-area img {
+
+            width: 176px;
+
+            height: 54px;
+
+            object-fit: contain;
+
+            background: transparent;
+
+            border: none;
+
+            outline: none;
+
+            box-shadow: none;
+
+            border-radius: 0;
+        }
+
+
+        /*
+         * GOLD DIAMOND UNDER LOGO
+         */
+
+        .logo-area a::after {
+
+            content: "";
+
+            position: absolute;
+
+            bottom: -8px;
+
+            left: 50%;
+
+            width: 7px;
+
+            height: 7px;
+
+            background: var(--gold);
+
+            transform:
+                translateX(-50%)
+                rotate(45deg);
+        }
+
+
+        /*
+         * GOLD LINE UNDER LOGO
+         */
+
+       /* .logo-area a::before {
+
+            content: "";
+
+            position: absolute;
+
+            bottom: -5px;
+
+            left: 50%;
+
+            width: 40px;
+
+            height: 1px;
+
+            background: var(--gold);
+
+            transform:
+                translateX(-50%);
+        }
+
+
+        /* =====================================================
+           MENU
+        ===================================================== */
+
+        .menu {
+
+            flex: 1;
+
+            padding:
+                22px 14px;
+
+            overflow-y: auto;
+        }
+
+
+        .menu::-webkit-scrollbar {
+
+            width: 4px;
+        }
+
+
+        .menu::-webkit-scrollbar-thumb {
+
+            background:
+                rgba(255,255,255,0.15);
+
+            border-radius: 10px;
+        }
+
+
+        .menu-label {
+
+            font-size: 10px;
+
+            text-transform: uppercase;
+
+            letter-spacing: 1.6px;
+
+            color:
+                rgba(255,255,255,0.38);
+
+            margin:
+                8px 13px 11px;
+        }
+
+
+        .menu-link {
+
+            display: flex;
+
+            align-items: center;
+
+            gap: 13px;
+
+            color:
+                rgba(255,255,255,0.72);
+
+            padding:
+                12px 14px;
+
+            margin-bottom: 4px;
+
+            border-radius: 10px;
+
+            font-size: 13.5px;
+
+            font-weight: 500;
+
+            transition:
+                all 0.25s ease;
+        }
+
+
+        .menu-link i {
+
+            width: 22px;
+
+            font-size: 17px;
+
+            text-align: center;
+        }
+
+
+        .menu-link:hover {
+
+            background:
+                rgba(255,255,255,0.08);
+
+            color: white;
+
+            transform:
+                translateX(3px);
+        }
+
+
+        .menu-link.active {
+
+            background: var(--gold);
+
+            color: var(--green-dark);
+
+            font-weight: 700;
+
+            box-shadow:
+                0 7px 18px
+                rgba(0,0,0,0.12);
+        }
+
+
+        /* =====================================================
+           SWITCH ACCOUNT SIDEBAR
+        ===================================================== */
+
+        .switch-link {
+
+            color: var(--gold) !important;
+
+            border:
+                1px solid
+                rgba(214,179,106,0.25);
+        }
+
+
+        .switch-link:hover {
+
+            background:
+                rgba(214,179,106,0.12)
+                !important;
+
+            color: #f0d58d !important;
+
+            border-color:
+                rgba(214,179,106,0.40);
+        }
+
+
+        /* =====================================================
+           LOGOUT
+        ===================================================== */
+
+        .logout-area {
+
+            padding:
+                12px 14px 20px;
+
+            border-top:
+                1px solid
+                rgba(255,255,255,0.08);
+        }
+
+
+        .logout {
+
+            color: #ffdede !important;
+        }
+
+
+        .logout:hover {
+
+            background:
+                rgba(255,80,80,0.10)
+                !important;
+
+            color: #ffdede !important;
+        }
+
+
+        /* =====================================================
+           MAIN
+        ===================================================== */
+
+        .main {
+
+            margin-left: 250px;
+
+            min-height: 100vh;
+        }
+
+
+        /* =====================================================
+           TOP HEADER
+        ===================================================== */
+
+        .top-header {
+
+            height: 68px;
+
+            background:
+                rgba(255,255,255,0.97);
+
+            border-bottom:
+                1px solid var(--border);
+
+            display: flex;
+
+            align-items: center;
+
+            justify-content: flex-end;
+
+            gap: 18px;
+
+            padding:
+                0 32px;
+
+            position: sticky;
+
+            top: 0;
+
+            z-index: 100;
+        }
+
+
+        /* =====================================================
+           NOTIFICATION
+        ===================================================== */
+
+        .notification {
+
+            width: 40px;
+
+            height: 40px;
+
+            border-radius: 11px;
+
+            background:
+                var(--cream);
+
+            display: flex;
+
+            align-items: center;
+
+            justify-content: center;
+
+            color:
+                var(--green-dark);
+
+            font-size: 17px;
+
+            cursor: pointer;
+
+            position: relative;
+
+            transition:
+                all 0.2s ease;
+        }
+
+
+        .notification:hover {
+
+            background:
+                var(--cream-dark);
+
+            transform:
+                translateY(-1px);
+        }
+
+
+        .notification-dot {
+
+            position: absolute;
+
+            top: 7px;
+
+            right: 7px;
+
+            width: 7px;
+
+            height: 7px;
+
+            border-radius: 50%;
+
+            background: var(--gold);
+
+            border:
+                2px solid white;
+        }
+
+
+        /* =====================================================
+           ADMIN PROFILE
+        ===================================================== */
+
+        .admin-user {
+
+            display: flex;
+
+            align-items: center;
+
+            gap: 10px;
+        }
+
+        /* =====================================================
+           ADMIN PROFILE LINK
+        ===================================================== */
+
+        .admin-profile-link {
+
+            text-decoration: none;
+
+            color: inherit;
+
+            cursor: pointer;
+        }
+
+        .admin-profile-link:hover {
+
+            text-decoration: none;
+
+            color: inherit;
+        }
+
+        .admin-profile-link .admin-avatar {
+
+            transition: transform 0.2s ease;
+        }
+
+        .admin-profile-link:hover .admin-avatar {
+
+            transform: scale(1.05);
+        }
+
+
+        .admin-avatar img {
+
+            width: 100%;
+
+            height: 100%;
+
+            border-radius: 50%;
+
+            object-fit: cover;
+
+            display: block;
+        }
+
+
+        .admin-avatar {
+
+            width: 40px;
+
+            height: 40px;
+
+            border-radius: 50%;
+
+            background:
+                var(--gold);
+
+            color:
+                var(--green-dark);
+
+            display: flex;
+
+            align-items: center;
+
+            justify-content: center;
+
+            font-size: 14px;
+
+            font-weight: 800;
+        }
+
+
+        .admin-details {
+
+            display: flex;
+
+            flex-direction: column;
+        }
+
+
+        .admin-name {
+
+            font-size: 13px;
+
+            font-weight: 700;
+
+            color:
+                var(--text-dark);
+        }
+
+
+        .admin-role {
+
+            font-size: 10px;
+
+            color:
+                var(--text-light);
+
+            margin-top: 2px;
+        }
+
+
+        /* =====================================================
+           SWITCH ACCOUNT BUTTON
+        ===================================================== */
+
+        .switch-account-btn {
+
+            display: inline-flex;
+
+            align-items: center;
+
+            justify-content: center;
+
+            gap: 7px;
+
+            padding:
+                8px 13px;
+
+            background:
+                var(--cream);
+
+            color:
+                var(--green-dark);
+
+            border:
+                1px solid #e4d9c7;
+
+            border-radius: 9px;
+
+            font-size: 11.5px;
+
+            font-weight: 700;
+
+            transition:
+                all 0.25s ease;
+        }
+
+
+        .switch-account-btn i {
+
+            font-size: 14px;
+        }
+
+
+        .switch-account-btn:hover {
+
+            background:
+                var(--gold);
+
+            color:
+                var(--green-dark);
+
+            border-color:
+                var(--gold);
+
+            transform:
+                translateY(-1px);
+
+            box-shadow:
+                0 5px 15px
+                rgba(214,179,106,0.20);
+        }
+
+
+        /* =====================================================
+           CONTENT
+        ===================================================== */
+
+        .content {
+
+            padding:
+                27px 34px 40px;
+        }
+
+
+        /* =====================================================
+           WELCOME
+        ===================================================== */
+
+        .welcome {
+
+            display: flex;
+
+            justify-content:
+                space-between;
+
+            align-items:
+                flex-end;
+
+            margin-bottom:
+                23px;
+        }
+
+
+        .welcome h1 {
+
+            font-size: 28px;
+
+            font-weight: 750;
+
+            color:
+                var(--green-dark);
+
+            margin-bottom: 5px;
+
+            letter-spacing:
+                -0.5px;
+        }
+
+
+        .welcome p {
+
+            color:
+                var(--text-medium);
+
+            font-size: 13px;
+        }
+
+
+        .welcome-date {
+
+            display: flex;
+
+            align-items: center;
+
+            gap: 8px;
+
+            color:
+                var(--text-light);
+
+            font-size: 11px;
+
+            background:
+                white;
+
+            border:
+                1px solid var(--border);
+
+            padding:
+                8px 12px;
+
+            border-radius: 9px;
+        }
+
+
+        .welcome-date i {
+
+            color:
+                var(--gold-dark);
+        }
+
+
+        /* =====================================================
+           STATISTICS
+        ===================================================== */
+
+        .stats {
+
+            display: grid;
+
+            grid-template-columns:
+                repeat(3, 1fr);
+
+            gap: 18px;
+
+            margin-bottom:
+                22px;
+        }
+
+
+        .stat-card {
+
+            background:
+                #ffffff;
+
+            border:
+                1px solid var(--border);
+
+            border-radius:
+                15px;
+
+            padding:
+                21px;
+
+            position: relative;
+
+            /*
+             * No green circle/leaf.
+             */
+            overflow: hidden;
+
+            box-shadow:
+                0 5px 18px
+                rgba(34,48,39,0.045);
+
+            transition:
+                all 0.25s ease;
+        }
+
+
+        .stat-card:hover {
+
+            transform:
+                translateY(-4px);
+
+            box-shadow:
+                0 12px 28px
+                rgba(34,48,39,0.09);
+
+            border-color:
+                #ddd0bd;
+        }
+
+
+        .stat-top {
+
+            display: flex;
+
+            align-items: center;
+
+            justify-content:
+                space-between;
+
+            margin-bottom:
+                17px;
+        }
+
+
+        .stat-title {
+
+            font-size: 12px;
+
+            color:
+                var(--text-medium);
+
+            font-weight: 650;
+
+            text-transform:
+                uppercase;
+
+            letter-spacing:
+                0.5px;
+        }
+
+
+        .stat-icon {
+
+            width: 43px;
+
+            height: 43px;
+
+            border-radius:
+                12px;
+
+            background:
+                var(--green-soft);
+
+            color:
+                var(--green-main);
+
+            display: flex;
+
+            align-items: center;
+
+            justify-content: center;
+
+            font-size: 18px;
+        }
+
+
+        .stat-card:nth-child(2)
+        .stat-icon {
+
+            background:
+                var(--gold-soft);
+
+            color:
+                var(--gold-dark);
+        }
+
+
+        .stat-card:nth-child(3)
+        .stat-icon {
+
+            background:
+                #f1eee6;
+
+            color:
+                var(--green-dark);
+        }
+
+
+        .stat-value {
+
+            font-size: 28px;
+
+            font-weight: 800;
+
+            color:
+                var(--green-dark);
+        }
+
+
+        .stat-description {
+
+            font-size: 11px;
+
+            color:
+                var(--text-light);
+
+            margin-top: 5px;
+        }
+
+
+        /* =====================================================
+           LOWER GRID
+        ===================================================== */
+
+        .dashboard-grid {
+
+            display: grid;
+
+            grid-template-columns:
+                minmax(0, 1fr)
+                285px;
+
+            gap: 20px;
+
+            align-items:
+                start;
+        }
+
+
+        /* =====================================================
+           GENERAL CARD
+        ===================================================== */
+
+        .card {
+
+            background:
+                #ffffff;
+
+            border:
+                1px solid var(--border);
+
+            border-radius:
+                15px;
+
+            box-shadow:
+                0 5px 18px
+                rgba(34,48,39,0.045);
+
+            overflow:
+                hidden;
+        }
+
+
+        .card-header {
+
+            padding:
+                19px 22px;
+
+            display: flex;
+
+            justify-content:
+                space-between;
+
+            align-items:
+                center;
+
+            border-bottom:
+                1px solid #eee8df;
+        }
+
+
+        .card-title-area {
+
+            display: flex;
+
+            align-items: center;
+
+            gap: 10px;
+        }
+
+
+        .card-title-icon {
+
+            width: 34px;
+
+            height: 34px;
+
+            border-radius:
+                9px;
+
+            background:
+                var(--green-soft);
+
+            color:
+                var(--green-main);
+
+            display: flex;
+
+            align-items: center;
+
+            justify-content: center;
+
+            font-size: 15px;
+        }
+
+
+        .card-header h2 {
+
+            font-size: 15px;
+
+            color:
+                var(--green-dark);
+
+            font-weight:
+                750;
+        }
+
+
+        .card-header p {
+
+            font-size: 10px;
+
+            color:
+                var(--text-light);
+
+            margin-top: 2px;
+        }
+
+
+        .view-all {
+
+            display: inline-flex;
+
+            align-items: center;
+
+            gap: 5px;
+
+            color:
+                var(--gold-dark);
+
+            font-size: 11px;
+
+            font-weight: 700;
+
+            transition:
+                0.2s;
+        }
+
+
+        .view-all:hover {
+
+            color:
+                var(--green-dark);
+
+            gap: 8px;
+        }
+
+
+        /* =====================================================
+           TABLE
+        ===================================================== */
+
+        .table-wrapper {
+
+            width: 100%;
+
+            overflow-x: auto;
+        }
+
+
+        table {
+
+            width: 100%;
+
+            border-collapse:
+                collapse;
+
+            min-width:
+                620px;
+        }
+
+
+        th {
+
+            text-align: left;
+
+            padding:
+                12px 20px;
+
+            background:
+                #fbf9f5;
+
+            color:
+                #8a928d;
+
+            font-size: 9px;
+
+            text-transform:
+                uppercase;
+
+            letter-spacing:
+                0.8px;
+
+            font-weight:
+                750;
+        }
+
+
+        td {
+
+            padding:
+                14px 20px;
+
+            border-top:
+                1px solid #f0ebe4;
+
+            font-size:
+                11.5px;
+
+            color:
+                #5f6963;
+        }
+
+
+        tbody tr {
+
+            transition:
+                background 0.2s;
+        }
+
+
+        tbody tr:hover {
+
+            background:
+                #fdfbf8;
+        }
+
+
+        /* =====================================================
+           ARTISAN CELL
+        ===================================================== */
+
+        .artisan-cell {
+
+            display: flex;
+
+            align-items: center;
+
+            gap: 10px;
+        }
+
+
+        .artisan-mini-avatar {
+
+            width: 32px;
+
+            height: 32px;
+
+            border-radius:
+                9px;
+
+            background:
+                var(--green-soft);
+
+            color:
+                var(--green-main);
+
+            display: flex;
+
+            align-items: center;
+
+            justify-content: center;
+
+            font-size:
+                12px;
+
+            font-weight:
+                800;
+
+            flex-shrink: 0;
+        }
+
+
+        .artisan-name {
+
+            color:
+                var(--green-dark);
+
+            font-weight:
+                700;
+
+            font-size:
+                12px;
+        }
+
+
+        .artisan-label {
+
+            font-size:
+                9px;
+
+            color:
+                var(--text-light);
+
+            margin-top:
+                2px;
+        }
+
+
+        /* =====================================================
+           STATUS
+        ===================================================== */
+
+        .status {
+
+            display: inline-flex;
+
+            align-items: center;
+
+            gap: 5px;
+
+            padding:
+                5px 9px;
+
+            border-radius:
+                30px;
+
+            font-size:
+                8.5px;
+
+            font-weight:
+                800;
+
+            letter-spacing:
+                0.3px;
+        }
+
+
+        .status-dot {
+
+            width: 5px;
+
+            height: 5px;
+
+            border-radius:
+                50%;
+        }
+
+
+        .pending {
+
+            background:
+                var(--warning-bg);
+
+            color:
+                var(--warning);
+        }
+
+
+        .pending .status-dot {
+
+            background:
+                var(--warning);
+        }
+
+
+        .approved {
+
+            background:
+                var(--success-bg);
+
+            color:
+                var(--success);
+        }
+
+
+        .approved .status-dot {
+
+            background:
+                var(--success);
+        }
+
+
+        .rejected {
+
+            background:
+                var(--danger-bg);
+
+            color:
+                var(--danger);
+        }
+
+
+        .rejected .status-dot {
+
+            background:
+                var(--danger);
+        }
+
+
+        /* =====================================================
+           QUICK ACTIONS
+        ===================================================== */
+
+        .quick-actions {
+
+            display: grid;
+
+            gap: 8px;
+
+            padding: 15px;
+        }
+
+
+        .quick-action {
+
+            display: flex;
+
+            align-items: center;
+
+            gap: 11px;
+
+            padding: 11px;
+
+            border:
+                1px solid #eee8df;
+
+            border-radius:
+                10px;
+
+            color:
+                var(--text-dark);
+
+            background:
+                #fff;
+
+            transition:
+                all 0.2s ease;
+        }
+
+
+        .quick-action:hover {
+
+            border-color:
+                #dfd0ba;
+
+            background:
+                #fcfaf6;
+
+            transform:
+                translateX(3px);
+        }
+
+
+        .quick-action-icon {
+
+            width: 34px;
+
+            height: 34px;
+
+            border-radius:
+                9px;
+
+            background:
+                var(--green-soft);
+
+            color:
+                var(--green-main);
+
+            display: flex;
+
+            align-items: center;
+
+            justify-content: center;
+
+            font-size:
+                14px;
+
+            flex-shrink: 0;
+        }
+
+
+        .quick-action:nth-child(2)
+        .quick-action-icon {
+
+            background:
+                var(--gold-soft);
+
+            color:
+                var(--gold-dark);
+        }
+
+
+        .quick-action:nth-child(3)
+        .quick-action-icon {
+
+            background:
+                #f1eee6;
+
+            color:
+                var(--green-dark);
+        }
+
+
+        .quick-action-text {
+
+            display: flex;
+
+            flex-direction: column;
+
+            min-width: 0;
+        }
+
+
+        .quick-action-title {
+
+            font-size:
+                11px;
+
+            font-weight:
+                750;
+
+            color:
+                var(--green-dark);
+        }
+
+
+        .quick-action-description {
+
+            font-size:
+                9px;
+
+            color:
+                var(--text-light);
+
+            margin-top:
+                2px;
+        }
+
+
+        .quick-action-arrow {
+
+            margin-left:
+                auto;
+
+            color:
+                #b4b9b5;
+
+            font-size:
+                13px;
+        }
+
+
+        /* =====================================================
+           EMPTY STATE
+        ===================================================== */
+
+        .empty {
+
+            text-align:
+                center;
+
+            padding:
+                45px 20px;
+
+            color:
+                var(--text-light);
+        }
+
+
+        .empty i {
+
+            display:
+                block;
+
+            font-size:
+                32px;
+
+            color:
+                #d7c9b3;
+
+            margin-bottom:
+                9px;
+        }
+
+
+        .empty-title {
+
+            font-size:
+                12px;
+
+            font-weight:
+                700;
+
+            color:
+                var(--text-medium);
+
+            margin-bottom:
+                3px;
+        }
+
+
+        .empty-description {
+
+            font-size:
+                10px;
+        }
+
+
+        /* =====================================================
+           FOOTER
+        ===================================================== */
+
+        .footer {
+
+            text-align:
+                center;
+
+            padding:
+                20px 0 5px;
+
+            font-size:
+                9px;
+
+            color:
+                #a1a7a3;
+        }
+
+
+        /* =====================================================
+           RESPONSIVE - 1100px
+        ===================================================== */
+
+        @media (max-width: 1100px) {
+
+            .sidebar {
+
+                width:
+                    225px;
+            }
+
+
+            .main {
+
+                margin-left:
+                    225px;
+            }
+
+
+            .dashboard-grid {
+
+                grid-template-columns:
+                    1fr;
+            }
+
+
+            .quick-actions {
+
+                grid-template-columns:
+                    repeat(3, 1fr);
+            }
+        }
+
+
+        /* =====================================================
+           RESPONSIVE - 900px
+        ===================================================== */
+
+        @media (max-width: 900px) {
+
+            .stats {
+
+                grid-template-columns:
+                    1fr;
+            }
+
+
+            .welcome {
+
+                align-items:
+                    flex-start;
+
+                flex-direction:
+                    column;
+
+                gap:
+                    12px;
+            }
+
+
+            .switch-account-btn span {
+
+                display:
+                    none;
+            }
+
+
+            .switch-account-btn {
+
+                width:
+                    38px;
+
+                height:
+                    38px;
+
+                padding:
+                    0;
+
+                justify-content:
+                    center;
+            }
+
+
+            .admin-details {
+
+                display:
+                    none;
+            }
+
+
+            .quick-actions {
+
+                grid-template-columns:
+                    1fr;
+            }
+        }
+
+
+        /* =====================================================
+           RESPONSIVE - 700px
+        ===================================================== */
+
+        @media (max-width: 700px) {
+
+            .sidebar {
+
+                position:
+                    relative;
+
+                width:
+                    100%;
+
+                height:
+                    auto;
+
+                min-height:
+                    auto;
+            }
+
+
+            .logo-area {
+
+                height:
+                    78px;
+            }
+
+
+            .menu {
+
+                display:
+                    flex;
+
+                flex-wrap:
+                    wrap;
+
+                padding:
+                    10px;
+            }
+
+
+            .menu-label {
+
+                display:
+                    none;
+            }
+
+
+            .menu-link {
+
+                width:
+                    auto;
+
+                margin:
+                    2px;
+
+                padding:
+                    9px 11px;
+            }
+
+
+            .logout-area {
+
+                display:
+                    flex;
+
+                gap:
+                    5px;
+
+                padding:
+                    8px 10px 12px;
+            }
+
+
+            .logout-area .menu-link {
+
+                flex:
+                    1;
+            }
+
+
+            .main {
+
+                margin-left:
+                    0;
+            }
+
+
+            .top-header {
+
+                height:
+                    64px;
+
+                padding:
+                    0 16px;
+            }
+
+
+            .content {
+
+                padding:
+                    22px 16px 30px;
+            }
+
+
+            .welcome h1 {
+
+                font-size:
+                    23px;
+            }
+
+
+            .welcome-date {
+
+                display:
+                    none;
+            }
+        }
+
+
+        /* =====================================================
+           RESPONSIVE - 480px
+        ===================================================== */
+
+        @media (max-width: 480px) {
+
+            .logo-area img {
+
+                width:
+                    155px;
+
+                height:
+                    53px;
+            }
+
+
+            .logo-area a {
+
+                width:
+                    170px;
+
+                height:
+                    55px;
+            }
+
+
+            .notification {
+
+                width:
+                    37px;
+
+                height:
+                    37px;
+            }
+
+
+            .admin-avatar {
+
+                width:
+                    37px;
+
+                height:
+                    37px;
+            }
+
+
+            .switch-account-btn {
+
+                width:
+                    37px;
+
+                height:
+                    37px;
+            }
+
+
+            .stat-card {
+
+                padding:
+                    18px;
+            }
+
+
+            .stat-value {
+
+                font-size:
+                    25px;
+            }
+        }
+
+    </style>
+
+</head>
+
+
+<body>
+
+
+<!-- =====================================================
+     SIDEBAR
+===================================================== -->
+
+<aside class="sidebar">
+
+
+    <!-- =================================================
+         CRAFTORA LOGO
+    ================================================= -->
+
+    <div class="logo-area">
+
+        <a href="/">
+
+            <img src="/images/craftora-logo.png"
+                 alt="Craftora Logo">
+
+        </a>
+
+    </div>
+
+
+    <!-- =================================================
+         MENU
+    ================================================= -->
+
+    <div class="menu">
+
+
+        <div class="menu-label">
+            Main Menu
+        </div>
+
+
+        <!-- Dashboard -->
+
+        <a href="/admin-dashboard"
+           class="menu-link active">
+
+            <i class="bi bi-grid-1x2-fill"></i>
+
+            <span>
+                Dashboard
+            </span>
+
+        </a>
+
+
+        <!-- Artisans -->
+
+        <a href="/admin/manage-artisans"
+           class="menu-link">
+
+            <i class="bi bi-people-fill"></i>
+
+            <span>
+                Artisans
+            </span>
+
+        </a>
+
+
+        <!-- Events -->
+
+      <!-- Events -->
+
+<a href="/admin/events"
+   class="menu-link">
+
+    <i class="bi bi-calendar-event-fill"></i>
+
+    <span>
+        Events
+    </span>
+
+</a>
+
+
+        <!-- Payments -->
+
+        <a href="/admin/orders"
+           class="menu-link">
+
+            <i class="bi bi-credit-card-fill"></i>
+
+            <span>
+                Payments
+            </span>
+
+        </a>
+
+
+        <!-- Management -->
+
+        <div class="menu-label"
+             style="margin-top: 23px;">
+
+            Management
+
+        </div>
+
+
+        <!-- Reports -->
+
+        <a href="/admin/orders"
+           class="menu-link">
+
+            <i class="bi bi-bar-chart-fill"></i>
+
+            <span>
+                Reports
+            </span>
+
+        </a>
+
+
+        <!-- Ratings -->
+
+        <a href="#"
+           class="menu-link">
+
+            <i class="bi bi-star-fill"></i>
+
+            <span>
+                Ratings
+            </span>
+
+        </a>
+
+<!-- Contact Messages -->
+
+<a href="/admin/contact-messages"
+   class="menu-link">
+
+    <i class="bi bi-envelope-fill"></i>
+
+    <span>
+        Contact Messages
+    </span>
+
+</a>
+
+
+        <!-- Settings -->
+
+        <a href="/admin/settings"
+           class="menu-link">
+
+            <i class="bi bi-gear-fill"></i>
+
+            <span>
+                Settings
+            </span>
+
+        </a>
+
+
+    
+
+        <!-- Reported Reviews -->
+        <a href="/admin/reported-reviews"
+           class="menu-link">
+            <i class="bi bi-flag-fill"></i>
+            <span>Reported Reviews</span>
+        </a>
+
+    </div>
+
+
+    <!-- =================================================
+         BOTTOM ACTIONS
+    ================================================= -->
+
+    <div class="logout-area">
+
+
+        <!-- SWITCH ACCOUNT -->
+
+        <div th:if="${session.userRoles != null and #lists.size(session.userRoles) > 1}">
+
+            <a href="/switch-account"
+               class="menu-link switch-link">
+
+                <i class="bi bi-arrow-left-right"></i>
+
+                <span>
+                    Switch Account
+                </span>
+
+            </a>
+
+        </div>
+
+
+        <!-- LOGOUT -->
+
+        <a href="/logout"
+           class="menu-link logout">
+
+            <i class="bi bi-box-arrow-left"></i>
+
+            <span>
+                Logout
+            </span>
+
+        </a>
+
+
+    </div>
+
+
+</aside>
+
+
+
+<!-- =====================================================
+     MAIN CONTENT
+===================================================== -->
+
+<main class="main">
+
+
+    <!-- =================================================
+         TOP HEADER
+    ================================================= -->
+
+    <header class="top-header">
+
+
+        <!-- NOTIFICATION -->
+
+        <div class="notification"
+             title="Notifications">
+
+            <i class="bi bi-bell"></i>
+
+            <span class="notification-dot"></span>
+
+        </div>
+
+
+        <!-- ADMIN PROFILE -->
+
+        <div class="admin-user">
+
+
+            <!-- Clickable Admin Profile -->
+
+            <a href="/admin/profile"
+               class="admin-profile-link"
+               title="View Admin Profile">
+
+                <!-- Avatar -->
+                <div class="admin-avatar">
+
+                    <img th:if="${artisan != null and artisan.profileImage != null and artisan.profileImage != ''}"
+                         th:src="${artisan.profileImage.startsWith('/') ? artisan.profileImage : '/' + artisan.profileImage}"
+                         alt="Admin Profile">
+
+                    <span th:if="${artisan == null or artisan.profileImage == null or artisan.profileImage == ''}">
+                        A
+                    </span>
+
+                </div>
+
+
+                <!-- Admin information -->
+
+                <div class="admin-details">
+
+                    <span class="admin-name">
+
+                        Admin
+
+                    </span>
+
+
+
+                </div>
+
+            </a>
+
+
+            <!-- Switch Account -->
+
+            <div th:if="${session.userRoles != null and #lists.size(session.userRoles) > 1}">
+
+                <a href="/switch-account"
+                   class="switch-account-btn"
+                   title="Switch Account">
+
+                    <i class="bi bi-arrow-left-right"></i>
+
+                    <span>
+                        Switch Account
+                    </span>
+
+                </a>
+
+            </div>
+
+
+        </div>
+
+
+    </header>
+
+
+
+    <!-- =================================================
+         PAGE CONTENT
+    ================================================= -->
+
+    <div class="content">
+
+
+        <!-- =================================================
+             WELCOME
+        ================================================= -->
+
+        <div class="welcome">
+
+
+            <div>
+
+                <h1>
+                    Welcome back, Admin!
+                </h1>
+
+                <p>
+                    Here's what's happening with your Craftora
+                    platform today.
+                </p>
+
+            </div>
+
+
+            <div class="welcome-date">
+
+                <i class="bi bi-speedometer2"></i>
+
+                <span>
+                    Admin Overview
+                </span>
+
+            </div>
+
+
+        </div>
+
+
+
+        <!-- =================================================
+             STATISTICS
+        ================================================= -->
+
+        <div class="stats">
+
+
+            <!-- =================================================
+                 ARTISANS
+            ================================================= -->
+
+            <div class="stat-card">
+
+
+                <div class="stat-top">
+
+                    <span class="stat-title">
+                        Artisans
+                    </span>
+
+
+                    <div class="stat-icon">
+
+                        <i class="bi bi-people-fill"></i>
+
+                    </div>
+
+                </div>
+
+
+                <div class="stat-value"
+                     th:text="${artisanCount}">
+
+                    0
+
+                </div>
+
+
+                <div class="stat-description">
+
+                    Approved artisans
+
+                </div>
+
+
+            </div>
+
+
+
+            <!-- =================================================
+                 EVENTS
+            ================================================= -->
+
+            <div class="stat-card">
+
+
+                <div class="stat-top">
+
+                    <span class="stat-title">
+                        Events
+                    </span>
+
+
+                    <div class="stat-icon">
+
+                        <i class="bi bi-calendar-event-fill"></i>
+
+                    </div>
+
+                </div>
+
+
+                <div class="stat-value"
+                     th:text="${eventCount}">
+
+                    0
+
+                </div>
+
+
+                <div class="stat-description">
+
+                    Total events
+
+                </div>
+
+
+            </div>
+
+
+
+            <!-- =================================================
+                 REVENUE
+            ================================================= -->
+
+            <a href="/admin/orders"
+               class="stat-card"
+               style="text-decoration: none; color: inherit; display: block;">
+
+
+                <div class="stat-top">
+
+                    <span class="stat-title">
+                        Revenue
+                    </span>
+
+
+                    <div class="stat-icon">
+
+                        <i class="bi bi-currency-rupee"></i>
+
+                    </div>
+
+                </div>
+
+
+                <div class="stat-value"
+                     style="font-size: 22px;">
+
+                    LKR
+
+                    <span th:text="${#numbers.formatDecimal(totalRevenue, 1, 2)}">
+
+                        0.00
+
+                    </span>
+
+                </div>
+
+
+                <div class="stat-description">
+
+                    Craftora product sales revenue (3%)
+
+                </div>
+
+
+            </a>
+
+
+        </div>
+
+
+
+        <!-- =================================================
+             LOWER DASHBOARD
+        ================================================= -->
+
+        <div class="dashboard-grid">
+
+
+            <!-- =================================================
+                 RECENT ARTISAN REQUESTS
+            ================================================= -->
+
+            <div class="card">
+
+
+                <div class="card-header">
+
+
+                    <div class="card-title-area">
+
+
+                        <div class="card-title-icon">
+
+                            <i class="bi bi-person-plus-fill"></i>
+
+                        </div>
+
+
+                        <div>
+
+                            <h2>
+                                Recent Artisan Requests
+                            </h2>
+
+                            <p>
+                                Latest artisan applications
+                            </p>
+
+                        </div>
+
+
+                    </div>
+
+
+                    <a href="/admin/manage-artisans"
+                       class="view-all">
+
+                        View All
+
+                        <i class="bi bi-arrow-right"></i>
+
+                    </a>
+
+
+                </div>
+
+
+
+                <!-- TABLE -->
+
+                <div class="table-wrapper">
+
+
+                    <table>
+
+
+                        <thead>
+
+                        <tr>
+
+                            <th>
+                                Artisan
+                            </th>
+
+                            <th>
+                                Email
+                            </th>
+
+                            <th>
+                                Contact
+                            </th>
+
+                            <th>
+                                Status
+                            </th>
+
+                            <th>
+                                Requested
+                            </th>
+
+                        </tr>
+
+                        </thead>
+
+
+
+                        <tbody>
+
+
+                        <!-- =================================================
+                             DATABASE DATA
+                        ================================================= -->
+
+                        <tr th:each="request : ${recentRequests}">
+
+
+                            <!-- ARTISAN -->
+
+                            <td>
+
+                                <div class="artisan-cell">
+
+
+                                    <div class="artisan-mini-avatar">
+
+                                        <span
+                                            th:text="${#strings.substring(request.firstName,0,1).toUpperCase()}">
+
+                                            A
+
+                                        </span>
+
+                                    </div>
+
+
+                                    <div>
+
+                                        <div class="artisan-name"
+                                             th:text="${request.firstName + ' ' + request.lastName}">
+
+                                            Artisan Name
+
+                                        </div>
+
+
+                                        <div class="artisan-label">
+
+                                            Artisan Application
+
+                                        </div>
+
+                                    </div>
+
+
+                                </div>
+
+                            </td>
+
+
+
+                            <!-- EMAIL -->
+
+                            <td th:text="${request.email}">
+
+                                email@example.com
+
+                            </td>
+
+
+
+                            <!-- CONTACT -->
+
+                            <td th:text="${request.contactNumber}">
+
+                                0771234567
+
+                            </td>
+
+
+
+                            <!-- STATUS -->
+
+                            <td>
+
+
+                                <!-- PENDING -->
+
+                                <span class="status pending"
+                                      th:if="${request.status == 'PENDING'}">
+
+                                    <span class="status-dot"></span>
+
+                                    PENDING
+
+                                </span>
+
+
+                                <!-- APPROVED -->
+
+                                <span class="status approved"
+                                      th:if="${request.status == 'APPROVED'}">
+
+                                    <span class="status-dot"></span>
+
+                                    APPROVED
+
+                                </span>
+
+
+                                <!-- REJECTED -->
+
+                                <span class="status rejected"
+                                      th:if="${request.status == 'REJECTED'}">
+
+                                    <span class="status-dot"></span>
+
+                                    REJECTED
+
+                                </span>
+
+
+                            </td>
+
+
+
+                            <!-- REQUESTED DATE -->
+
+                            <td>
+
+
+                                <span th:if="${request.requestedAt != null}"
+                                      th:text="${#temporals.format(request.requestedAt, 'dd MMM yyyy')}">
+
+                                    07 Sep 2026
+
+                                </span>
+
+
+                                <span th:if="${request.requestedAt == null}">
+
+                                    -
+
+                                </span>
+
+
+                            </td>
+
+
+                        </tr>
+
+
+
+                        <!-- =================================================
+                             NO DATA
+                        ================================================= -->
+
+                        <tr th:if="${#lists.isEmpty(recentRequests)}">
+
+
+                            <td colspan="5">
+
+
+                                <div class="empty">
+
+
+                                    <i class="bi bi-inbox"></i>
+
+
+                                    <div class="empty-title">
+
+                                        No artisan requests found
+
+                                    </div>
+
+
+                                    <div class="empty-description">
+
+                                        New artisan applications
+                                        will appear here.
+
+                                    </div>
+
+
+                                </div>
+
+
+                            </td>
+
+
+                        </tr>
+
+
+                        </tbody>
+
+
+                    </table>
+
+
+                </div>
+
+
+            </div>
+
+
+
+            <!-- =================================================
+                 QUICK ACTIONS
+            ================================================= -->
+
+            <div class="card">
+
+
+                <div class="card-header">
+
+
+                    <div class="card-title-area">
+
+
+                        <div class="card-title-icon">
+
+                            <i class="bi bi-lightning-charge-fill"></i>
+
+                        </div>
+
+
+                        <div>
+
+                            <h2>
+                                Quick Actions
+                            </h2>
+
+                            <p>
+                                Manage Craftora quickly
+                            </p>
+
+                        </div>
+
+
+                    </div>
+
+
+                </div>
+
+
+
+                <div class="quick-actions">
+
+
+                    <!-- MANAGE ARTISANS -->
+
+                    <a href="/admin/manage-artisans"
+                       class="quick-action">
+
+
+                        <div class="quick-action-icon">
+
+                            <i class="bi bi-people-fill"></i>
+
+                        </div>
+
+
+                        <div class="quick-action-text">
+
+                            <span class="quick-action-title">
+
+                                Manage Artisans
+
+                            </span>
+
+
+                            <span class="quick-action-description">
+
+                                Review applications
+
+                            </span>
+
+                        </div>
+
+
+                        <i class="bi bi-chevron-right quick-action-arrow"></i>
+
+
+                    </a>
+
+
+
+                    <!-- EVENTS -->
+
+                    <a href="#"
+                       class="quick-action">
+
+
+                        <div class="quick-action-icon">
+
+                            <i class="bi bi-calendar-event-fill"></i>
+
+                        </div>
+
+
+                        <div class="quick-action-text">
+
+                            <span class="quick-action-title">
+
+                                Manage Events
+
+                            </span>
+
+
+                            <span class="quick-action-description">
+
+                                Workshops & exhibitions
+
+                            </span>
+
+                        </div>
+
+
+                        <i class="bi bi-chevron-right quick-action-arrow"></i>
+
+
+                    </a>
+
+
+
+                    <!-- PAYMENTS -->
+
+                    <a href="/admin/orders"
+                       class="quick-action">
+
+
+                        <div class="quick-action-icon">
+
+                            <i class="bi bi-credit-card-fill"></i>
+
+                        </div>
+
+
+                        <div class="quick-action-text">
+
+                            <span class="quick-action-title">
+
+                                View Payments
+
+                            </span>
+
+
+                            <span class="quick-action-description">
+
+                                Payment records
+
+                            </span>
+
+                        </div>
+
+
+                        <i class="bi bi-chevron-right quick-action-arrow"></i>
+
+
+                    </a>
+
+
+                </div>
+
+
+            </div>
+
+
+        </div>
+
+
+
+        <!-- =================================================
+             FOOTER
+        ================================================= -->
+
+        <div class="footer">
+
+            © 2026 Craftora.
+            Handicraft Development & Community Management System.
+
+        </div>
+
+
+    </div>
+
+
+</main>
+
+
+</body>
+
+</html>

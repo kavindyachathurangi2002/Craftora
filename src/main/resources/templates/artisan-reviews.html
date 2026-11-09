@@ -1,0 +1,900 @@
+
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Customer Reviews | Craftora</title>
+
+    <!-- Bootstrap Icons -->
+    <link rel="stylesheet"
+          href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --green-dark: #103d2b;
+            --green-main: #174d37;
+            --green-soft: #edf5ef;
+            --cream: #f8f4ec;
+            --cream-dark: #eee5d7;
+            --gold: #d6b36a;
+            --gold-dark: #a98239;
+            --gold-soft: #f8efd9;
+            --white: #ffffff;
+            --text-dark: #183c2d;
+            --text-medium: #65736b;
+            --text-light: #929b96;
+            --border: #e7dfd2;
+            --success: #2d713c;
+            --success-bg: #e5f3e8;
+            --danger: #a33a3a;
+            --danger-bg: #fdeaea;
+        }
+
+        body {
+            font-family: "Segoe UI", Arial, sans-serif;
+            background: #f8f6f1;
+            color: var(--text-dark);
+            min-height: 100vh;
+        }
+
+        a {
+            text-decoration: none;
+        }
+
+        /* SIDEBAR */
+
+        .sidebar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 250px;
+            height: 100vh;
+            background: var(--green-dark);
+            color: white;
+            display: flex;
+            flex-direction: column;
+            z-index: 1000;
+            box-shadow: 7px 0 25px rgba(0, 0, 0, 0.08);
+        }
+
+        /* LOGO */
+
+        .logo-area {
+            height: 82px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 9px 20px;
+            border-bottom: 1px solid rgba(255,255,255,0.08);
+            position: relative;
+        }
+
+        .logo-area a {
+            width: 188px;
+            height: 57px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: #ffffff;
+            border-radius: 15px;
+            position: relative;
+            overflow: visible;
+        }
+
+        .logo-area img {
+            width: 176px;
+            height: 54px;
+            object-fit: contain;
+        }
+
+        .logo-area a::before {
+            content: "";
+            position: absolute;
+            bottom: -5px;
+            left: 50%;
+            width: 40px;
+            height: 1px;
+            background: var(--gold);
+            transform: translateX(-50%);
+        }
+
+        /* MENU */
+
+        .menu {
+            flex: 1;
+            padding: 22px 14px;
+            overflow-y: auto;
+        }
+
+        .menu::-webkit-scrollbar {
+            width: 4px;
+        }
+
+        .menu::-webkit-scrollbar-thumb {
+            background: rgba(255,255,255,0.15);
+            border-radius: 10px;
+        }
+
+        .menu-label {
+            font-size: 10px;
+            text-transform: uppercase;
+            letter-spacing: 1.6px;
+            color: rgba(255,255,255,0.38);
+            margin: 8px 13px 11px;
+        }
+
+        .menu-link {
+            display: flex;
+            align-items: center;
+            gap: 13px;
+            color: rgba(255,255,255,0.72);
+            padding: 12px 14px;
+            margin-bottom: 4px;
+            border-radius: 10px;
+            font-size: 13.5px;
+            font-weight: 500;
+            transition: all 0.25s ease;
+        }
+
+        .menu-link i {
+            width: 22px;
+            font-size: 17px;
+            text-align: center;
+        }
+
+        .menu-link:hover {
+            background: rgba(255,255,255,0.08);
+            color: white;
+            transform: translateX(3px);
+        }
+
+        .menu-link.active {
+            background: var(--gold);
+            color: var(--green-dark);
+            font-weight: 700;
+            box-shadow: 0 7px 18px rgba(0,0,0,0.12);
+        }
+
+        .switch-link {
+            color: var(--gold) !important;
+            border: 1px solid rgba(214,179,106,0.25);
+        }
+
+        .switch-link:hover {
+            background: rgba(214,179,106,0.12) !important;
+            color: #f0d58d !important;
+        }
+
+        .logout-area {
+            padding: 12px 14px 20px;
+            border-top: 1px solid rgba(255,255,255,0.08);
+        }
+
+        .logout {
+            color: #ffdede !important;
+        }
+
+        .logout:hover {
+            background: rgba(255,80,80,0.10) !important;
+        }
+
+        /* MAIN */
+
+        .main {
+            margin-left: 250px;
+            min-height: 100vh;
+        }
+
+        /* TOP HEADER */
+
+        .top-header {
+            height: 68px;
+            background: rgba(255,255,255,0.97);
+            border-bottom: 1px solid var(--border);
+            display: flex;
+            align-items: center;
+            justify-content: flex-end;
+            gap: 18px;
+            padding: 0 32px;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .notification {
+            width: 40px;
+            height: 40px;
+            border-radius: 11px;
+            background: var(--cream);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--green-dark);
+            font-size: 17px;
+            position: relative;
+        }
+
+        .notification-dot {
+            position: absolute;
+            top: 7px;
+            right: 7px;
+            width: 7px;
+            height: 7px;
+            border-radius: 50%;
+            background: var(--gold);
+            border: 2px solid white;
+        }
+
+        .artisan-user {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .artisan-profile-link {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            color: inherit;
+        }
+
+        .artisan-avatar {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: var(--gold);
+            color: var(--green-dark);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 14px;
+            font-weight: 800;
+            overflow: hidden;
+        }
+
+        .artisan-avatar img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .artisan-details {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .artisan-name {
+            font-size: 13px;
+            font-weight: 700;
+            color: var(--text-dark);
+        }
+
+        .artisan-role {
+            font-size: 10px;
+            color: var(--text-light);
+            margin-top: 2px;
+        }
+
+        .switch-account-btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 7px;
+            padding: 8px 13px;
+            background: var(--cream);
+            color: var(--green-dark);
+            border: 1px solid #e4d9c7;
+            border-radius: 9px;
+            font-size: 11.5px;
+            font-weight: 700;
+            transition: all 0.25s ease;
+        }
+
+        .switch-account-btn:hover {
+            background: var(--gold);
+            color: var(--green-dark);
+            border-color: var(--gold);
+        }
+
+        /* CONTENT */
+
+        .content {
+            padding: 27px 34px 40px;
+        }
+
+        .welcome {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-end;
+            margin-bottom: 23px;
+        }
+
+        .welcome h1 {
+            font-size: 28px;
+            font-weight: 750;
+            color: var(--green-dark);
+            margin-bottom: 5px;
+            letter-spacing: -0.5px;
+        }
+
+        .welcome p {
+            color: var(--text-medium);
+            font-size: 13px;
+        }
+
+        .back-link {
+            display: inline-flex;
+            align-items: center;
+            gap: 7px;
+            background: white;
+            border: 1px solid var(--border);
+            color: var(--text-medium);
+            padding: 9px 13px;
+            border-radius: 9px;
+            font-size: 12px;
+            transition: 0.2s;
+        }
+
+        .back-link:hover {
+            background: var(--gold-soft);
+            color: var(--green-dark);
+        }
+
+        /* ALERTS */
+
+        .alert {
+            padding: 13px 16px;
+            border-radius: 10px;
+            margin-bottom: 18px;
+            font-size: 13px;
+            border: 1px solid transparent;
+        }
+
+        .success {
+            background: var(--success-bg);
+            color: var(--success);
+            border-color: #cce8d3;
+        }
+
+        .error {
+            background: var(--danger-bg);
+            color: var(--danger);
+            border-color: #f4cccc;
+        }
+
+        .warning {
+            background: var(--warning-bg);
+            color: var(--warning);
+            border-color: #f0dfae;
+        }
+
+        /* REVIEW CARD */
+
+        .review-card {
+            background: white;
+            border: 1px solid var(--border);
+            border-radius: 15px;
+            padding: 24px;
+            margin-bottom: 20px;
+            box-shadow: 0 5px 18px rgba(34,48,39,0.045);
+            transition: 0.25s ease;
+        }
+
+        .review-card:hover {
+            box-shadow: 0 10px 25px rgba(34,48,39,0.08);
+            border-color: #ddd0bd;
+        }
+
+        .review-top {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            gap: 12px;
+            flex-wrap: wrap;
+        }
+
+        .product-name {
+            color: var(--green-dark);
+            font-size: 17px;
+            font-weight: 750;
+            line-height: 1.5;
+        }
+
+        .review-label {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            color: var(--green-main);
+            background: var(--green-soft);
+            padding: 6px 10px;
+            border-radius: 20px;
+            font-size: 10px;
+            font-weight: 700;
+            white-space: nowrap;
+        }
+
+        .customer-name {
+            color: var(--text-medium);
+            margin-top: 12px;
+            font-size: 13px;
+        }
+
+        .customer-name strong {
+            color: var(--text-dark);
+        }
+
+        .stars {
+            color: #e5a900;
+            font-size: 19px;
+            margin: 13px 0;
+            letter-spacing: 2px;
+        }
+
+        .review-text {
+            line-height: 1.7;
+            color: #4f5d55;
+            font-size: 13px;
+            overflow-wrap: anywhere;
+        }
+
+        .date {
+            color: var(--text-light);
+            font-size: 11px;
+            margin-top: 13px;
+        }
+
+        /* REPORT FORM */
+
+        .report-form {
+            margin-top: 20px;
+            border-top: 1px solid #eee8df;
+            padding-top: 18px;
+        }
+
+        .report-form label {
+            display: block;
+            color: var(--text-dark);
+            font-size: 13px;
+            margin-bottom: 9px;
+        }
+
+        .report-form textarea {
+            width: 100%;
+            min-height: 90px;
+            padding: 12px 14px;
+            border: 1px solid #dcdedb;
+            border-radius: 9px;
+            resize: vertical;
+            font-family: inherit;
+            font-size: 13px;
+            color: var(--text-dark);
+            outline: none;
+            transition: 0.2s;
+        }
+
+        .report-form textarea:focus {
+            border-color: var(--gold-dark);
+            box-shadow: 0 0 0 3px rgba(214,179,106,0.15);
+        }
+
+        .report-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 7px;
+            margin-top: 12px;
+            background: var(--danger);
+            color: white;
+            border: none;
+            padding: 10px 17px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 12px;
+            font-weight: 650;
+            transition: 0.2s;
+        }
+
+        .report-btn:hover {
+            background: #872f2f;
+            transform: translateY(-1px);
+        }
+
+        /* EMPTY STATE */
+
+        .empty {
+            background: white;
+            border: 1px solid var(--border);
+            border-radius: 15px;
+            padding: 55px 20px;
+            text-align: center;
+            box-shadow: 0 5px 18px rgba(34,48,39,0.045);
+        }
+
+        .empty i {
+            display: block;
+            font-size: 38px;
+            color: var(--gold);
+            margin-bottom: 13px;
+        }
+
+        .empty h3 {
+            color: var(--green-dark);
+            font-size: 17px;
+            margin-bottom: 7px;
+        }
+
+        .empty p {
+            color: var(--text-light);
+            font-size: 12px;
+        }
+
+        /* RESPONSIVE */
+
+        @media (max-width: 900px) {
+            .sidebar {
+                width: 225px;
+            }
+
+            .main {
+                margin-left: 225px;
+            }
+
+            .content {
+                padding: 24px 22px 35px;
+            }
+
+            .artisan-details {
+                display: none;
+            }
+        }
+
+        @media (max-width: 700px) {
+            .sidebar {
+                position: relative;
+                width: 100%;
+                height: auto;
+                min-height: auto;
+            }
+
+            .logo-area {
+                height: 78px;
+            }
+
+            .menu {
+                display: flex;
+                flex-wrap: wrap;
+                padding: 10px;
+            }
+
+            .menu-label {
+                display: none;
+            }
+
+            .menu-link {
+                width: auto;
+                margin: 2px;
+                padding: 9px 11px;
+            }
+
+            .logout-area {
+                display: flex;
+                gap: 5px;
+                padding: 8px 10px 12px;
+            }
+
+            .logout-area .menu-link {
+                flex: 1;
+            }
+
+            .main {
+                margin-left: 0;
+            }
+
+            .top-header {
+                height: 64px;
+                padding: 0 16px;
+            }
+
+            .content {
+                padding: 22px 16px 30px;
+            }
+
+            .welcome {
+                align-items: flex-start;
+                flex-direction: column;
+                gap: 12px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .logo-area img {
+                width: 155px;
+                height: 53px;
+            }
+
+            .logo-area a {
+                width: 170px;
+                height: 55px;
+            }
+
+            .notification,
+            .artisan-avatar,
+            .switch-account-btn {
+                width: 37px;
+                height: 37px;
+            }
+
+            .switch-account-btn span {
+                display: none;
+            }
+
+            .review-card {
+                padding: 18px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+<!-- SIDEBAR -->
+<aside class="sidebar">
+
+    <!-- CRAFTORA LOGO -->
+    <div class="logo-area">
+        <a href="/">
+            <img src="/images/craftora-logo.png"
+                 alt="Craftora Logo">
+        </a>
+    </div>
+
+    <!-- MENU -->
+    <div class="menu">
+
+        <div class="menu-label">Main Menu</div>
+
+        <a href="/artisan-dashboard" class="menu-link">
+            <i class="bi bi-grid-1x2-fill"></i>
+            <span>Dashboard</span>
+        </a>
+
+        <a href="/artisan/profile" class="menu-link">
+            <i class="bi bi-person-circle"></i>
+            <span>Profile</span>
+        </a>
+
+        <a href="/marketplace" class="menu-link">
+            <i class="bi bi-shop"></i>
+            <span>Marketplace</span>
+        </a>
+
+        <a href="/cart" class="menu-link">
+            <i class="bi bi-cart3"></i>
+            <span>My Cart</span>
+        </a>
+
+        <a href="/artisan/orders" class="menu-link">
+            <i class="bi bi-bag-check-fill"></i>
+            <span>Orders</span>
+        </a>
+
+        <a href="/artisan/my-orders" class="menu-link">
+            <i class="bi bi-bag-heart-fill"></i>
+            <span>My Orders</span>
+        </a>
+
+        <a href="/artisan/payments" class="menu-link">
+            <i class="bi bi-credit-card-fill"></i>
+            <span>Payments</span>
+        </a>
+
+        <a href="/artisan/events" class="menu-link">
+            <i class="bi bi-calendar-event-fill"></i>
+            <span>Events</span>
+        </a>
+
+        <a href="/artisan/reviews" class="menu-link active">
+            <i class="bi bi-star-fill"></i>
+            <span>Reviews</span>
+        </a>
+
+    </div>
+
+    <!-- BOTTOM ACTIONS -->
+    <div class="logout-area">
+
+        <div th:if="${session.userRoles != null and #lists.size(session.userRoles) > 1}">
+            <a href="/switch-account" class="menu-link switch-link">
+                <i class="bi bi-arrow-left-right"></i>
+                <span>Switch Account</span>
+            </a>
+        </div>
+
+        <a href="/logout" class="menu-link logout">
+            <i class="bi bi-box-arrow-left"></i>
+            <span>Logout</span>
+        </a>
+
+    </div>
+
+</aside>
+
+<!-- MAIN CONTENT -->
+<main class="main">
+
+    <!-- TOP HEADER -->
+    <header class="top-header">
+
+        <div class="notification" title="Notifications">
+            <i class="bi bi-bell"></i>
+            <span class="notification-dot"></span>
+        </div>
+
+        <div class="artisan-user">
+
+            <a href="/artisan/profile"
+               class="artisan-profile-link"
+               title="View Artisan Profile">
+
+                <div class="artisan-avatar"
+                     th:if="${artisan != null and artisan.profileImage != null and artisan.profileImage != ''}">
+                    <img th:src="${artisan.profileImage.startsWith('/') ? artisan.profileImage : '/' + artisan.profileImage}"
+                         alt="Artisan Profile">
+                </div>
+
+                <div class="artisan-avatar"
+                     th:unless="${artisan != null and artisan.profileImage != null and artisan.profileImage != ''}">
+                    A
+                </div>
+
+                <div class="artisan-details">
+                    <span class="artisan-name">Artisan</span>
+                    <span class="artisan-role">Artisan Account</span>
+                </div>
+
+            </a>
+
+        </div>
+
+        <a href="/switch-account"
+           class="switch-account-btn"
+           th:if="${session.userRoles != null and #lists.size(session.userRoles) > 1}">
+            <i class="bi bi-arrow-left-right"></i>
+            <span>Switch Account</span>
+        </a>
+
+    </header>
+
+    <!-- PAGE CONTENT -->
+    <section class="content">
+
+        <div class="welcome">
+
+            <div>
+                <h1>Customer Reviews</h1>
+                <p>View customer feedback for your handicraft products.</p>
+            </div>
+
+            <a href="/artisan-dashboard" class="back-link">
+                <i class="bi bi-arrow-left"></i>
+                Back to Dashboard
+            </a>
+
+        </div>
+
+        <!-- SUCCESS MESSAGE -->
+        <div class="alert success" th:if="${param.success}">
+            <i class="bi bi-check-circle-fill"></i>
+            Review report submitted successfully.
+        </div>
+
+        <!-- ERROR MESSAGE -->
+        <div class="alert error" th:if="${param.error}">
+            <i class="bi bi-exclamation-circle-fill"></i>
+            Unable to submit the report. Please check the details.
+        </div>
+
+        <!-- ALREADY REPORTED MESSAGE -->
+        <div class="alert warning" th:if="${param.message}">
+            <i class="bi bi-info-circle-fill"></i>
+            This review has already been reported.
+        </div>
+
+        <!-- EMPTY STATE -->
+        <div th:if="${#lists.isEmpty(ratings)}" class="empty">
+            <i class="bi bi-chat-square-heart"></i>
+            <h3>No reviews yet</h3>
+            <p>Customer reviews for your products will appear here.</p>
+        </div>
+
+        <!-- REVIEW CARDS -->
+        <div class="review-card" th:each="rating : ${ratings}">
+
+            <div class="review-top">
+
+                <div class="product-name"
+                     th:text="${rating.product.productName}">
+                    Product Name
+                </div>
+
+                <span class="review-label">
+                    <i class="bi bi-patch-check-fill"></i>
+                    Customer Feedback
+                </span>
+
+            </div>
+
+            <div class="customer-name">
+                Customer:
+                <strong th:text="${rating.customer.user.fullName}">
+                    Customer Name
+                </strong>
+            </div>
+
+            <!-- STAR RATING -->
+            <div class="stars">
+                <span th:each="i : ${#numbers.sequence(1,5)}"
+                      th:text="${i <= rating.rating ? '★' : '☆'}">★</span>
+            </div>
+
+            <!-- REVIEW TEXT -->
+            <p class="review-text"
+               th:if="${rating.review != null and !rating.review.isEmpty()}"
+               th:text="${rating.review}">
+                Review text
+            </p>
+
+            <p class="review-text"
+               th:if="${rating.review == null or rating.review.isEmpty()}">
+                No written comment was provided.
+            </p>
+
+            <!-- DATE -->
+            <div class="date"
+                 th:if="${rating.createdAt != null}"
+                 th:text="${#temporals.format(rating.createdAt, 'dd MMM yyyy')}">
+                Date
+            </div>
+
+            <!-- REPORT FORM -->
+            <form class="report-form"
+                  th:action="@{/artisan/reviews/report}"
+                  method="post">
+
+                <input type="hidden"
+                       name="ratingId"
+                       th:value="${rating.ratingId}">
+
+                <label>
+                    <i class="bi bi-flag"></i>
+                    <strong>Report this review</strong>
+                </label>
+
+                <textarea name="reason"
+                          maxlength="1000"
+                          placeholder="Explain why you are reporting this review..."
+                          required></textarea>
+
+                <button type="submit" class="report-btn">
+                    <i class="bi bi-flag-fill"></i>
+                    Report Review
+                </button>
+
+            </form>
+
+        </div>
+
+    </section>
+
+</main>
+
+</body>
+</html>

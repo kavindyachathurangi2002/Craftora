@@ -1,0 +1,1116 @@
+
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Contact Messages | Craftora Admin</title>
+
+    <link rel="stylesheet"
+          href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --green-dark: #103d2b;
+            --green-main: #174d37;
+            --green-soft: #edf5ef;
+            --cream: #f8f4ec;
+            --gold: #d6b36a;
+            --gold-dark: #a98239;
+            --white: #ffffff;
+            --text-dark: #183c2d;
+            --text-medium: #65736b;
+            --text-light: #929b96;
+            --border: #e7dfd2;
+            --success: #2d713c;
+            --success-bg: #e5f3e8;
+            --warning: #997217;
+            --warning-bg: #fff3d4;
+            --danger: #a33a3a;
+            --danger-bg: #fdeaea;
+        }
+
+        body {
+            font-family: "Segoe UI", Arial, sans-serif;
+            background: #f8f6f1;
+            color: var(--text-dark);
+            min-height: 100vh;
+        }
+
+        a {
+            text-decoration: none;
+        }
+
+        /* SIDEBAR */
+
+        .sidebar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 250px;
+            height: 100vh;
+            background: var(--green-dark);
+            color: white;
+            display: flex;
+            flex-direction: column;
+            z-index: 1000;
+            box-shadow: 7px 0 25px rgba(0, 0, 0, 0.08);
+        }
+
+        .logo-area {
+            height: 82px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 9px 20px;
+            border-bottom: 1px solid rgba(255,255,255,0.08);
+        }
+
+        .logo-area a {
+            width: 188px;
+            height: 57px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: #ffffff;
+            border-radius: 15px;
+        }
+
+        .logo-area img {
+            width: 176px;
+            height: 54px;
+            object-fit: contain;
+        }
+
+        /* MENU */
+
+        .menu {
+            flex: 1;
+            padding: 22px 14px;
+            overflow-y: auto;
+        }
+
+        .menu::-webkit-scrollbar {
+            width: 4px;
+        }
+
+        .menu::-webkit-scrollbar-thumb {
+            background: rgba(255,255,255,0.15);
+            border-radius: 10px;
+        }
+
+        .menu-label {
+            font-size: 10px;
+            text-transform: uppercase;
+            letter-spacing: 1.6px;
+            color: rgba(255,255,255,0.38);
+            margin: 8px 13px 11px;
+        }
+
+        .menu-link {
+            display: flex;
+            align-items: center;
+            gap: 13px;
+            color: rgba(255,255,255,0.72);
+            padding: 12px 14px;
+            margin-bottom: 4px;
+            border-radius: 10px;
+            font-size: 13.5px;
+            font-weight: 500;
+            transition: all 0.25s ease;
+        }
+
+        .menu-link i {
+            width: 22px;
+            font-size: 17px;
+            text-align: center;
+        }
+
+        .menu-link:hover {
+            background: rgba(255,255,255,0.08);
+            color: white;
+            transform: translateX(3px);
+        }
+
+        .menu-link.active {
+            background: var(--gold);
+            color: var(--green-dark);
+            font-weight: 700;
+            box-shadow: 0 7px 18px rgba(0,0,0,0.12);
+        }
+
+        .switch-link {
+            color: var(--gold) !important;
+            border: 1px solid rgba(214,179,106,0.25);
+        }
+
+        .switch-link:hover {
+            background: rgba(214,179,106,0.12) !important;
+            color: #f0d58d !important;
+        }
+
+        .logout-area {
+            padding: 12px 14px 20px;
+            border-top: 1px solid rgba(255,255,255,0.08);
+        }
+
+        .logout {
+            color: #ffdede !important;
+        }
+
+        .logout:hover {
+            background: rgba(255,80,80,0.10) !important;
+        }
+
+        /* MAIN */
+
+        .main {
+            margin-left: 250px;
+            min-height: 100vh;
+        }
+
+        /* TOP HEADER */
+
+        .top-header {
+            height: 68px;
+            background: rgba(255,255,255,0.97);
+            border-bottom: 1px solid var(--border);
+            display: flex;
+            align-items: center;
+            justify-content: flex-end;
+            gap: 18px;
+            padding: 0 32px;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .notification {
+            width: 40px;
+            height: 40px;
+            border-radius: 11px;
+            background: var(--cream);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--green-dark);
+            font-size: 17px;
+            position: relative;
+        }
+
+        .notification-dot {
+            position: absolute;
+            top: 7px;
+            right: 7px;
+            width: 7px;
+            height: 7px;
+            border-radius: 50%;
+            background: var(--gold);
+            border: 2px solid white;
+        }
+
+        .admin-user {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .admin-profile-link {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            color: inherit;
+            text-decoration: none;
+        }
+
+        .admin-profile-link:hover {
+            color: inherit;
+        }
+
+        .admin-avatar {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: var(--gold);
+            color: var(--green-dark);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 14px;
+            font-weight: 800;
+            overflow: hidden;
+            flex-shrink: 0;
+        }
+
+        .admin-avatar img {
+            width: 100%;
+            height: 100%;
+            border-radius: 50%;
+            object-fit: cover;
+            display: block;
+        }
+
+        .admin-details {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .admin-name {
+            font-size: 13px;
+            font-weight: 700;
+            color: var(--text-dark);
+        }
+
+        .admin-role {
+            font-size: 10px;
+            color: var(--text-light);
+            margin-top: 2px;
+        }
+
+        .switch-account-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 7px;
+            padding: 8px 13px;
+            background: var(--cream);
+            color: var(--green-dark);
+            border: 1px solid #e4d9c7;
+            border-radius: 9px;
+            font-size: 11.5px;
+            font-weight: 700;
+            transition: all 0.25s ease;
+        }
+
+        .switch-account-btn:hover {
+            background: var(--gold);
+            border-color: var(--gold);
+        }
+
+        /* CONTENT */
+
+        .content {
+            padding: 27px 34px 40px;
+        }
+
+        .page-heading {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 15px;
+            margin-bottom: 23px;
+        }
+
+        .heading-left {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+        }
+
+        .heading-icon {
+            width: 48px;
+            height: 48px;
+            border-radius: 13px;
+            background: var(--green-soft);
+            color: var(--green-main);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 22px;
+        }
+
+        .page-heading h1 {
+            font-size: 25px;
+            font-weight: 750;
+            color: var(--green-dark);
+            margin-bottom: 4px;
+        }
+
+        .page-heading p {
+            color: var(--text-medium);
+            font-size: 12px;
+        }
+
+        .back-button {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 11px 16px;
+            background: var(--green-dark);
+            color: white;
+            border-radius: 9px;
+            font-size: 12px;
+            font-weight: 600;
+            transition: 0.2s;
+            white-space: nowrap;
+        }
+
+        .back-button:hover {
+            background: var(--green-main);
+            color: white;
+            transform: translateY(-2px);
+        }
+
+        /* ALERTS */
+
+        .alert {
+            padding: 13px 17px;
+            border-radius: 10px;
+            margin-bottom: 18px;
+            font-size: 13px;
+            display: flex;
+            align-items: center;
+            gap: 9px;
+        }
+
+        .alert-success {
+            background: var(--success-bg);
+            color: var(--success);
+            border: 1px solid #c6e4ce;
+        }
+
+        .alert-danger {
+            background: var(--danger-bg);
+            color: var(--danger);
+            border: 1px solid #f1caca;
+        }
+
+        /* MESSAGE CARD */
+
+        .message-card {
+            background: white;
+            border: 1px solid var(--border);
+            border-left: 4px solid var(--gold);
+            border-radius: 15px;
+            margin-bottom: 20px;
+            box-shadow: 0 5px 18px rgba(34,48,39,0.045);
+            overflow: hidden;
+            transition: box-shadow 0.25s ease;
+        }
+
+        .message-card:hover {
+            box-shadow: 0 10px 26px rgba(34,48,39,0.08);
+        }
+
+        .message-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            gap: 15px;
+            padding: 21px 23px;
+            border-bottom: 1px solid #f0ebe4;
+        }
+
+        .message-subject {
+            font-size: 17px;
+            font-weight: 750;
+            color: var(--green-dark);
+            margin-bottom: 11px;
+            overflow-wrap: anywhere;
+        }
+
+        .customer-info {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px 20px;
+        }
+
+        .customer-info span {
+            display: inline-flex;
+            align-items: center;
+            gap: 7px;
+            color: var(--text-medium);
+            font-size: 12px;
+            overflow-wrap: anywhere;
+        }
+
+        .customer-info i {
+            color: var(--gold-dark);
+            font-size: 14px;
+        }
+
+        .status {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            padding: 7px 12px;
+            border-radius: 30px;
+            font-size: 10px;
+            font-weight: 800;
+            letter-spacing: 0.3px;
+            white-space: nowrap;
+        }
+
+        .status-new {
+            background: var(--warning-bg);
+            color: var(--warning);
+        }
+
+        .status-replied {
+            background: var(--success-bg);
+            color: var(--success);
+        }
+
+        .message-body {
+            padding: 21px 23px;
+        }
+
+        .section-title {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            color: var(--green-dark);
+            font-size: 14px;
+            font-weight: 750;
+            margin-bottom: 11px;
+        }
+
+        .section-title i {
+            color: var(--gold-dark);
+        }
+
+        .customer-message {
+            background: #fbf9f5;
+            border: 1px solid #f0ebe4;
+            border-radius: 10px;
+            padding: 17px 19px;
+            color: #4f5c54;
+            font-size: 13px;
+            line-height: 1.8;
+            white-space: pre-wrap;
+            overflow-wrap: anywhere;
+        }
+
+        .message-date {
+            display: flex;
+            align-items: center;
+            gap: 7px;
+            color: var(--text-light);
+            font-size: 11px;
+            margin-top: 12px;
+        }
+
+        .message-date i {
+            color: var(--gold-dark);
+        }
+
+        /* PREVIOUS REPLY */
+
+        .previous-reply {
+            margin-top: 20px;
+            background: var(--success-bg);
+            border-left: 4px solid #39945a;
+            border-radius: 10px;
+            padding: 17px 19px;
+        }
+
+        .previous-reply .section-title {
+            color: var(--success);
+        }
+
+        .previous-reply p {
+            color: #355a40;
+            font-size: 13px;
+            line-height: 1.8;
+            white-space: pre-wrap;
+            overflow-wrap: anywhere;
+        }
+
+        /* REPLY FORM */
+
+        .reply-section {
+            border-top: 1px solid #eee8df;
+            padding: 21px 23px 23px;
+        }
+
+        .reply-section .section-title {
+            font-size: 15px;
+            margin-bottom: 16px;
+        }
+
+        .form-label {
+            display: block;
+            color: var(--text-medium);
+            font-size: 12px;
+            font-weight: 650;
+            margin-bottom: 8px;
+        }
+
+        .reply-textarea {
+            width: 100%;
+            min-height: 115px;
+            resize: vertical;
+            border: 1px solid #deded8;
+            border-radius: 10px;
+            padding: 13px 15px;
+            font-family: inherit;
+            font-size: 13px;
+            color: var(--text-dark);
+            line-height: 1.6;
+            outline: none;
+            transition: border 0.2s, box-shadow 0.2s;
+        }
+
+        .reply-textarea:focus {
+            border-color: var(--green-main);
+            box-shadow: 0 0 0 3px rgba(23,77,55,0.08);
+        }
+
+        .reply-textarea::placeholder {
+            color: #a6ada8;
+        }
+
+        .reply-actions {
+            display: flex;
+            justify-content: flex-end;
+            margin-top: 13px;
+        }
+
+        .send-button {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            padding: 11px 19px;
+            border: none;
+            border-radius: 9px;
+            background: var(--green-dark);
+            color: white;
+            font-size: 12px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .send-button:hover {
+            background: var(--green-main);
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(16,61,43,0.15);
+        }
+
+        /* EMPTY STATE */
+
+        .empty-card {
+            background: white;
+            border: 1px solid var(--border);
+            border-radius: 15px;
+            padding: 65px 20px;
+            text-align: center;
+            box-shadow: 0 5px 18px rgba(34,48,39,0.045);
+        }
+
+        .empty-icon {
+            width: 65px;
+            height: 65px;
+            border-radius: 18px;
+            background: var(--green-soft);
+            color: var(--green-main);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 27px;
+            margin: 0 auto 17px;
+        }
+
+        .empty-card h2 {
+            font-size: 17px;
+            color: var(--green-dark);
+            margin-bottom: 7px;
+        }
+
+        .empty-card p {
+            font-size: 12px;
+            color: var(--text-light);
+        }
+
+        /* FOOTER */
+
+        .footer {
+            text-align: center;
+            padding: 20px 0 5px;
+            font-size: 10px;
+            color: #a1a7a3;
+        }
+
+        /* RESPONSIVE */
+
+        @media (max-width: 1100px) {
+            .sidebar {
+                width: 225px;
+            }
+
+            .main {
+                margin-left: 225px;
+            }
+        }
+
+        @media (max-width: 700px) {
+            .sidebar {
+                position: relative;
+                width: 100%;
+                height: auto;
+                min-height: auto;
+            }
+
+            .logo-area {
+                height: 78px;
+            }
+
+            .menu {
+                display: flex;
+                flex-wrap: wrap;
+                padding: 10px;
+            }
+
+            .menu-label {
+                display: none;
+            }
+
+            .menu-link {
+                width: auto;
+                margin: 2px;
+                padding: 9px 11px;
+            }
+
+            .logout-area {
+                display: flex;
+                gap: 5px;
+                padding: 8px 10px 12px;
+            }
+
+            .logout-area .menu-link {
+                flex: 1;
+            }
+
+            .main {
+                margin-left: 0;
+            }
+
+            .top-header {
+                height: 64px;
+                padding: 0 16px;
+            }
+
+            .content {
+                padding: 22px 16px 30px;
+            }
+
+            .page-heading {
+                align-items: flex-start;
+                flex-direction: column;
+            }
+
+            .page-heading h1 {
+                font-size: 22px;
+            }
+
+            .message-header {
+                flex-direction: column;
+            }
+
+            .admin-details {
+                display: none;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .logo-area img {
+                width: 155px;
+                height: 53px;
+            }
+
+            .logo-area a {
+                width: 170px;
+                height: 55px;
+            }
+
+            .customer-info {
+                flex-direction: column;
+                gap: 8px;
+            }
+
+            .message-header,
+            .message-body,
+            .reply-section {
+                padding-left: 16px;
+                padding-right: 16px;
+            }
+
+            .reply-actions {
+                justify-content: stretch;
+            }
+
+            .send-button {
+                width: 100%;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+<!-- SIDEBAR -->
+
+<aside class="sidebar">
+
+    <div class="logo-area">
+        <a href="/">
+            <img src="/images/craftora-logo.png" alt="Craftora Logo">
+        </a>
+    </div>
+
+    <div class="menu">
+
+        <div class="menu-label">Main Menu</div>
+
+        <a href="/admin-dashboard" class="menu-link">
+            <i class="bi bi-grid-1x2-fill"></i>
+            <span>Dashboard</span>
+        </a>
+
+        <a href="/admin/manage-artisans" class="menu-link">
+            <i class="bi bi-people-fill"></i>
+            <span>Artisans</span>
+        </a>
+
+        <a href="#" class="menu-link">
+            <i class="bi bi-calendar-event-fill"></i>
+            <span>Events</span>
+        </a>
+
+        <a href="/admin/orders" class="menu-link">
+            <i class="bi bi-credit-card-fill"></i>
+            <span>Payments</span>
+        </a>
+
+        <div class="menu-label" style="margin-top: 23px;">
+            Management
+        </div>
+
+        <a href="/admin/orders" class="menu-link">
+            <i class="bi bi-bar-chart-fill"></i>
+            <span>Reports</span>
+        </a>
+
+        <a href="#" class="menu-link">
+            <i class="bi bi-star-fill"></i>
+            <span>Ratings</span>
+        </a>
+
+        <a href="/admin/contact-messages" class="menu-link active">
+            <i class="bi bi-envelope-fill"></i>
+            <span>Contact Messages</span>
+        </a>
+
+        <a href="/admin/settings" class="menu-link">
+            <i class="bi bi-gear-fill"></i>
+            <span>Settings</span>
+        </a>
+
+        <a href="/admin/reported-reviews" class="menu-link">
+            <i class="bi bi-flag-fill"></i>
+            <span>Reported Reviews</span>
+        </a>
+
+    </div>
+
+    <div class="logout-area">
+
+        <div th:if="${session.userRoles != null and #lists.size(session.userRoles) > 1}">
+            <a href="/switch-account" class="menu-link switch-link">
+                <i class="bi bi-arrow-left-right"></i>
+                <span>Switch Account</span>
+            </a>
+        </div>
+
+        <a href="/logout" class="menu-link logout">
+            <i class="bi bi-box-arrow-left"></i>
+            <span>Logout</span>
+        </a>
+
+    </div>
+
+</aside>
+
+<!-- MAIN CONTENT -->
+
+<main class="main">
+
+    <!-- TOP HEADER -->
+
+    <header class="top-header">
+
+        <div class="notification" title="Notifications">
+            <i class="bi bi-bell"></i>
+            <span class="notification-dot"></span>
+        </div>
+
+        <div class="admin-user">
+
+            <a href="/admin/profile"
+               class="admin-profile-link"
+               title="View Admin Profile">
+
+                <div class="admin-avatar">
+
+                    <img th:if="${artisan != null and artisan.profileImage != null and artisan.profileImage != ''}"
+                         th:src="${artisan.profileImage.startsWith('/') ? artisan.profileImage : '/' + artisan.profileImage}"
+                         alt="Admin Profile">
+
+                    <span th:if="${artisan == null or artisan.profileImage == null or artisan.profileImage == ''}">
+                        A
+                    </span>
+
+                </div>
+
+                <div class="admin-details">
+                    <span class="admin-name">Admin</span>
+                    <span class="admin-role">Administrator</span>
+                </div>
+
+            </a>
+
+            <div th:if="${session.userRoles != null and #lists.size(session.userRoles) > 1}">
+                <a href="/switch-account" class="switch-account-btn"
+                   title="Switch Account">
+                    <i class="bi bi-arrow-left-right"></i>
+                    <span>Switch Account</span>
+                </a>
+            </div>
+
+        </div>
+
+    </header>
+
+    <!-- PAGE CONTENT -->
+
+    <div class="content">
+
+        <div class="page-heading">
+
+            <div class="heading-left">
+
+                <div class="heading-icon">
+                    <i class="bi bi-envelope-fill"></i>
+                </div>
+
+                <div>
+                    <h1>Contact Messages</h1>
+                    <p>View and respond to messages received from Craftora customers.</p>
+                </div>
+
+            </div>
+
+            <a href="/admin-dashboard" class="back-button">
+                <i class="bi bi-arrow-left"></i>
+                Back to Dashboard
+            </a>
+
+        </div>
+
+        <!-- SUCCESS MESSAGE -->
+
+        <div th:if="${successMessage != null}"
+             class="alert alert-success">
+
+            <i class="bi bi-check-circle-fill"></i>
+            <span th:text="${successMessage}"></span>
+
+        </div>
+
+        <!-- ERROR MESSAGE -->
+
+        <div th:if="${errorMessage != null}"
+             class="alert alert-danger">
+
+            <i class="bi bi-exclamation-circle-fill"></i>
+            <span th:text="${errorMessage}"></span>
+
+        </div>
+
+        <!-- MESSAGE LIST -->
+
+        <div th:if="${contactMessages != null and !#lists.isEmpty(contactMessages)}">
+
+            <div class="message-card"
+                 th:each="message : ${contactMessages}">
+
+                <!-- MESSAGE HEADER -->
+
+                <div class="message-header">
+
+                    <div>
+
+                        <h2 class="message-subject"
+                            th:text="${message.subject}">
+                            Message Subject
+                        </h2>
+
+                        <div class="customer-info">
+
+                            <span>
+                                <i class="bi bi-person-fill"></i>
+                                <strong th:text="${message.name}">
+                                    Customer Name
+                                </strong>
+                            </span>
+
+                            <span>
+                                <i class="bi bi-envelope"></i>
+                                <span th:text="${message.email}">
+                                    customer@example.com
+                                </span>
+                            </span>
+
+                        </div>
+
+                    </div>
+
+                    <span th:if="${message.status == 'REPLIED'}"
+                          class="status status-replied">
+                        <i class="bi bi-check-circle"></i>
+                        REPLIED
+                    </span>
+
+                    <span th:unless="${message.status == 'REPLIED'}"
+                          class="status status-new">
+                        <i class="bi bi-clock"></i>
+                        NEW
+                    </span>
+
+                </div>
+
+                <!-- CUSTOMER MESSAGE -->
+
+                <div class="message-body">
+
+                    <h3 class="section-title">
+                        <i class="bi bi-chat-left-text"></i>
+                        Customer Message
+                    </h3>
+
+                    <div class="customer-message"
+                         th:text="${message.message}">
+                        Customer message content
+                    </div>
+
+                    <div class="message-date"
+                         th:if="${message.createdAt != null}">
+
+                        <i class="bi bi-calendar3"></i>
+
+                        <span>
+                            Received:
+                            <span th:text="${#temporals.format(message.createdAt, 'dd MMM yyyy, hh:mm a')}">
+                                28 Sep 2026
+                            </span>
+                        </span>
+
+                    </div>
+
+                    <!-- PREVIOUS REPLY -->
+
+                    <div class="previous-reply"
+                         th:if="${message.replyMessage != null and !#strings.isEmpty(message.replyMessage)}">
+
+                        <h3 class="section-title">
+                            <i class="bi bi-reply-fill"></i>
+                            Your Previous Reply
+                        </h3>
+
+                        <p th:text="${message.replyMessage}">
+                            Previous reply content
+                        </p>
+
+                        <div class="message-date"
+                             th:if="${message.repliedAt != null}">
+
+                            <i class="bi bi-calendar-check"></i>
+
+                            <span>
+                                Replied:
+                                <span th:text="${#temporals.format(message.repliedAt, 'dd MMM yyyy, hh:mm a')}">
+                                    28 Sep 2026
+                                </span>
+                            </span>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+                <!-- REPLY FORM -->
+
+                <div class="reply-section">
+
+                    <h3 class="section-title">
+                        <i class="bi bi-reply"></i>
+                        Reply to Customer
+                    </h3>
+
+                    <form th:action="@{/admin/contact-messages/{id}/reply(id=${message.id})}"
+                          method="post">
+
+                        <label class="form-label"
+                               th:for="'reply-' + ${message.id}">
+                            Your Reply
+                        </label>
+
+                        <textarea class="reply-textarea"
+                                  th:id="'reply-' + ${message.id}"
+                                  name="replyMessage"
+                                  placeholder="Type your reply here..."
+                                  required></textarea>
+
+                        <div class="reply-actions">
+
+                            <button type="submit" class="send-button">
+                                <i class="bi bi-send-fill"></i>
+                                Send Reply
+                            </button>
+
+                        </div>
+
+                    </form>
+
+                </div>
+
+            </div>
+
+        </div>
+
+        <!-- EMPTY STATE -->
+
+        <div class="empty-card"
+             th:if="${contactMessages == null or #lists.isEmpty(contactMessages)}">
+
+            <div class="empty-icon">
+                <i class="bi bi-inbox"></i>
+            </div>
+
+            <h2>No Contact Messages Yet</h2>
+
+            <p>Customer messages will appear here when they contact Craftora.</p>
+
+        </div>
+
+        <!-- FOOTER -->
+
+        <div class="footer">
+            © 2026 Craftora. Handicraft Development & Community Management System.
+        </div>
+
+    </div>
+
+</main>
+
+</body>
+</html>

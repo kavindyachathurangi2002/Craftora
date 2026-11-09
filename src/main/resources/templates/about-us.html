@@ -1,0 +1,756 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>About Us - Craftora</title>
+
+    <link rel="stylesheet" href="/css/style.css">
+
+    <style>
+        .about-hero {
+            min-height: 360px;
+            background:
+                linear-gradient(rgba(20, 61, 43, 0.82), rgba(20, 61, 43, 0.82)),
+                url('/images/hero2.jpg') center/cover no-repeat;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            padding: 70px 20px;
+            color: #fff;
+        }
+
+        .about-hero-content {
+            max-width: 850px;
+        }
+
+        .about-hero h1 {
+            font-size: 52px;
+            margin: 0 0 15px;
+            letter-spacing: 1px;
+        }
+
+        .about-hero p {
+            font-size: 19px;
+            line-height: 1.7;
+            margin: 0 auto;
+            max-width: 720px;
+        }
+
+        .about-section {
+            padding: 75px 8%;
+            background: #fff;
+        }
+
+        .about-section.light {
+            background: #f7f5ed;
+        }
+
+        .about-container {
+            max-width: 1150px;
+            margin: 0 auto;
+        }
+
+        .about-heading {
+            text-align: center;
+            margin-bottom: 45px;
+        }
+
+        .about-heading span {
+            color: #d6a84f;
+            font-size: 14px;
+            font-weight: 700;
+            letter-spacing: 2px;
+        }
+
+        .about-heading h2 {
+            color: #143d2b;
+            font-size: 34px;
+            margin: 10px 0 15px;
+        }
+
+        .about-heading p {
+            color: #666;
+            max-width: 750px;
+            margin: 0 auto;
+            line-height: 1.7;
+        }
+
+        .about-two-column {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 50px;
+            align-items: center;
+        }
+
+        .about-image {
+            width: 100%;
+            height: 390px;
+            border-radius: 18px;
+            overflow: hidden;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.10);
+        }
+
+        .about-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .about-text h2 {
+            color: #143d2b;
+            font-size: 32px;
+            margin: 0 0 18px;
+        }
+
+        .about-text p {
+            color: #555;
+            line-height: 1.8;
+            margin-bottom: 15px;
+        }
+
+        /* ==========================================
+           ATTRACTIVE MISSION SECTION
+        ========================================== */
+
+        .mission-card {
+            position: relative;
+            overflow: hidden;
+            background:
+                radial-gradient(circle at 8% 20%, rgba(214,168,79,0.18), transparent 24%),
+                radial-gradient(circle at 92% 80%, rgba(255,255,255,0.08), transparent 25%),
+                linear-gradient(135deg, #0f3a29, #19543d);
+            color: #fff;
+            border-radius: 24px;
+            padding: 58px 65px 50px;
+            text-align: center;
+            box-shadow: 0 18px 45px rgba(20,61,43,0.20);
+            border: 1px solid rgba(214,168,79,0.22);
+        }
+
+        .mission-card::before,
+        .mission-card::after {
+            content: "";
+            position: absolute;
+            border: 1px solid rgba(214,168,79,0.22);
+            border-radius: 50%;
+            pointer-events: none;
+        }
+
+        .mission-card::before {
+            width: 220px;
+            height: 220px;
+            left: -105px;
+            top: -115px;
+        }
+
+        .mission-card::after {
+            width: 250px;
+            height: 250px;
+            right: -125px;
+            bottom: -135px;
+        }
+
+        .mission-card .icon {
+            position: relative;
+            z-index: 1;
+            width: 76px;
+            height: 76px;
+            margin: 0 auto 20px;
+            border-radius: 50%;
+            background: #fff;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 38px;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.16);
+        }
+
+        .mission-card h2 {
+            position: relative;
+            z-index: 1;
+            color: #f0c96d;
+            margin: 0 0 18px;
+            font-size: 36px;
+            letter-spacing: 0.5px;
+        }
+
+        .mission-card p {
+            position: relative;
+            z-index: 1;
+            max-width: 850px;
+            margin: 0 auto;
+            line-height: 1.85;
+            font-size: 17px;
+            color: rgba(255,255,255,0.94);
+        }
+
+        .mission-points {
+            position: relative;
+            z-index: 1;
+            max-width: 900px;
+            margin: 35px auto 0;
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 16px;
+        }
+
+        .mission-point {
+            padding: 18px 14px;
+            border-radius: 14px;
+            background: rgba(255,255,255,0.08);
+            border: 1px solid rgba(255,255,255,0.12);
+            backdrop-filter: blur(4px);
+        }
+
+        .mission-point-icon {
+            display: block;
+            font-size: 25px;
+            margin-bottom: 8px;
+        }
+
+        .mission-point strong {
+            display: block;
+            color: #f0c96d;
+            font-size: 15px;
+            margin-bottom: 5px;
+        }
+
+        .mission-point span {
+            display: block;
+            color: rgba(255,255,255,0.82);
+            font-size: 13px;
+            line-height: 1.45;
+        }
+
+        .values-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 22px;
+        }
+
+        .value-card {
+            background: #fff;
+            border-radius: 15px;
+            padding: 30px 22px;
+            text-align: center;
+            border: 1px solid #eee;
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+        }
+
+        .value-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 25px rgba(0,0,0,0.08);
+        }
+
+        .value-icon {
+            font-size: 38px;
+            margin-bottom: 14px;
+        }
+
+        .value-card h3 {
+            color: #143d2b;
+            margin: 0 0 10px;
+            font-size: 20px;
+        }
+
+        .value-card p {
+            color: #666;
+            line-height: 1.6;
+            font-size: 14px;
+            margin: 0;
+        }
+
+        .community-box {
+            text-align: center;
+            max-width: 850px;
+            margin: 0 auto;
+        }
+
+        .community-box h2 {
+            color: #143d2b;
+            font-size: 34px;
+            margin-bottom: 18px;
+        }
+
+        .community-box p {
+            color: #555;
+            line-height: 1.8;
+            font-size: 17px;
+        }
+
+        .about-buttons {
+            margin-top: 28px;
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            flex-wrap: wrap;
+        }
+
+        .about-btn {
+            display: inline-block;
+            padding: 13px 25px;
+            border-radius: 7px;
+            text-decoration: none;
+            font-weight: 700;
+            transition: 0.2s;
+        }
+
+        .about-btn.primary {
+            background: #d6a84f;
+            color: #143d2b;
+        }
+
+        .about-btn.secondary {
+            border: 1px solid #143d2b;
+            color: #143d2b;
+            background: #fff;
+        }
+
+        .about-btn:hover {
+            transform: translateY(-2px);
+        }
+
+        @media (max-width: 900px) {
+            .values-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .about-two-column {
+                grid-template-columns: 1fr;
+            }
+
+            .about-image {
+                height: 300px;
+            }
+        }
+
+        @media (max-width: 600px) {
+            .about-hero h1 {
+                font-size: 38px;
+            }
+
+            .about-hero p {
+                font-size: 16px;
+            }
+
+            .values-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .about-section {
+                padding: 55px 6%;
+            }
+
+            .mission-card {
+                padding: 38px 22px;
+            }
+
+            .mission-card h2 {
+                font-size: 30px;
+            }
+
+            .mission-card p {
+                font-size: 15px;
+            }
+
+            .mission-points {
+                grid-template-columns: 1fr;
+                gap: 12px;
+                margin-top: 28px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+<!-- ================================
+     NAVIGATION BAR
+================================ -->
+
+<nav class="navbar">
+
+    <div class="logo">
+        <a href="/">
+            <img src="/images/craftora-logo.png" alt="Craftora Logo">
+        </a>
+    </div>
+
+    <div class="nav-links">
+
+        <a href="/">Home</a>
+
+        <a href="/about-us" class="active">About Us</a>
+
+        <div class="dropdown">
+            <a href="#">Events ▾</a>
+
+            <div class="dropdown-menu">
+                <a href="/workshops">Workshops</a>
+                <a href="/exhibitions">Exhibitions</a>
+                <a href="/competitions">Competitions</a>
+            </div>
+        </div>
+
+        <a href="/marketplace">Marketplace</a>
+
+        <a href="/ratings">Ratings</a>
+
+        <a href="/contact">Contact Us</a>
+
+    </div>
+
+    <div class="sign-in">
+        <a href="/login">Sign In</a>
+    </div>
+
+</nav>
+
+
+<!-- ================================
+     ABOUT HERO
+================================ -->
+
+<section class="about-hero">
+
+    <div class="about-hero-content">
+
+        <h1>About Craftora</h1>
+
+        <p>
+            Connecting artisans, craft lovers and communities
+            while preserving the beauty of traditional handicrafts.
+        </p>
+
+    </div>
+
+</section>
+
+
+<!-- ================================
+     WHO WE ARE
+================================ -->
+
+<section class="about-section">
+
+    <div class="about-container">
+
+        <div class="about-two-column">
+
+            <div class="about-image">
+                <img src="/images/hero1.jpg"
+                     alt="Artisan creating traditional handicrafts">
+            </div>
+
+            <div class="about-text">
+
+                <span style="color:#d6a84f; font-weight:700; letter-spacing:2px;">
+                    WHO WE ARE
+                </span>
+
+                <h2>Welcome to Craftora</h2>
+
+                <p>
+                    Craftora is a web-based handicraft development and
+                    community management platform created to connect
+                    talented artisans with customers, learners and
+                    craft communities.
+                </p>
+
+                <p>
+                    Our platform provides artisans with a digital space
+                    to showcase their handmade products, share their
+                    skills and participate in workshops, exhibitions
+                    and competitions.
+                </p>
+
+                <p>
+                    At the same time, customers and craft lovers can
+                    discover unique handmade creations and learn more
+                    about the people and traditional skills behind them.
+                </p>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</section>
+
+
+<!-- ================================
+     OUR MISSION
+================================ -->
+
+<section class="about-section light">
+
+    <div class="about-container">
+
+        <div class="mission-card">
+
+            
+        <h2>Our Mission</h2>
+
+            <p>
+                Our mission is to support local artisans, preserve the
+                beauty of traditional handicrafts, and create meaningful
+                opportunities for artisans to share their skills and
+                handmade products with a wider community through technology.
+            </p>
+
+          
+        </div>
+
+    </div>
+
+</section>
+
+
+<!-- ================================
+     WHAT CRAFTORA OFFERS
+================================ -->
+
+<section class="about-section">
+
+    <div class="about-container">
+
+        <div class="about-heading">
+
+            <span>WHAT WE OFFER</span>
+
+            <h2>Everything in One Craft Community</h2>
+
+            <p>
+                Craftora brings together the people, products,
+                knowledge and activities that make the handicraft
+                community special.
+            </p>
+
+        </div>
+
+
+        <div class="values-grid">
+
+            <div class="value-card">
+
+                <div class="value-icon">🧑‍🎨</div>
+
+                <h3>Artisan Community</h3>
+
+                <p>
+                    Artisans can create profiles, showcase their
+                    skills and share their handmade creations.
+                </p>
+
+            </div>
+
+
+            <div class="value-card">
+
+                <div class="value-icon">🛍️</div>
+
+                <h3>Marketplace</h3>
+
+                <p>
+                    Customers can discover and purchase unique
+                    handmade products from artisans.
+                </p>
+
+            </div>
+
+
+            <div class="value-card">
+
+                <div class="value-icon">🎓</div>
+
+                <h3>Workshops</h3>
+
+                <p>
+                    Learners can discover workshops and learn
+                    traditional and creative craft techniques.
+                </p>
+
+            </div>
+
+
+            <div class="value-card">
+
+                <div class="value-icon">🏆</div>
+
+                <h3>Events & Competitions</h3>
+
+                <p>
+                    The community can participate in exhibitions,
+                    competitions and other handicraft activities.
+                </p>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</section>
+
+
+<!-- ================================
+     OUR COMMUNITY
+================================ -->
+
+<section class="about-section light">
+
+    <div class="about-container">
+
+        <div class="community-box">
+
+            <span style="color:#d6a84f; font-weight:700; letter-spacing:2px;">
+                OUR COMMUNITY
+            </span>
+
+            <h2>Artisans • Customers • Learners</h2>
+
+            <p>
+                Craftora is built around a community where artisans
+                can share their creativity and skills, customers can
+                discover and support handmade products, and learners
+                can gain knowledge from experienced craft makers.
+            </p>
+
+            <p>
+                By bringing these groups together in one platform,
+                Craftora aims to create meaningful connections and
+                new opportunities within the handicraft community.
+            </p>
+
+            <div class="about-buttons">
+
+                <a href="#" class="about-btn primary">
+                    Explore Marketplace
+                </a>
+
+                <a href="#" class="about-btn secondary">
+                    Meet Our Artisans
+                </a>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</section>
+
+
+<!-- ================================
+     FOOTER
+================================ -->
+
+<footer class="site-footer">
+
+    <div class="footer-container">
+
+        <div class="footer-column footer-about">
+
+            <h3>CRAFTORA</h3>
+
+            <p>
+                Craftora is an integrated web application aimed at
+                preserving traditional handicrafts, promoting artisan
+                growth, and providing learning & commercial opportunities
+                through technology.
+            </p>
+
+        </div>
+
+
+        <div class="footer-column">
+
+            <h3>QUICK LINKS</h3>
+
+            <ul>
+                <li><a href="/">Home</a></li>
+                <li><a href="/about-us">About Us</a></li>
+                <li><a href="#">Registered Artisans</a></li>
+                <li><a href="#">Ratings & Reviews</a></li>
+            </ul>
+
+        </div>
+
+
+        <div class="footer-column">
+
+            <h3>EVENT CATEGORIES</h3>
+
+            <ul>
+                <li><a href="/workshops">Workshops</a></li>
+                <li><a href="/exhibitions">Exhibitions</a></li>
+                <li><a href="/competitions">Competitions</a></li>
+                <li><a href="#">Google Maps Integration</a></li>
+            </ul>
+
+        </div>
+
+
+        <div class="footer-column footer-contact">
+
+            <h3>CONTACT US</h3>
+
+            <div class="footer-contact-item">
+                <span class="footer-contact-icon">📍</span>
+                <span>Sri Lanka</span>
+            </div>
+
+            <div class="footer-contact-item">
+                <span class="footer-contact-icon">📞</span>
+                <span>+94 77 123 4567</span>
+            </div>
+
+            <div class="footer-contact-item">
+                <span class="footer-contact-icon">✉</span>
+                <span>info@craftora.lk</span>
+            </div>
+
+            <div class="footer-contact-item">
+                <span class="footer-contact-icon">🕐</span>
+                <span>Mon - Fri: 9.00 AM - 5.00 PM</span>
+            </div>
+
+        </div>
+
+
+        <div class="footer-column community-column">
+
+            <h3>CRAFTORA<br>COMMUNITY</h3>
+
+            <p class="community-text">
+                Be part of the growing handicraft community
+                and discover new opportunities.
+            </p>
+
+            <ul>
+                <li><a href="#">Become an Artisan</a></li>
+                <li><a href="#">Join a Workshop</a></li>
+                <li><a href="#">Explore Marketplace</a></li>
+                <li><a href="#">Share Your Craft</a></li>
+            </ul>
+
+        </div>
+
+    </div>
+
+
+    <div class="footer-bottom">
+
+        <p>
+            © 2026 Craftora Project. All Rights Reserved.
+        </p>
+
+    </div>
+
+</footer>
+
+</body>
+</html>

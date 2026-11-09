@@ -1,0 +1,1389 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title th:text="${product.productName} + ' - Craftora'">
+        Product Details - Craftora
+    </title>
+
+    <link rel="stylesheet" href="/css/style.css">
+
+    <style>
+
+        /* =========================================================
+           PRODUCT DETAILS
+           ========================================================= */
+
+        .product-detail-section {
+            padding: 70px 7%;
+            background: #f8f8f4;
+            min-height: 70vh;
+        }
+
+        .product-detail-container {
+            max-width: 1150px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 18px;
+            overflow: hidden;
+            box-shadow: 0 8px 30px rgba(0,0,0,0.08);
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+        }
+
+        .detail-image-area {
+            min-height: 560px;
+            background: #f3f3ef;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+        }
+
+        .detail-image-area img {
+            width: 100%;
+            height: 100%;
+            min-height: 560px;
+            object-fit: contain;
+            display: block;
+        }
+
+        .detail-no-image {
+            font-size: 80px;
+            color: #999;
+        }
+
+        .detail-content {
+            padding: 50px;
+        }
+
+        .detail-category {
+            display: inline-block;
+            background: #eef5ef;
+            color: #18553d;
+            padding: 7px 13px;
+            border-radius: 20px;
+            font-size: 13px;
+            font-weight: 700;
+            margin-bottom: 18px;
+        }
+
+        .detail-content h1 {
+            color: #184c38;
+            font-size: 36px;
+            line-height: 1.2;
+            margin: 0 0 18px;
+        }
+
+        .detail-artisan {
+            color: #555;
+            font-size: 15px;
+            margin-bottom: 22px;
+        }
+
+        .detail-price {
+            color: #b18a2e;
+            font-size: 30px;
+            font-weight: 800;
+            margin-bottom: 18px;
+        }
+
+        .detail-stock {
+            display: inline-block;
+            background: #f1f6f2;
+            color: #18553d;
+            padding: 9px 13px;
+            border-radius: 7px;
+            font-size: 14px;
+            margin-bottom: 28px;
+        }
+
+        .detail-stock.out {
+            background: #fff1f1;
+            color: #b42318;
+        }
+
+        .detail-divider {
+            height: 1px;
+            background: #e6e4dc;
+            margin: 8px 0 25px;
+        }
+
+        .detail-content h2 {
+            color: #184c38;
+            font-size: 21px;
+            margin: 0 0 12px;
+        }
+
+        .detail-description {
+            color: #5d5d5d;
+            font-size: 16px;
+            line-height: 1.8;
+            white-space: pre-line;
+            margin-bottom: 30px;
+        }
+
+        .detail-actions {
+            display: flex;
+            gap: 12px;
+        }
+
+        .detail-btn {
+            text-decoration: none;
+            padding: 13px 22px;
+            border-radius: 8px;
+            font-weight: 700;
+            text-align: center;
+        }
+
+        .back-btn {
+            background: #184c38;
+            color: white;
+        }
+
+        .buy-detail-btn {
+            background: #d6ae45;
+            color: #173d2f;
+        }
+
+
+        /* =========================================================
+           RATINGS & REVIEWS
+           ========================================================= */
+
+        .reviews-section {
+            max-width: 1150px;
+            margin: 35px auto 0;
+            background: white;
+            border-radius: 18px;
+            box-shadow: 0 8px 30px rgba(0,0,0,0.08);
+            padding: 45px 50px;
+        }
+
+        .reviews-container {
+            width: 100%;
+        }
+
+        .reviews-title {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .reviews-title h2 {
+            color: #184c38;
+            font-size: 28px;
+            margin: 0 0 8px;
+        }
+
+        .reviews-title p {
+            color: #777;
+            margin: 0;
+            font-size: 15px;
+        }
+
+        .rating-summary {
+            display: flex;
+            justify-content: center;
+            border-bottom: 1px solid #e6e4dc;
+            padding-bottom: 30px;
+            margin-bottom: 30px;
+        }
+
+        .rating-average {
+            text-align: center;
+        }
+
+        .average-number {
+            display: block;
+            color: #184c38;
+            font-size: 42px;
+            font-weight: 800;
+        }
+
+        .average-stars,
+        .review-stars {
+            color: #d6ae45;
+            font-size: 22px;
+            letter-spacing: 2px;
+        }
+
+        .review-count {
+            display: block;
+            color: #777;
+            margin-top: 5px;
+        }
+
+        .customer-reviews {
+            display: flex;
+            flex-direction: column;
+            gap: 18px;
+        }
+
+        .review-card {
+            border: 1px solid #e6e4dc;
+            border-radius: 12px;
+            padding: 22px;
+            background: #fafaf7;
+        }
+
+        .review-top {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 8px;
+        }
+
+        .review-top strong {
+            color: #184c38;
+            font-size: 16px;
+        }
+
+        .review-top span {
+            color: #888;
+            font-size: 13px;
+        }
+
+        .review-card p {
+            color: #555;
+            line-height: 1.7;
+            margin: 10px 0 0;
+        }
+
+        .no-reviews {
+            text-align: center;
+            padding: 35px;
+            background: #f8f8f4;
+            border-radius: 12px;
+        }
+
+        .no-review-icon {
+            color: #d6ae45;
+            font-size: 30px;
+            margin-bottom: 8px;
+        }
+
+        .no-reviews h3 {
+            color: #184c38;
+            margin: 5px 0;
+        }
+
+        .no-reviews p {
+            color: #777;
+            margin: 0;
+        }
+
+
+        /* =========================================================
+           WRITE A REVIEW
+           ADDED FOR RATINGS FUNCTIONALITY
+           ========================================================= */
+
+        .write-review-box {
+            background: #f8f8f4;
+            border: 1px solid #e6e4dc;
+            border-radius: 12px;
+            padding: 28px;
+            margin-bottom: 30px;
+        }
+
+        .write-review-box h3 {
+            color: #184c38;
+            font-size: 23px;
+            margin: 0 0 8px;
+        }
+
+        .write-review-box > p {
+            color: #777;
+            margin: 0 0 22px;
+        }
+
+        .review-form-group {
+            margin-bottom: 18px;
+        }
+
+        .review-form-group > label {
+            display: block;
+            color: #184c38;
+            font-weight: 700;
+            margin-bottom: 8px;
+        }
+
+        .rating-select {
+            display: flex;
+            gap: 5px;
+            align-items: center;
+        }
+
+        .rating-option {
+            position: relative;
+        }
+
+        .rating-option input {
+            position: absolute;
+            opacity: 0;
+            pointer-events: none;
+        }
+
+        .rating-option label {
+            cursor: pointer;
+            color: #cfcfcf;
+            font-size: 32px;
+            letter-spacing: 0;
+            transition: 0.2s;
+            line-height: 1;
+        }
+
+        .rating-option label.selected {
+            color: #d6ae45;
+        }
+
+        .rating-option label:hover {
+            color: #d6ae45;
+        }
+
+        .review-textarea {
+            width: 100%;
+            min-height: 120px;
+            padding: 13px;
+            border: 1px solid #ddd8c9;
+            border-radius: 8px;
+            resize: vertical;
+            font-family: inherit;
+            font-size: 15px;
+            box-sizing: border-box;
+            outline: none;
+        }
+
+        .review-textarea:focus {
+            border-color: #184c38;
+        }
+
+        .submit-review-btn {
+            background: #184c38;
+            color: white;
+            border: none;
+            padding: 13px 25px;
+            border-radius: 8px;
+            font-weight: 700;
+            cursor: pointer;
+            font-size: 15px;
+        }
+
+        .submit-review-btn:hover {
+            background: #123d2d;
+        }
+
+        .review-message {
+            padding: 15px 18px;
+            border-radius: 10px;
+            background: #f8f8f4;
+            border: 1px solid #e6e4dc;
+            color: #666;
+            margin-bottom: 25px;
+        }
+
+        .review-message.success {
+            background: #eef7f0;
+            border-color: #c9e2cf;
+            color: #18553d;
+        }
+
+        .review-message a {
+            color: #184c38;
+            font-weight: 700;
+        }
+
+
+        /* =========================================================
+           RESPONSIVE
+           ========================================================= */
+
+        @media (max-width: 850px) {
+
+            .product-detail-container {
+                grid-template-columns: 1fr;
+            }
+
+            .detail-image-area,
+            .detail-image-area img {
+                min-height: 400px;
+            }
+
+            .detail-content {
+                padding: 35px 25px;
+            }
+
+            .reviews-section {
+                margin: 25px 5% 0;
+                padding: 35px 25px;
+            }
+
+        }
+
+
+        @media (max-width: 500px) {
+
+            .product-detail-section {
+                padding: 40px 5%;
+            }
+
+            .detail-content h1 {
+                font-size: 29px;
+            }
+
+            .detail-actions {
+                flex-direction: column;
+            }
+
+            .reviews-section {
+                padding: 30px 18px;
+            }
+
+            .review-top {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 5px;
+            }
+
+            .rating-select {
+                gap: 4px;
+            }
+
+            .rating-option label {
+                font-size: 25px;
+            }
+
+        }
+
+    </style>
+
+</head>
+
+
+<body>
+
+
+<!-- =========================================================
+     NAVBAR
+     ========================================================= -->
+
+<nav class="navbar">
+
+    <div class="logo">
+
+        <a href="/">
+            <img src="/images/craftora-logo.png" alt="Craftora Logo">
+        </a>
+
+    </div>
+
+
+    <div class="nav-links">
+
+        <a href="/">Home</a>
+
+        <a href="/about-us">About Us</a>
+
+
+        <div class="dropdown">
+
+            <a href="#">Events ▾</a>
+
+            <div class="dropdown-menu">
+
+                <a href="/workshops">Workshops</a>
+
+                <a href="/exhibitions">Exhibitions</a>
+
+                <a href="/competitions">Competitions</a>
+
+            </div>
+
+        </div>
+
+
+        <a href="/marketplace" class="active">
+            Marketplace
+        </a>
+
+        <a href="/ratings">
+            Ratings
+        </a>
+
+        <a href="/contact-us">
+            Contact Us
+        </a>
+
+    </div>
+
+
+    <div class="sign-in">
+
+        <a href="/login">
+            Sign In
+        </a>
+
+    </div>
+
+</nav>
+
+
+
+<!-- =========================================================
+     PRODUCT DETAILS
+     ========================================================= -->
+
+<section class="product-detail-section">
+
+
+    <div class="product-detail-container">
+
+
+        <!-- PRODUCT IMAGE -->
+
+        <div class="detail-image-area">
+
+            <img
+                    th:if="${product.productImage != null and !product.productImage.isEmpty()}"
+                    th:src="${product.productImage.startsWith('/') ? product.productImage : '/' + product.productImage}"
+                    th:alt="${product.productName}"
+            >
+
+
+            <div
+                    class="detail-no-image"
+                    th:if="${product.productImage == null or product.productImage.isEmpty()}"
+            >
+                🛍️
+            </div>
+
+        </div>
+
+
+
+        <!-- PRODUCT INFORMATION -->
+
+        <div class="detail-content">
+
+
+            <span
+                    class="detail-category"
+                    th:text="${product.category}"
+            >
+                Craft Category
+            </span>
+
+
+            <h1 th:text="${product.productName}">
+                Product Name
+            </h1>
+
+
+            <div class="detail-artisan">
+
+                Crafted by
+
+                <strong th:text="${product.artisan.user.fullName}">
+                    Artisan Name
+                </strong>
+
+            </div>
+
+
+            <div class="detail-price">
+
+                LKR
+
+                <span th:text="${product.price}">
+                    0.00
+                </span>
+
+            </div>
+
+
+            <div
+                    class="detail-stock"
+                    th:if="${product.stockQuantity != null and product.stockQuantity > 0}"
+            >
+
+                Available Stock:
+
+                <strong th:text="${product.stockQuantity}">
+                    0
+                </strong>
+
+            </div>
+
+
+            <div
+                    class="detail-stock out"
+                    th:if="${product.stockQuantity == null or product.stockQuantity <= 0}"
+            >
+
+                Out of Stock
+
+            </div>
+
+
+            <div class="detail-divider"></div>
+
+
+            <h2>
+                Product Description
+            </h2>
+
+
+            <p
+                    class="detail-description"
+                    th:text="${product.description}"
+            >
+                Product description
+            </p>
+
+
+
+            <!-- EXISTING BUTTONS - NOT CHANGED -->
+
+            <div class="detail-actions">
+
+
+                <a
+                        href="/marketplace"
+                        class="detail-btn back-btn"
+                >
+                    ← Back to Marketplace
+                </a>
+
+
+                <a
+                        th:href="@{'/cart/buy-now/' + ${product.productId}}"
+                        class="detail-btn buy-detail-btn"
+                        th:if="${product.stockQuantity != null and product.stockQuantity > 0}"
+                >
+                    Buy Now
+                </a>
+
+
+            </div>
+
+
+        </div>
+
+    </div>
+
+
+
+    <!-- =====================================================
+         RATINGS & REVIEWS
+         SEPARATE SECTION BELOW PRODUCT DETAILS
+         ===================================================== -->
+
+    <div class="reviews-section">
+
+
+        <div class="reviews-container">
+
+
+            <div class="reviews-title">
+
+                <h2>
+                    Ratings & Reviews
+                </h2>
+
+                <p>
+                    What our customers say about this product
+                </p>
+
+            </div>
+
+
+
+            <!-- RATING SUMMARY -->
+
+            <div class="rating-summary">
+
+
+                <div class="rating-average">
+
+
+                    <span
+                            class="average-number"
+                            th:text="${#numbers.formatDecimal(averageRating, 1, 1)}"
+                    >
+                        0.0
+                    </span>
+
+
+                    <div class="average-stars">
+                        ★★★★★
+                    </div>
+
+
+                    <span class="review-count">
+
+                        <span th:text="${reviewCount}">
+                            0
+                        </span>
+
+                        Reviews
+
+                    </span>
+
+
+                </div>
+
+            </div>
+
+
+            <!-- =================================================
+                 WRITE REVIEW - PURCHASED CUSTOMER ONLY
+                 ================================================= -->
+
+            <div
+                    class="write-review-box"
+                    th:if="${canReview}"
+            >
+
+                <h3>
+                    Write a Review
+                </h3>
+
+                <p>
+                    Share your experience with this product.
+                </p>
+
+
+                <form
+                        th:action="@{'/ratings/submit/' + ${product.productId}}"
+                        method="post"
+                >
+
+
+                    <!-- RATING -->
+
+                    <div class="review-form-group">
+
+                        <label>
+                            Your Rating
+                        </label>
+
+
+                        <div class="rating-select">
+
+
+                            <div class="rating-option">
+
+                                <input
+                                        type="radio"
+                                        id="rating1"
+                                        name="rating"
+                                        value="1"
+                                        required
+                                >
+
+                                <label for="rating1" data-rating="1">
+                                    ★
+                                </label>
+
+                            </div>
+
+
+                            <div class="rating-option">
+
+                                <input
+                                        type="radio"
+                                        id="rating2"
+                                        name="rating"
+                                        value="2"
+                                >
+
+                                <label for="rating2" data-rating="2">
+                                    ★
+                                </label>
+
+                            </div>
+
+
+                            <div class="rating-option">
+
+                                <input
+                                        type="radio"
+                                        id="rating3"
+                                        name="rating"
+                                        value="3"
+                                >
+
+                                <label for="rating3" data-rating="3">
+                                    ★
+                                </label>
+
+                            </div>
+
+
+                            <div class="rating-option">
+
+                                <input
+                                        type="radio"
+                                        id="rating4"
+                                        name="rating"
+                                        value="4"
+                                >
+
+                                <label for="rating4" data-rating="4">
+                                    ★
+                                </label>
+
+                            </div>
+
+
+                            <div class="rating-option">
+
+                                <input
+                                        type="radio"
+                                        id="rating5"
+                                        name="rating"
+                                        value="5"
+                                >
+
+                                <label for="rating5" data-rating="5">
+                                    ★
+                                </label>
+
+                            </div>
+
+
+                        </div>
+
+                    </div>
+
+
+                    <!-- REVIEW TEXT -->
+
+                    <div class="review-form-group">
+
+                        <label for="review">
+                            Your Review
+                        </label>
+
+
+                        <textarea
+                                id="review"
+                                name="review"
+                                class="review-textarea"
+                                maxlength="1000"
+                                placeholder="Write your review here..."
+                        ></textarea>
+
+                    </div>
+
+
+                    <button
+                            type="submit"
+                            class="submit-review-btn"
+                    >
+                        Submit Review
+                    </button>
+
+
+                </form>
+
+            </div>
+
+
+            <!-- =================================================
+                 ALREADY REVIEWED
+                 ================================================= -->
+
+            <div
+                    id="alreadyReviewedMessage"
+                    class="review-message success"
+                    th:if="${loggedIn and alreadyReviewed}"
+            >
+
+                ✓ You have already reviewed this product.
+
+            </div>
+
+
+            <!-- =================================================
+                 LOGGED IN BUT NOT PURCHASED
+                 ================================================= -->
+
+            <div
+                    class="review-message"
+                    th:if="${loggedIn and !canReview and !alreadyReviewed}"
+            >
+
+                You can review this product after purchasing it.
+
+            </div>
+
+
+            <!-- =================================================
+                 NOT LOGGED IN
+                 ================================================= -->
+
+            <div
+                    class="review-message"
+                    th:if="${!loggedIn}"
+            >
+
+                Please
+
+                <a href="/login">
+                    sign in
+                </a>
+
+                to write a review.
+
+            </div>
+
+
+            <!-- =================================================
+                 REVIEW SUCCESS
+                 ================================================= -->
+
+            <div
+                    id="reviewSuccessMessage"
+                    class="review-message success"
+                    th:if="${param.reviewSuccess}"
+            >
+
+                ✓ Your review has been submitted successfully.
+
+            </div>
+
+
+
+            <!-- CUSTOMER REVIEWS -->
+
+            <div class="customer-reviews">
+
+
+                <!-- EACH REVIEW -->
+
+                <div
+                        class="review-card"
+                        th:each="review : ${ratings}"
+                >
+
+
+                    <div class="review-top">
+
+
+                        <strong
+                                th:text="${review.customer.user.fullName}"
+                        >
+                            Customer Name
+                        </strong>
+
+
+                        <span
+                                th:text="${#temporals.format(review.createdAt, 'dd MMM yyyy')}"
+                        >
+                            Date
+                        </span>
+
+
+                    </div>
+
+
+
+                    <!-- STAR RATING -->
+
+                    <div class="review-stars">
+
+                        <span
+                                th:each="i : ${#numbers.sequence(1,5)}"
+                                th:text="${i <= review.rating ? '★' : '☆'}"
+                        >
+                            ★
+                        </span>
+
+                    </div>
+
+
+
+                    <!-- WRITTEN REVIEW -->
+
+                    <p
+                            th:if="${review.review != null and !review.review.isEmpty()}"
+                            th:text="${review.review}"
+                    >
+                        Customer review
+                    </p>
+
+
+                </div>
+
+
+
+                <!-- NO REVIEWS -->
+
+                <div
+                        class="no-reviews"
+                        th:if="${#lists.isEmpty(ratings)}"
+                >
+
+
+                    <div class="no-review-icon">
+                        ★
+                    </div>
+
+
+                    <h3>
+                        No reviews yet
+                    </h3>
+
+
+                    <p>
+                        Be the first to review this product.
+                    </p>
+
+
+                </div>
+
+
+            </div>
+
+
+        </div>
+
+
+    </div>
+
+
+</section>
+
+
+
+<!-- =========================================================
+     FOOTER
+     ========================================================= -->
+
+<footer class="site-footer">
+
+
+    <div class="footer-container">
+
+
+        <!-- ABOUT -->
+
+        <div class="footer-column footer-about">
+
+            <h3>
+                CRAFTORA
+            </h3>
+
+            <p>
+
+                Craftora is an integrated web application aimed at
+                preserving traditional handicrafts, promoting artisan
+                growth, and providing learning & commercial opportunities
+                through technology.
+
+            </p>
+
+        </div>
+
+
+
+        <!-- QUICK LINKS -->
+
+        <div class="footer-column">
+
+            <h3>
+                QUICK LINKS
+            </h3>
+
+            <ul>
+
+                <li>
+                    <a href="/">Home</a>
+                </li>
+
+                <li>
+                    <a href="/about-us">About Us</a>
+                </li>
+
+                <li>
+                    <a href="/exhibitions">Exhibitions</a>
+                </li>
+
+                <li>
+                    <a href="/competitions">Competitions</a>
+                </li>
+
+                <li>
+                    <a href="/marketplace">Marketplace</a>
+                </li>
+
+                <li>
+                    <a href="/ratings">Ratings</a>
+                </li>
+
+                <li>
+                    <a href="/contact-us">Contact Us</a>
+                </li>
+
+            </ul>
+
+        </div>
+
+
+
+        <!-- EVENT CATEGORIES -->
+
+        <div class="footer-column">
+
+            <h3>
+                EVENT CATEGORIES
+            </h3>
+
+            <ul>
+
+                <li>
+                    <a href="/workshops">Workshops</a>
+                </li>
+
+                <li>
+                    <a href="/exhibitions">Exhibitions</a>
+                </li>
+
+                <li>
+                    <a href="/competitions">Competitions</a>
+                </li>
+
+                <li>
+                    <a href="#">
+                        Google Maps Integration
+                    </a>
+                </li>
+
+            </ul>
+
+        </div>
+
+
+
+        <!-- CONTACT -->
+
+        <div class="footer-column footer-contact">
+
+            <h3>
+                CONTACT US
+            </h3>
+
+
+            <div class="footer-contact-item">
+
+                <span class="footer-contact-icon">
+                    📍
+                </span>
+
+                <span>
+                    Sri Lanka
+                </span>
+
+            </div>
+
+
+            <div class="footer-contact-item">
+
+                <span class="footer-contact-icon">
+                    📞
+                </span>
+
+                <span>
+                    +94 77 0343002
+                </span>
+
+            </div>
+
+
+            <div class="footer-contact-item">
+
+                <span class="footer-contact-icon">
+                    ✉
+                </span>
+
+                <span>
+                    craftorasystem@gmail.com
+                </span>
+
+            </div>
+
+
+            <div class="footer-contact-item">
+
+                <span class="footer-contact-icon">
+                    🕐
+                </span>
+
+                <span>
+                    Mon - Fri: 9.00 AM - 5.00 PM
+                </span>
+
+            </div>
+
+        </div>
+
+
+
+        <!-- COMMUNITY -->
+
+        <div class="footer-column community-column">
+
+            <h3>
+                CRAFTORA<br>
+                COMMUNITY
+            </h3>
+
+
+            <p class="community-text">
+
+                Be part of the growing handicraft community
+                and discover new opportunities.
+
+            </p>
+
+
+            <ul>
+
+                <li>
+                    <a href="#">
+                        Become an Artisan
+                    </a>
+                </li>
+
+                <li>
+                    <a href="/workshops">
+                        Join a Workshop
+                    </a>
+                </li>
+
+                <li>
+                    <a href="/marketplace">
+                        Explore Marketplace
+                    </a>
+                </li>
+
+                <li>
+                    <a href="#">
+                        Share Your Craft
+                    </a>
+                </li>
+
+            </ul>
+
+        </div>
+
+
+    </div>
+
+
+
+    <div class="footer-bottom">
+
+        <p>
+            © 2026 Craftora Project. All Rights Reserved.
+        </p>
+
+    </div>
+
+
+</footer>
+
+
+<script>
+
+    const ratingLabels =
+        document.querySelectorAll('.rating-option label');
+
+    ratingLabels.forEach(label => {
+
+        label.addEventListener('click', function () {
+
+            const selectedRating =
+                parseInt(this.getAttribute('data-rating'));
+
+            ratingLabels.forEach(star => {
+
+                const starRating =
+                    parseInt(star.getAttribute('data-rating'));
+
+                if (starRating <= selectedRating) {
+                    star.classList.add('selected');
+                } else {
+                    star.classList.remove('selected');
+                }
+
+            });
+
+        });
+
+    });
+
+
+    /* REVIEW SUCCESS / ALREADY REVIEWED MESSAGES */
+    const reviewSuccessMessage =
+        document.getElementById('reviewSuccessMessage');
+
+    const alreadyReviewedMessage =
+        document.getElementById('alreadyReviewedMessage');
+
+    const reviewSubmitted =
+        new URLSearchParams(window.location.search).has('reviewSuccess');
+
+    if (reviewSubmitted) {
+
+        const messagesToHide = [
+            reviewSuccessMessage,
+            alreadyReviewedMessage
+        ].filter(message => message !== null);
+
+        setTimeout(() => {
+
+            messagesToHide.forEach(message => {
+
+                message.style.transition =
+                    'opacity 0.4s ease, max-height 0.4s ease, margin 0.4s ease, padding 0.4s ease';
+
+                message.style.opacity = '0';
+                message.style.maxHeight = '0';
+                message.style.marginTop = '0';
+                message.style.marginBottom = '0';
+                message.style.paddingTop = '0';
+                message.style.paddingBottom = '0';
+                message.style.overflow = 'hidden';
+            });
+
+            setTimeout(() => {
+                messagesToHide.forEach(message => message.remove());
+            }, 450);
+
+        }, 3000);
+
+        /* Remove reviewSuccess=true from the URL */
+        if (window.history && window.history.replaceState) {
+
+            const url = new URL(window.location.href);
+            url.searchParams.delete('reviewSuccess');
+
+            window.history.replaceState(
+                {},
+                document.title,
+                url.pathname + url.search + url.hash
+            );
+        }
+    }
+
+</script>
+
+</body>
+
+</html>

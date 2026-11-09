@@ -1,0 +1,634 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Craftora - Checkout</title>
+
+    <link rel="stylesheet" href="/css/style.css">
+
+    <style>
+
+        .cart-nav-link {
+            color: #184c38;
+            text-decoration: none;
+            font-weight: 700;
+            white-space: nowrap;
+        }
+
+        .cart-nav-link:hover {
+            color: #b18a2e;
+        }
+
+        body {
+            background: #f8f8f4;
+        }
+
+        .checkout-page {
+            padding: 55px 7%;
+            min-height: 70vh;
+        }
+
+        .checkout-header {
+            max-width: 1200px;
+            margin: 0 auto 28px;
+        }
+
+        .checkout-header span {
+            color: #b18a2e;
+            font-size: 13px;
+            font-weight: 700;
+            letter-spacing: 2px;
+        }
+
+        .checkout-header h1 {
+            color: #184c38;
+            margin: 8px 0;
+            font-size: 36px;
+        }
+
+        .checkout-header p {
+            color: #666;
+            margin: 0;
+        }
+
+        .checkout-layout {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: 1.35fr 0.85fr;
+            gap: 25px;
+            align-items: start;
+        }
+
+        .checkout-card {
+            background: white;
+            border: 1px solid #e7e5dc;
+            border-radius: 14px;
+            padding: 25px;
+            box-shadow: 0 5px 18px rgba(0,0,0,0.06);
+        }
+
+        .checkout-card h2 {
+            color: #184c38;
+            font-size: 22px;
+            margin: 0 0 20px;
+        }
+
+        .checkout-item {
+            display: grid;
+            grid-template-columns: 95px 1fr auto;
+            gap: 15px;
+            align-items: center;
+            padding: 0 0 18px;
+            margin-bottom: 18px;
+            border-bottom: 1px solid #e7e5dc;
+        }
+
+        .checkout-item:last-child {
+            margin-bottom: 0;
+        }
+
+        .product-image {
+            width: 95px;
+            height: 95px;
+            border-radius: 10px;
+            background: #f3f3ef;
+            overflow: hidden;
+        }
+
+        .product-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+        }
+
+        .category {
+            display: inline-block;
+            background: #eef5ef;
+            color: #18553d;
+            padding: 5px 9px;
+            border-radius: 18px;
+            font-size: 11px;
+            font-weight: 700;
+            margin-bottom: 7px;
+        }
+
+        .checkout-item h3 {
+            color: #184c38;
+            margin: 0 0 6px;
+            font-size: 18px;
+        }
+
+        .artisan {
+            color: #666;
+            font-size: 13px;
+            margin-bottom: 6px;
+        }
+
+        .unit-price {
+            color: #b18a2e;
+            font-weight: 800;
+        }
+
+        .item-right {
+            text-align: right;
+            color: #184c38;
+            font-weight: 800;
+        }
+
+        .quantity {
+            color: #666;
+            font-size: 13px;
+            font-weight: 600;
+            margin-top: 5px;
+        }
+
+        .form-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+        }
+
+        .form-group {
+            margin-bottom: 16px;
+        }
+
+        .form-group.full {
+            grid-column: 1 / -1;
+        }
+
+        .form-group label {
+            display: block;
+            color: #184c38;
+            font-size: 13px;
+            font-weight: 700;
+            margin-bottom: 7px;
+        }
+
+        .form-group input,
+        .form-group textarea {
+            width: 100%;
+            box-sizing: border-box;
+            border: 1px solid #ddd;
+            border-radius: 9px;
+            padding: 11px 12px;
+            font-size: 14px;
+            background: #fff;
+        }
+
+        .form-group input:focus,
+        .form-group textarea:focus {
+            outline: none;
+            border-color: #b18a2e;
+            box-shadow: 0 0 0 2px rgba(177,138,46,0.12);
+        }
+
+        .readonly-email {
+            background: #f3f3ef !important;
+            color: #777;
+        }
+
+        .summary-row {
+            display: flex;
+            justify-content: space-between;
+            gap: 15px;
+            color: #666;
+            margin-bottom: 13px;
+        }
+
+        .summary-total {
+            border-top: 1px solid #e7e5dc;
+            padding-top: 17px;
+            margin-top: 17px;
+            display: flex;
+            justify-content: space-between;
+            color: #184c38;
+            font-size: 21px;
+            font-weight: 800;
+        }
+
+        .payment-btn {
+            width: 100%;
+            border: none;
+            margin-top: 22px;
+            padding: 14px;
+            border-radius: 9px;
+            background: #d6ae45;
+            color: #173d2f;
+            font-weight: 800;
+            cursor: pointer;
+            font-size: 15px;
+        }
+
+        .payment-btn:hover {
+            background: #c79f38;
+        }
+
+        .back-link {
+            display: block;
+            text-align: center;
+            margin-top: 13px;
+            color: #184c38;
+            text-decoration: none;
+            font-size: 13px;
+            font-weight: 700;
+        }
+
+        .notice {
+            margin-top: 18px;
+            padding: 12px 14px;
+            border-radius: 8px;
+            background: #eef5ef;
+            color: #18553d;
+            font-size: 13px;
+            line-height: 1.5;
+        }
+
+        .success-message {
+            max-width: 1200px;
+            margin: 0 auto 20px;
+            padding: 14px 16px;
+            border-radius: 9px;
+            background: #eaf7ed;
+            border: 1px solid #b7dfbf;
+            color: #17652b;
+            font-weight: 700;
+        }
+
+        .error-message {
+            max-width: 1200px;
+            margin: 0 auto 20px;
+            padding: 14px 16px;
+            border-radius: 9px;
+            background: #fff1f1;
+            border: 1px solid #efb5b5;
+            color: #a51f1f;
+            font-weight: 700;
+        }
+
+        @media (max-width: 850px) {
+
+            .checkout-layout {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        @media (max-width: 600px) {
+
+            .form-row {
+                grid-template-columns: 1fr;
+            }
+
+            .form-group.full {
+                grid-column: auto;
+            }
+
+            .checkout-item {
+                grid-template-columns: 80px 1fr;
+            }
+
+            .product-image {
+                width: 80px;
+                height: 80px;
+            }
+
+            .item-right {
+                grid-column: 1 / -1;
+                text-align: left;
+            }
+        }
+
+    </style>
+</head>
+
+<body>
+
+<nav class="navbar">
+
+    <div class="logo">
+        <a href="/">
+            <img src="/images/craftora-logo.png" alt="Craftora Logo">
+        </a>
+    </div>
+
+    <div class="nav-links">
+
+        <a href="/">Home</a>
+
+        <a href="/about-us">About Us</a>
+
+        <div class="dropdown">
+
+            <a href="#">Events ▾</a>
+
+            <div class="dropdown-menu">
+                <a href="/workshops">Workshops</a>
+                <a href="/exhibitions">Exhibitions</a>
+                <a href="/competitions">Competitions</a>
+            </div>
+
+        </div>
+
+        <a href="/marketplace">Marketplace</a>
+
+        <a href="/cart" class="cart-nav-link">
+            🛒 My Cart
+        </a>
+
+        <a href="/ratings">Ratings</a>
+
+        <a href="/contact-us">Contact Us</a>
+
+    </div>
+
+    <div class="sign-in">
+        <a th:href="${session.selectedRole == 'ARTISAN' ? '/artisan-dashboard' : (session.selectedRole == 'ADMIN' ? '/admin-dashboard' : '/customer-dashboard')}">
+            Dashboard
+        </a>
+    </div>
+
+</nav>
+
+
+<section class="checkout-page">
+
+    <div class="checkout-header">
+
+        <span>CRAFTORA CHECKOUT</span>
+
+        <h1>Complete Your Purchase</h1>
+
+        <p>
+            Review your selected products and enter your delivery details.
+        </p>
+
+    </div>
+
+
+    <!-- SUCCESS -->
+
+    <div th:if="${successMessage != null}"
+         class="success-message"
+         th:text="${successMessage}">
+        Your order has been created successfully.
+    </div>
+
+
+    <!-- ERROR -->
+
+    <div th:if="${param.error != null}"
+         class="error-message">
+
+        Please enter all delivery details before placing your order.
+
+    </div>
+
+
+    <form action="/checkout/place-order"
+          method="post">
+
+        <div class="checkout-layout">
+
+
+            <!-- LEFT -->
+
+            <div class="checkout-card">
+
+                <h2>Order Items</h2>
+
+
+                <div class="checkout-item"
+                     th:each="item : ${checkoutItems}">
+
+                    <div class="product-image">
+
+                        <img th:if="${item.product.productImage != null and !item.product.productImage.isEmpty()}"
+                             th:src="${item.product.productImage.startsWith('/') ? item.product.productImage : '/' + item.product.productImage}"
+                             th:alt="${item.product.productName}">
+
+                    </div>
+
+
+                    <div>
+
+                        <span class="category"
+                              th:text="${item.product.category}">
+                            Craft
+                        </span>
+
+                        <h3 th:text="${item.product.productName}">
+                            Product Name
+                        </h3>
+
+                        <div class="artisan">
+
+                            By
+
+                            <strong th:text="${item.product.artisan.user.fullName}">
+                                Artisan
+                            </strong>
+
+                        </div>
+
+                        <div class="unit-price">
+
+                            LKR
+
+                            <span th:text="${item.product.price}">
+                                0.00
+                            </span>
+
+                        </div>
+
+                    </div>
+
+
+                    <div class="item-right">
+
+                        LKR
+
+                        <span th:text="${item.subtotal}">
+                            0.00
+                        </span>
+
+                        <div class="quantity">
+
+                            Quantity:
+
+                            <span th:text="${item.quantity}">
+                                1
+                            </span>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+
+                <!-- DELIVERY DETAILS -->
+
+                <h2 style="margin-top:25px;">
+                    Delivery Details
+                </h2>
+
+
+                <div class="form-row">
+
+
+                    <div class="form-group">
+
+                        <label>
+                            Full Name
+                        </label>
+
+                        <input type="text"
+                               name="deliveryName"
+                               th:value="${customer.user.fullName}"
+                               required>
+
+                    </div>
+
+
+                    <div class="form-group">
+
+                        <label>
+                            Email
+                        </label>
+
+                        <input type="email"
+                               th:value="${customer.user.email}"
+                               class="readonly-email"
+                               readonly>
+
+                    </div>
+
+
+                    <div class="form-group">
+
+                        <label>
+                            Phone Number
+                        </label>
+
+                        <input type="text"
+                               name="deliveryPhone"
+                               th:value="${customer.user.phone}"
+                               required>
+
+                    </div>
+
+
+                    <div class="form-group">
+
+                        <label>
+                            City
+                        </label>
+
+                        <input type="text"
+                               name="deliveryCity"
+                               th:value="${customer.city}"
+                               required>
+
+                    </div>
+
+
+                    <div class="form-group full">
+
+                        <label>
+                            Delivery Address
+                        </label>
+
+                        <textarea name="deliveryAddress"
+                                  rows="3"
+                                  required
+                                  th:text="${customer.address}"></textarea>
+
+                    </div>
+
+
+                </div>
+
+
+                <div class="notice">
+
+                    <strong>Note:</strong>
+
+                    You can change these delivery details for this order.
+                    Your Customer Profile will not be changed.
+
+                </div>
+
+            </div>
+
+
+            <!-- RIGHT -->
+
+            <div class="checkout-card">
+
+                <h2>
+                    Order Summary
+                </h2>
+
+
+                <div class="summary-row">
+
+                    <span>
+                        Items
+                    </span>
+
+                    <strong th:text="${#lists.size(checkoutItems)}">
+                        0
+                    </strong>
+
+                </div>
+
+
+                <div class="summary-total">
+
+                    <span>
+                        Total
+                    </span>
+
+                    <span>
+
+                        LKR
+
+                        <span th:text="${checkoutTotal}">
+                            0.00
+                        </span>
+
+                    </span>
+
+                </div>
+
+
+                <button type="submit"
+                        class="payment-btn">
+
+                    Place Order & Continue to Payment
+
+                </button>
+
+
+                <a href="/cart"
+                   class="back-link">
+
+                    ← Back to Cart
+
+                </a>
+
+            </div>
+
+
+        </div>
+
+    </form>
+
+</section>
+
+</body>
+
+</html>
