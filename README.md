@@ -152,3 +152,21 @@ The Admin Dashboard provides a centralized interface to manage users, artisans, 
 The Customer Dashboard provides customers with a user-friendly interface to explore handmade products, manage shopping carts and orders, register for events, view payments, and manage their profiles.
 
 ![Craftora Customer Dashboard](Customer-dashboard.png)
+
+
+## Marketplace
+
+The Craftora Marketplace allows customers to explore and discover handmade products created by talented artisans.
+
+### Marketplace Features
+
+- Browse handmade products from different artisans.
+- Search products by name, artisan, or craft type.
+- Filter products by craft category and price range.
+- Check product availability.
+- Sort products based on recommendations.
+- View product details and discover unique handicrafts.
+
+### Marketplace Overview
+
+![Craftora Marketplace](Craftora-Marketplace-Full-Page.png)
