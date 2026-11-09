@@ -34,7 +34,7 @@ build/
 
 
 
-// GITHUB IGNORE FILES
+# GITHUB IGNORE FILES
 # Craftora private files
 uploads/
 **/uploads/
