@@ -132,3 +132,9 @@ Developed as a Final Year Undergraduate Project.
 ### Home Page Footer
 
 ![Craftora Footer](05-home-footer.png)
+
+### Artisan Dashboard
+
+The Artisan Dashboard provides an overview of products, customer orders, payments, events, and quick management actions.
+
+![Craftora Artisan Dashboard](artisan-dashboard.png)
