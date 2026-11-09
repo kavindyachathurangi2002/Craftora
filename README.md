@@ -145,3 +145,10 @@ The Artisan Dashboard provides an overview of products, customer orders, payment
 The Admin Dashboard provides a centralized interface to manage users, artisans, products, events, payments, and platform activities.
 
 ![Craftora Admin Dashboard](Admin-dashboard.png)
+
+
+### Customer Dashboard
+
+The Customer Dashboard provides customers with a user-friendly interface to explore handmade products, manage shopping carts and orders, register for events, view payments, and manage their profiles.
+
+![Craftora Customer Dashboard](Customer-dashboard.png)
