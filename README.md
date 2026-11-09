@@ -138,3 +138,10 @@ Developed as a Final Year Undergraduate Project.
 The Artisan Dashboard provides an overview of products, customer orders, payments, events, and quick management actions.
 
 ![Craftora Artisan Dashboard](artisan-dashboard.png)
+
+
+### Admin Dashboard
+
+The Admin Dashboard provides a centralized interface to manage users, artisans, products, events, payments, and platform activities.
+
+![Craftora Admin Dashboard](Admin-dashboard.png)
